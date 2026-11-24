@@ -53,6 +53,12 @@ Windows 启动、资料库、完整 APK 签名导出和重启更新已验证。�
 - 感谢球员工坊原作者 **[light23335](https://github.com/light23335)**。
 - 感谢 73eFootball 原作者 **[efootball_73](https://t.me/efootball_73)**。
 
+## ⚠️ 免责声明
+
+* 本项目代码及派生修改内容**仅供个人学习、技术交流与非营利性娱乐使用，严禁用于任何商业用途**（包括但不限于二次售卖、付费定制、商业引流等）。
+* 项目中所涉及的游戏界面风格、卡面视觉元素及相关素材，其版权均归原游戏开发商（KONAMI）及对应权利方所有；如涉及侵权，请联系仓库作者及时删除。
+* 本工具按“现状”提供，开发者不对因使用或无法使用本工具而导致的任何直接或间接后果承担责任。
+
 ---
 
 ## English
@@ -107,3 +113,9 @@ The original project's project-wide license is pending confirmation from the ori
 
 - **[light23335](https://github.com/light23335)** for the original Player Studio.
 - **[efootball_73](https://t.me/efootball_73)** for 73eFootball.
+
+### ⚠️ Disclaimer
+
+* This project's code and derivative modifications are **for personal learning, technical exchange, and nonprofit entertainment only. All commercial use is prohibited**, including resale, paid customization, and commercial promotion.
+* The game interface style, card visuals, and related assets referenced in this project belong to the original game developer (KONAMI) and the respective rights holders. If you believe your rights have been infringed, please contact the repository owner so the material can be removed promptly.
+* This tool is provided “as is.” The developers accept no liability for any direct or indirect consequences arising from its use or the inability to use it.
