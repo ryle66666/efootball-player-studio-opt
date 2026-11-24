@@ -1,0 +1,1410 @@
+/* ==========================================================================
+   球员工坊 · APPLE MINIMALIST LIGHT — 苹果极简浅色主题与丝滑动效
+   仅在 html[data-theme="apple-light"] 下生效；切回 liquid-glass 即完整还原原版深色液态玻璃。
+   ========================================================================== */
+
+/* ---------- 顶栏主题/语言切换按钮（两套主题通用） ---------- */
+.head-actions .shell-util-btn{
+  min-height:34px;
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:12.5px;
+  font-weight:600;
+  letter-spacing:.2px;
+  gap:6px;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.head-actions .shell-util-btn svg{width:15px;height:15px}
+.head-actions .shell-util-btn .util-text{display:inline!important;line-height:1}
+@media(max-width:1900px){
+  .head-actions .shell-util-btn{
+    width:auto!important;
+    height:34px!important;
+    padding:0 11px!important;
+  }
+  .head-actions .shell-util-btn .util-text{display:inline!important}
+}
+@media(max-width:760px){
+  .head-actions .shell-util-btn{
+    height:32px!important;
+    padding:0 9px!important;
+    font-size:11.5px;
+  }
+}
+
+/* 主题切换时的平滑过渡（仅在点击切换的 280ms 内附加，平时零开销） */
+html.theme-switching,
+html.theme-switching body,
+html.theme-switching .panel,
+html.theme-switching .dock,
+html.theme-switching .sidebar,
+html.theme-switching .topbar,
+html.theme-switching .tile,
+html.theme-switching .button,
+html.theme-switching .input,
+html.theme-switching select{
+  transition:background-color .28s cubic-bezier(.22,1,.36,1),
+             color .24s cubic-bezier(.22,1,.36,1),
+             border-color .24s cubic-bezier(.22,1,.36,1),
+             box-shadow .28s cubic-bezier(.22,1,.36,1)!important;
+}
+
+/* ==========================================================================
+   APPLE MINIMALIST LIGHT TOKENS
+   ========================================================================== */
+@font-face{
+  font-family:"Studio Noto Sans SC";
+  src:local("Noto Sans SC SemiBold"),local("NotoSansSC-SemiBold"),local("Noto Sans SC"),local("NotoSansSC-Regular");
+  font-weight:100 599;
+  font-variation-settings:"wght" 600;
+}
+@font-face{
+  font-family:"Studio Noto Sans SC";
+  src:local("Noto Sans SC Bold"),local("NotoSansSC-Bold"),local("Noto Sans SC"),local("NotoSansSC-Regular");
+  font-weight:600 900;
+  font-variation-settings:"wght" 700;
+}
+html[data-theme="apple-light"]{
+  color-scheme:light;
+
+  /* 浅色极简画布与纯净层次 */
+  --c1:#0071E3;
+  --c2:#5AC8FA;
+  --c3:#5856D6;
+  --tint:#F5F5F7;
+
+  --surface:#FFFFFF;
+  --surface-2:#F5F5F7;
+  --glass-bg:rgba(255,255,255,.88);
+  --glass-bg-2:rgba(255,255,255,.96);
+  --fill:rgba(0,0,0,.045);
+  --fill-2:rgba(0,0,0,.08);
+
+  --line:rgba(0,0,0,.08);
+  --line-2:rgba(0,0,0,.11);
+  --line-3:rgba(0,0,0,.22);
+
+  --text:#1D1D1F;
+  --text-2:#424245;
+  --muted:#6E6E73;
+  --faint:#65656D;
+
+  --ink:#1D1D1F;
+  --graphite:linear-gradient(180deg,#47494F 7%,#303137 36%,#232429 64%,#35373D 94%);
+  --rating-font:"StudioCardRating","Bahnschrift SemiCondensed","Arial Black",var(--display);
+  --ink-2:#343438;
+  --on-ink:#FFFFFF;
+  --accent:#0071E3;
+  --accent-soft:rgba(0,113,227,.10);
+  --navy:#0071E3;
+  --navy-soft:rgba(0,113,227,.10);
+  --green:#248A3D;
+  --red:#D70015;
+  --red-soft:rgba(215,0,21,.08);
+  --red-line:rgba(215,0,21,.24);
+  --warn:#B25000;
+  --mint:#248A3D;
+  --border:rgba(0,0,0,.10);
+  --stroke:rgba(0,0,0,.09);
+  --panel:#FFFFFF;
+  --panel2:var(--surface-2);
+  --stroke2:var(--line-3);
+  --glass-shadow:none;
+  --shadow-lg:0 16px 42px -18px rgba(24,28,38,.24);
+
+  --blur:saturate(180%) blur(20px);
+  --blur-lg:saturate(190%) blur(28px);
+  --r:12px;
+  --r-lg:18px;
+  --r-xl:24px;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 10px 28px -12px rgba(0,0,0,.09);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.04),0 3px 10px -4px rgba(0,0,0,.06);
+  --shadow-pop:0 14px 40px -10px rgba(0,0,0,.16),0 2px 8px rgba(0,0,0,.06);
+
+  --font:"Studio Noto Sans SC","Noto Sans SC","Noto Sans CJK SC","PingFang SC","Microsoft YaHei UI","Segoe UI",sans-serif;
+  --display:var(--font);
+  --font-num:var(--font);
+
+  /* 苹果丝滑弹性曲线 */
+  --spring:cubic-bezier(.22,1,.36,1);
+  --ease:cubic-bezier(.25,.1,.25,1);
+  --apple-sheet:cubic-bezier(.32,.72,0,1);
+}
+
+html[data-theme="apple-light"][data-effects="low"]{
+  --low-effects-panel:#FFFFFF;
+  --low-effects-overlay:#FFFFFF;
+}
+
+/* ---------- 画布与柔和光晕 ---------- */
+html[data-theme="apple-light"] body{
+  background:var(--tint);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
+html[data-theme="apple-light"] :is(.ambient,.veil,.grain){display:none}
+
+html[data-theme="apple-light"] ::selection{
+  background:rgba(0,113,227,.18);
+  color:#1D1D1F;
+}
+
+/* 浅色精致滚动条 */
+html[data-theme="apple-light"] ::-webkit-scrollbar-thumb{
+  background:rgba(0,0,0,.16);
+  border-radius:999px;
+}
+html[data-theme="apple-light"] ::-webkit-scrollbar-thumb:hover{
+  background:rgba(0,0,0,.28);
+}
+
+/* ---------- 字体与标题 ---------- */
+html[data-theme="apple-light"] h1,
+html[data-theme="apple-light"] h2,
+html[data-theme="apple-light"] h3,
+html[data-theme="apple-light"] strong{
+  color:var(--text);
+}
+html[data-theme="apple-light"] .page-heading h1{
+  font-family:var(--display);
+  font-stretch:normal;
+  font-weight:700;
+  letter-spacing:-.025em;
+  color:#1D1D1F;
+}
+html[data-theme="apple-light"] .page-heading p{
+  color:var(--muted);
+}
+html[data-theme="apple-light"] .eyebrow{
+  background:none;
+  font-family:var(--font);
+  font-stretch:normal;
+  font-weight:600;
+  letter-spacing:.12em;
+  color:var(--accent);
+}
+html[data-theme="apple-light"] .mono{
+  background:rgba(0,0,0,.05);
+  color:#1D1D1F;
+}
+html[data-theme="apple-light"] kbd{
+  background:#FFFFFF;
+  border-color:rgba(0,0,0,.14);
+  color:var(--muted);
+  box-shadow:0 1px 0 rgba(0,0,0,.06);
+}
+html[data-theme="apple-light"] a:not(.button,.dock-logo,.brand){
+  color:var(--accent);
+}
+html[data-theme="apple-light"] .text-link{
+  color:var(--accent);
+}
+html[data-theme="apple-light"] .text-link:hover{
+  color:#005BB5;
+}
+
+/* ---------- 左侧悬浮 Dock 与导航抽屉 ---------- */
+html[data-theme="apple-light"] .dock{
+  background:rgba(255,255,255,.82);
+  border:1px solid rgba(0,0,0,.07);
+  box-shadow:0 4px 20px -4px rgba(0,0,0,.10),0 1px 3px rgba(0,0,0,.05);
+}
+html[data-theme="apple-light"] :is(.dock-logo,.mark){
+  background:var(--graphite);
+  color:#FFFFFF;
+  box-shadow:0 4px 12px -4px rgba(0,0,0,.28);
+  font-stretch:normal;
+}
+html[data-theme="apple-light"] .dock-button{
+  color:#515154;
+  transition:transform .28s var(--spring),background-color .2s var(--ease),color .2s var(--ease),box-shadow .25s var(--ease);
+}
+html[data-theme="apple-light"] .dock-button:hover:not(:disabled){
+  color:#1D1D1F;
+  background:rgba(0,0,0,.06);
+  transform:scale(1.06);
+}
+html[data-theme="apple-light"] .dock-button:active:not(:disabled){
+  transform:scale(.94);
+}
+html[data-theme="apple-light"] .dock-button[aria-current="page"]{
+  background:#0071E3!important;
+  color:#FFFFFF!important;
+  box-shadow:0 4px 14px -3px rgba(0,113,227,.45);
+}
+html[data-theme="apple-light"] .dock hr{
+  background:rgba(0,0,0,.10);
+}
+html[data-theme="apple-light"] .dock-tip{
+  background:rgba(29,29,31,.92);
+  color:#FFFFFF;
+  box-shadow:0 8px 22px -6px rgba(0,0,0,.22);
+}
+
+html[data-theme="apple-light"] .sidebar-backdrop{
+  background:rgba(0,0,0,.22);
+  -webkit-backdrop-filter:blur(6px);
+  backdrop-filter:blur(6px);
+}
+html[data-theme="apple-light"] .sidebar{
+  background:rgba(255,255,255,.90);
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:var(--shadow-pop);
+  transition:transform .42s var(--apple-sheet),opacity .26s var(--ease);
+}
+html[data-theme="apple-light"] .brand{
+  border-bottom:1px solid var(--line);
+}
+html[data-theme="apple-light"] .brand-mark{
+  background:#1D1D1F;
+  color:#FFFFFF;
+}
+html[data-theme="apple-light"] .brand strong{color:#1D1D1F}
+html[data-theme="apple-light"] .brand span{color:var(--muted)}
+html[data-theme="apple-light"] .nav-group-toggle{
+  color:var(--muted);
+  font-size:14px;
+  font-weight:700;
+}
+html[data-theme="apple-light"] .nav-group-toggle:hover{
+  color:#1D1D1F;
+  background:rgba(0,0,0,.045);
+}
+html[data-theme="apple-light"] .nav-item{
+  color:#424245;
+  font-size:15px;
+  font-weight:700;
+  transition:background-color .2s var(--ease),color .2s var(--ease),transform .22s var(--spring);
+}
+html[data-theme="apple-light"] .nav-item:hover:not(:disabled){
+  color:#1D1D1F;
+  background:rgba(0,0,0,.05);
+}
+html[data-theme="apple-light"] .nav-item.active{
+  color:#FFFFFF;
+  background:#0071E3;
+  box-shadow:0 4px 12px -4px rgba(0,113,227,.4);
+}
+html[data-theme="apple-light"] .nav-item.active svg{color:#FFFFFF}
+html[data-theme="apple-light"] .nav-group-toggle[aria-expanded="true"] .nav-chevron,
+html[data-theme="apple-light"] .quiet-button:hover{
+  color:var(--text);
+}
+html[data-theme="apple-light"] .nav-divider{background:var(--line)}
+
+/* ---------- 顶部栏与浮动操作组 ---------- */
+html[data-theme="apple-light"] .head{
+  top:0;
+  padding:10px 0;
+  background:var(--tint);
+  border-bottom:1px solid var(--line);
+}
+html[data-theme="apple-light"] .crumb-back{
+  color:#424245;
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:var(--shadow-sm);
+}
+html[data-theme="apple-light"] .crumb-back:hover{
+  color:#1D1D1F;
+  background:#FFFFFF;
+  transform:translateY(-1px);
+  box-shadow:var(--shadow);
+}
+html[data-theme="apple-light"] .breadcrumb{color:var(--muted)}
+html[data-theme="apple-light"] .breadcrumb strong{color:#1D1D1F}
+html[data-theme="apple-light"] .head-actions{
+  max-width:100%;
+  flex-shrink:1;
+  flex-wrap:wrap;
+  gap:6px;
+}
+html[data-theme="apple-light"] .head-actions .button:not(.primary):not(.danger){
+  color:#1D1D1F;
+}
+html[data-theme="apple-light"] .head-actions .button:not(.primary):not(.danger):hover:not(:disabled){
+  background:rgba(0,0,0,.06);
+}
+html[data-theme="apple-light"] .head-actions .shell-util-btn{
+  background:rgba(0,0,0,.045);
+  color:#1D1D1F;
+}
+html[data-theme="apple-light"] .head-actions .shell-util-btn:hover{
+  background:rgba(0,0,0,.085);
+}
+html[data-theme="apple-light"] .save-status{
+  color:var(--muted);
+}
+html[data-theme="apple-light"] .save-status.dirty{
+  color:var(--warn);
+}
+
+/* ---------- 按钮 ---------- */
+html[data-theme="apple-light"] .button{
+  border-radius:999px;
+  font-weight:500;
+  transition:transform .22s var(--spring),background-color .2s var(--ease),border-color .2s var(--ease),box-shadow .22s var(--ease),color .2s var(--ease);
+}
+html[data-theme="apple-light"] .button:active:not(:disabled){
+  transform:scale(.965);
+}
+html[data-theme="apple-light"] .button.primary{
+  background:#0071E3;
+  color:#FFFFFF;
+  box-shadow:0 1px 2px rgba(0,0,0,.08),0 4px 12px -4px rgba(0,113,227,.45);
+}
+html[data-theme="apple-light"] .button.primary:hover:not(:disabled){
+  background:#0077ED;
+  box-shadow:0 2px 4px rgba(0,0,0,.10),0 8px 18px -6px rgba(0,113,227,.50);
+  transform:translateY(-1px);
+}
+html[data-theme="apple-light"] .button.secondary{
+  background:#FFFFFF;
+  color:#1D1D1F;
+  border:1px solid rgba(0,0,0,.11);
+  box-shadow:0 1px 2px rgba(0,0,0,.04);
+}
+html[data-theme="apple-light"] .button.secondary:hover:not(:disabled){
+  background:#FAFAFC;
+  border-color:rgba(0,0,0,.18);
+  box-shadow:0 3px 10px -4px rgba(0,0,0,.10);
+  transform:translateY(-1px);
+}
+html[data-theme="apple-light"] .button.ghost{
+  color:#424245;
+  background:transparent;
+}
+html[data-theme="apple-light"] .button.ghost:hover:not(:disabled){
+  color:#1D1D1F;
+  background:rgba(0,0,0,.055);
+}
+html[data-theme="apple-light"] .button.danger{
+  background:rgba(215,0,21,.08);
+  color:#D70015;
+  border:1px solid rgba(215,0,21,.18);
+  box-shadow:none;
+}
+html[data-theme="apple-light"] .button.danger:hover:not(:disabled){
+  background:rgba(215,0,21,.14);
+}
+html[data-theme="apple-light"] .button.pill{
+  background:rgba(0,0,0,.05);
+  color:#1D1D1F;
+}
+html[data-theme="apple-light"] .button.pill:hover:not(:disabled){
+  background:rgba(0,0,0,.09);
+}
+
+/* ---------- 表单控件 ---------- */
+html[data-theme="apple-light"] .input,
+html[data-theme="apple-light"] input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not(:where(.search-box input,.stepper-group input)),
+html[data-theme="apple-light"] select,
+html[data-theme="apple-light"] textarea{
+  background:#FFFFFF;
+  color:#1D1D1F;
+  border:1px solid rgba(0,0,0,.14);
+  box-shadow:0 1px 2px rgba(0,0,0,.03) inset;
+  transition:border-color .2s var(--ease),box-shadow .22s var(--ease),background-color .2s var(--ease);
+}
+html[data-theme="apple-light"] .input:hover,
+html[data-theme="apple-light"] input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not(:where(.search-box input,.stepper-group input)):hover,
+html[data-theme="apple-light"] select:hover,
+html[data-theme="apple-light"] textarea:hover{
+  border-color:rgba(0,0,0,.24);
+}
+html[data-theme="apple-light"] .input:focus,
+html[data-theme="apple-light"] input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not(:where(.search-box input,.stepper-group input)):focus,
+html[data-theme="apple-light"] select:focus,
+html[data-theme="apple-light"] textarea:focus{
+  background:#FFFFFF;
+  border-color:#0071E3;
+  box-shadow:0 0 0 3.5px rgba(0,113,227,.18);
+}
+html[data-theme="apple-light"] ::placeholder{
+  color:#86868B;
+}
+html[data-theme="apple-light"] select:not([multiple]):not([size]){
+  background-color:#FFFFFF;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23424245' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+}
+html[data-theme="apple-light"] select:focus{background-color:var(--surface)}
+html[data-theme="apple-light"] option,
+html[data-theme="apple-light"] optgroup{
+  background:#FFFFFF;
+  color:#1D1D1F;
+}
+html[data-theme="apple-light"] input[type=checkbox],
+html[data-theme="apple-light"] input[type=radio]{
+  accent-color:#0071E3;
+}
+html[data-theme="apple-light"] input[type=range]{background:transparent}
+html[data-theme="apple-light"] input[type=range]::-webkit-slider-runnable-track{
+  box-shadow:0 0 0 1px rgba(30,36,48,.28);
+}
+html[data-theme="apple-light"] input[type=range]::-moz-range-track{
+  box-shadow:0 0 0 1px rgba(30,36,48,.28);
+}
+html[data-theme="apple-light"] input[type=range]::-webkit-slider-thumb{
+  background:#FFFFFF;
+  border:1px solid rgba(0,0,0,.16);
+  box-shadow:0 2px 6px rgba(0,0,0,.18);
+}
+html[data-theme="apple-light"] input[type=range]::-moz-range-thumb{
+  background:#FFFFFF;
+  border:1px solid rgba(0,0,0,.16);
+  box-shadow:0 2px 6px rgba(0,0,0,.18);
+}
+html[data-theme="apple-light"] .native-library .library-summary strong{
+  font-family:"SF Pro Display","Segoe UI Variable Display","Bahnschrift","DIN Alternate","Segoe UI",sans-serif;
+  font-stretch:normal;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-.02em;
+  line-height:1.15;
+}
+html[data-theme="apple-light"] .native-library .library-summary small{
+  margin-top:9px;
+  line-height:1.4;
+}
+html[data-theme="apple-light"] .native-library .search-box:has(>#library-query){
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:10px 8px;
+  padding:10px 14px 12px;
+  border-radius:16px;
+  align-items:center;
+}
+html[data-theme="apple-light"] .native-library .search-box>#library-query{
+  grid-column:1/-1;
+  grid-row:1;
+  min-width:0;
+  width:100%;
+  min-height:42px;
+  padding:6px 12px 6px 42px;
+  border-radius:10px;
+}
+html[data-theme="apple-light"] .native-library .search-box:has(>#library-query)>.search-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  grid-area:1/1;
+  justify-self:start;
+  align-self:center;
+  margin-inline-start:14px;
+  font-size:18px;
+  line-height:1;
+  color:var(--muted);
+  z-index:1;
+  pointer-events:none;
+}
+html[data-theme="apple-light"] .native-library #library-identity-filters{
+  display:contents;
+}
+html[data-theme="apple-light"] .native-library .search-box:has(>#library-query) select{
+  width:100%;
+  min-width:0;
+  max-width:none;
+  min-height:36px;
+  padding:6px 30px 6px 12px;
+  border-radius:10px;
+  background-color:#F2F2F7;
+  font-size:13px;
+}
+html[data-theme="apple-light"] .native-library .search-box:has(>#library-query) select:hover:not(:disabled){
+  background-color:#E8E8ED;
+}
+@media(max-width:760px){
+  html[data-theme="apple-light"] .native-library .search-box:has(>#library-query){
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    padding:10px 12px 12px;
+  }
+  html[data-theme="apple-light"] .native-library .search-box:has(>#library-query)>.search-icon{
+    display:inline-flex;
+  }
+  html[data-theme="apple-light"] .native-library .search-box>#library-query{
+    padding-inline-start:42px;
+  }
+}
+html[data-theme="apple-light"] .search-box{
+  background:#FFFFFF;
+  border:1px solid rgba(0,0,0,.12);
+  box-shadow:0 1px 2px rgba(0,0,0,.03);
+}
+html[data-theme="apple-light"] .search-box:focus-within{
+  border-color:#0071E3;
+  box-shadow:0 0 0 3.5px rgba(0,113,227,.16);
+}
+html[data-theme="apple-light"] .search-box input{
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  color:var(--text);
+}
+html[data-theme="apple-light"] .search-box input:focus{
+  background:transparent;
+  box-shadow:none;
+  outline:none;
+}
+html[data-theme="apple-light"] .search-box select{
+  background-color:rgba(0,0,0,.04);
+  border:0;
+  box-shadow:none;
+}
+
+/* ---------- 卡片与面板 ---------- */
+html[data-theme="apple-light"] .panel{
+  background:#FFFFFF;
+  border:1px solid rgba(0,0,0,.07);
+  box-shadow:var(--shadow);
+  transition:box-shadow .3s var(--ease),border-color .3s var(--ease);
+}
+html[data-theme="apple-light"] .panel-title h2{
+  color:#1D1D1F;
+  font-weight:600;
+  letter-spacing:-.01em;
+}
+html[data-theme="apple-light"] .panel-description{
+  color:var(--muted);
+}
+html[data-theme="apple-light"] .library-player,
+html[data-theme="apple-light"] .personal-player,
+html[data-theme="apple-light"] .preset-tile,
+html[data-theme="apple-light"] .coach-card,
+html[data-theme="apple-light"] .native-asset,
+html[data-theme="apple-light"] .training-card{
+  background:#FFFFFF;
+  border:1px solid rgba(0,0,0,.075);
+  box-shadow:var(--shadow-sm);
+  transition:transform .34s var(--spring),box-shadow .28s var(--ease),border-color .22s var(--ease);
+}
+html[data-theme="apple-light"] .library-player:hover,
+html[data-theme="apple-light"] .personal-player:hover,
+html[data-theme="apple-light"] .preset-tile:hover,
+html[data-theme="apple-light"] .coach-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(0,0,0,.14);
+  box-shadow:0 12px 28px -10px rgba(0,0,0,.12),0 2px 6px rgba(0,0,0,.05);
+}
+
+/* ---------- 首页 Hub（苹果极简画廊风格） ---------- */
+html[data-theme="apple-light"] .hero-copy h2{
+  font-family:var(--display);
+  font-stretch:normal;
+  font-weight:700;
+  letter-spacing:-.03em;
+  color:#1D1D1F;
+  background:none;
+  -webkit-text-fill-color:initial;
+}
+html[data-theme="apple-light"] .hub-hero p{
+  color:#515154;
+}
+html[data-theme="apple-light"] .hub-tag{
+  background:rgba(0,113,227,.10);
+  color:#0071E3;
+  border:1px solid rgba(0,113,227,.16);
+}
+html[data-theme="apple-light"] .tile{
+  background:#FFFFFF;
+  border:1px solid rgba(0,0,0,.075);
+  box-shadow:var(--shadow-sm);
+  transition:transform .36s var(--spring),box-shadow .28s var(--ease),border-color .22s var(--ease);
+}
+html[data-theme="apple-light"] .tile:hover:not(:disabled){
+  transform:translateY(-4px);
+  border-color:rgba(0,113,227,.26);
+  box-shadow:0 16px 34px -14px rgba(0,0,0,.13),0 2px 6px rgba(0,0,0,.04);
+}
+html[data-theme="apple-light"] .tile:active:not(:disabled){
+  transform:translateY(-1px) scale(.985);
+}
+html[data-theme="apple-light"] .tile .tile-icon{
+  background:#F2F2F7;
+  color:#0071E3;
+  box-shadow:none;
+}
+html[data-theme="apple-light"] .tile:hover .tile-icon{
+  background:#0071E3;
+  color:#FFFFFF;
+}
+html[data-theme="apple-light"] .tile .tile-title{color:#1D1D1F}
+html[data-theme="apple-light"] .tile .tile-desc{color:var(--muted)}
+html[data-theme="apple-light"] .tile .tile-count{color:#1D1D1F}
+html[data-theme="apple-light"] .tile .tile-count small{color:var(--muted)}
+html[data-theme="apple-light"] .tile-arrow{
+  color:#86868B;
+  background:rgba(0,0,0,.04);
+}
+html[data-theme="apple-light"] .tile:hover .tile-arrow{
+  color:#0071E3;
+  background:rgba(0,113,227,.10);
+}
+html[data-theme="apple-light"] .rail-card{
+  background:#FFFFFF;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:var(--shadow-sm);
+}
+html[data-theme="apple-light"] .rail-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 14px 30px -12px rgba(0,0,0,.14);
+}
+html[data-theme="apple-light"] .rail-card-art.has-full-card img.full-card-img{
+  filter:drop-shadow(0 6px 12px rgba(0,0,0,.16));
+}
+html[data-theme="apple-light"] .rail-card-meta{
+  background:linear-gradient(180deg,transparent,rgba(29,29,31,.82));
+  color:#FFFFFF;
+}
+html[data-theme="apple-light"] .rail-card-meta strong{color:#FFFFFF}
+html[data-theme="apple-light"] .rail-card-meta small{color:rgba(255,255,255,.82)}
+html[data-theme="apple-light"] .hub-group-head h2{color:#1D1D1F}
+html[data-theme="apple-light"] .hub-group-head span{color:var(--muted)}
+
+/* ---------- 展台（右侧预览区） ---------- */
+html[data-theme="apple-light"] .preview-area{
+  background:transparent;
+}
+html[data-theme="apple-light"] .stage-panel{
+  background:#FFFFFF;
+  border:1px solid rgba(0,0,0,.075);
+  box-shadow:var(--shadow);
+}
+html[data-theme="apple-light"] :is(.seg,.preview-tabs,.segmented,.filter-tabs){
+  --tab-radius:12px;
+  --tab-inset:4px;
+  padding:var(--tab-inset);
+  border-radius:var(--tab-radius);
+  background:#E8E8ED;
+  border:0;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.06);
+}
+html[data-theme="apple-light"] .seg{--tab-inset:5px}
+html[data-theme="apple-light"] :is(.seg,.preview-tabs,.segmented,.filter-tabs)>:is(button,.thumb){
+  border-radius:calc(var(--tab-radius) - var(--tab-inset));
+}
+html[data-theme="apple-light"] .seg button,
+html[data-theme="apple-light"] .seg .page-tab,
+html[data-theme="apple-light"] .preview-tabs button{
+  color:#515154;
+  font-weight:500;
+}
+html[data-theme="apple-light"] .seg button.active,
+html[data-theme="apple-light"] .seg .page-tab[aria-current="page"],
+html[data-theme="apple-light"] .preview-tabs button.active{
+  color:#1D1D1F!important;
+  font-weight:600;
+}
+html[data-theme="apple-light"] :is(.segmented,.filter-tabs) button:hover:not(.active){
+  color:var(--text);
+}
+html[data-theme="apple-light"] .skill-toolbar .segmented button.active{
+  background:#FFFFFF;
+  color:#1D1D1F;
+}
+html[data-theme="apple-light"] .preview-tabs button.active{
+  background:#FFFFFF!important;
+  box-shadow:0 1px 4px rgba(0,0,0,.12),0 1px 1px rgba(0,0,0,.06);
+}
+html[data-theme="apple-light"] .seg .thumb,
+html[data-theme="apple-light"] .seg-thumb{
+  background:#FFFFFF;
+  box-shadow:0 1px 4px rgba(0,0,0,.12),0 1px 1px rgba(0,0,0,.06);
+  transition:left .34s var(--spring),width .34s var(--spring);
+}
+html[data-theme="apple-light"] .coach-selection{
+  background:#FFFFFF;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:var(--shadow-sm);
+}
+html[data-theme="apple-light"] .coach-picker-toggle{
+  background:#F5F5F7;
+  color:#1D1D1F;
+  border:1px solid rgba(0,0,0,.12);
+}
+html[data-theme="apple-light"] .coach-picker-toggle:hover{
+  background:#EFEFF4;
+  border-color:rgba(0,0,0,.20);
+}
+html[data-theme="apple-light"] #preview-coach-results{
+  background:#FFFFFF;
+  border-color:rgba(0,0,0,.12);
+}
+html[data-theme="apple-light"] #preview-coach-results button{
+  color:#1D1D1F;
+  border-bottom-color:rgba(0,0,0,.07);
+}
+html[data-theme="apple-light"] #preview-coach-results button:hover,
+html[data-theme="apple-light"] #preview-coach-results button:focus{
+  background:rgba(0,113,227,.08);
+  color:var(--text);
+}
+html[data-theme="apple-light"] #preview-coach-results button[aria-selected="true"]{
+  background:rgba(0,113,227,.12);
+  color:#0071E3;
+}
+html[data-theme="apple-light"] .card-caption span{
+  background:rgba(0,0,0,.055);
+  color:#424245;
+}
+html[data-theme="apple-light"] .tile .tile-kicker{
+  color:#0071E3;
+}
+html[data-theme="apple-light"] .tile strong{color:#1D1D1F}
+html[data-theme="apple-light"] .tile small{color:var(--muted)}
+html[data-theme="apple-light"] .card-stage{
+  background:radial-gradient(65% 55% at 50% 45%,rgba(0,113,227,.07),transparent 72%),#F5F5F7;
+  border:1px solid rgba(0,0,0,.06);
+}
+html[data-theme="apple-light"] .preview-fab{
+  background:rgba(255,255,255,.90);
+  color:#1D1D1F;
+  border:1px solid rgba(0,0,0,.10);
+  box-shadow:var(--shadow-pop);
+}
+html[data-theme="apple-light"] .preview-fab strong{color:#1D1D1F}
+html[data-theme="apple-light"] .preview-fab small{color:var(--muted)}
+html[data-theme="apple-light"] .stage-backdrop{
+  background:rgba(0,0,0,.22);
+}
+html[data-theme="apple-light"][data-ui-stage=sheet] .preview-area{
+  background:rgba(255,255,255,.94);
+  border-color:rgba(0,0,0,.09);
+  box-shadow:var(--shadow-pop);
+}
+
+/* ---------- 能力值、雷达图与培养 ---------- */
+html[data-theme="apple-light"] .ability-group header b{
+  background:none;
+  -webkit-background-clip:initial;
+  background-clip:initial;
+  color:#0071E3;
+}
+html[data-theme="apple-light"] .stat-row:hover,
+html[data-theme="apple-light"] .stat-row:focus-within{
+  background:rgba(0,113,227,.055);
+}
+html[data-theme="apple-light"] .stat-row>label{color:#424245}
+html[data-theme="apple-light"] .stat-row:focus-within>label{color:#1D1D1F}
+html[data-theme="apple-light"] .stat-final,
+html[data-theme="apple-light"] .stat-final[style]{
+  color:#1D1D1F!important;
+}
+html[data-theme="apple-light"] .stat-final small{color:var(--green)}
+html[data-theme="apple-light"] .training-stat-row strong[style],
+html[data-theme="apple-light"] .training-detail-table td[style]{
+  color:var(--text)!important;
+}
+html[data-theme="apple-light"] #radar-chart .radar-ring{
+  stroke:rgba(0,0,0,.10);
+}
+html[data-theme="apple-light"] #radar-chart .radar-axis{
+  stroke:rgba(0,0,0,.09);
+}
+html[data-theme="apple-light"] #radar-chart .radar-area{
+  fill:rgba(0,113,227,.16);
+  stroke:#0071E3;
+}
+html[data-theme="apple-light"] #radar-chart text{
+  fill:#424245;
+}
+html[data-theme="apple-light"] .budget-card{
+  background:#FFFFFF;
+  border-color:rgba(0,0,0,.08);
+}
+html[data-theme="apple-light"] .budget-track{
+  background:rgba(0,0,0,.08);
+}
+html[data-theme="apple-light"] .budget-track i{
+  background:#0071E3;
+}
+html[data-theme="apple-light"] .stepper-group{
+  background:#F2F2F7;
+}
+html[data-theme="apple-light"] .stepper-group input[type=number]{
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  color:var(--text);
+}
+html[data-theme="apple-light"] .stepper-group input[type=number]:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+  border-radius:4px;
+}
+html[data-theme="apple-light"] .stepper-group button{color:#1D1D1F}
+html[data-theme="apple-light"] .stepper-group button:hover:not(:disabled){
+  background:#FFFFFF;
+}
+
+/* ---------- 筛选标签、药丸与状态徽章 ---------- */
+html[data-theme="apple-light"] .filter-tabs button{
+  color:#515154;
+}
+html[data-theme="apple-light"] .filter-tabs button.active{
+  background:#FFFFFF;
+  color:#1D1D1F;
+  box-shadow:0 1px 4px rgba(0,0,0,.10);
+}
+html[data-theme="apple-light"] .preset-filters button:hover:not(.active){
+  color:var(--text);
+}
+html[data-theme="apple-light"] .preset-filters button.active{
+  background:var(--graphite);
+  color:var(--on-ink);
+}
+html[data-theme="apple-light"] .preset-filters button.active small{opacity:.88}
+html[data-theme="apple-light"] .inline-badge,
+html[data-theme="apple-light"] .tag,
+html[data-theme="apple-light"] .pill-badge{
+  background:rgba(0,0,0,.055);
+  color:#424245;
+  border-color:rgba(0,0,0,.08);
+}
+html[data-theme="apple-light"] .type-option{
+  background:#FFFFFF;
+  border:1px solid rgba(0,0,0,.10);
+  color:#1D1D1F;
+}
+html[data-theme="apple-light"] .type-option:hover{
+  border-color:rgba(0,0,0,.22);
+}
+html[data-theme="apple-light"] .type-option.active,
+html[data-theme="apple-light"] .type-option[aria-pressed="true"]{
+  background:#0071E3;
+  border-color:#0071E3;
+  color:#FFFFFF;
+}
+html[data-theme="apple-light"] .type-option:is(.active,[aria-pressed="true"])>strong{
+  color:#1D1D1F;
+  text-shadow:0 0 2px #fff,0 0 4px rgba(255,255,255,.65);
+  -webkit-text-stroke:1.4px #fff;
+  paint-order:stroke fill;
+}
+html[data-theme="apple-light"] .type-option.active small,
+html[data-theme="apple-light"] .type-option[aria-pressed="true"] small{
+  color:rgba(255,255,255,.85);
+}
+
+/* ---------- 技能卡片 ---------- */
+html[data-theme="apple-light"] .skill-tile{
+  background:#FFFFFF;
+  border-color:rgba(0,0,0,.10);
+}
+html[data-theme="apple-light"] .skill-tile.innate{
+  background:var(--graphite);
+  border-color:#1D1D1F;
+}
+html[data-theme="apple-light"] .skill-tile.innate .skill-name{color:#FFFFFF}
+html[data-theme="apple-light"] .skill-tile.innate small{color:rgba(255,255,255,.72)}
+html[data-theme="apple-light"] .skill-tile.innate .skill-state{
+  background:#FFFFFF;
+  border-color:#FFFFFF;
+  color:#1D1D1F;
+}
+html[data-theme="apple-light"] .skill-tile.additional{
+  background:rgba(0,113,227,.08);
+  border-color:#0071E3;
+  box-shadow:inset 0 0 0 1px #0071E3;
+}
+html[data-theme="apple-light"] .skill-tile.additional .skill-name{color:#005BB5}
+
+/* ---------- 列表项、教程、新手引导、动作与卡面 ---------- */
+html[data-theme="apple-light"] .player-option{
+  background:#FFFFFF;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:none;
+}
+html[data-theme="apple-light"] .player-option:hover{
+  border-color:rgba(0,0,0,.16);
+  background:#FAFAFC;
+}
+html[data-theme="apple-light"] .welcome-banner{
+  background:linear-gradient(135deg,#FFFFFF 0%,#F2F7FF 100%);
+  border:1px solid rgba(0,113,227,.16);
+  box-shadow:var(--shadow);
+}
+html[data-theme="apple-light"] .welcome-banner h2{color:#1D1D1F}
+html[data-theme="apple-light"] .welcome-banner p{color:#515154}
+html[data-theme="apple-light"] .step-badge{
+  background:#0071E3;
+  color:#FFFFFF;
+}
+html[data-theme="apple-light"] .setup-ready{
+  background:rgba(178,80,0,.08);
+  color:#B25000;
+}
+html[data-theme="apple-light"] .setup-ready.is-ready{
+  background:rgba(36,138,61,.09);
+  color:#248A3D;
+}
+html[data-theme="apple-light"] .beginner-shortcuts button{
+  background:#FFFFFF;
+  border-color:rgba(0,0,0,.12);
+  color:#424245;
+}
+html[data-theme="apple-light"] .beginner-shortcuts button:hover:not(:disabled){
+  background:#F5F5F7;
+  color:#1D1D1F;
+}
+html[data-theme="apple-light"] .tutorial-topic{
+  background:#FFFFFF;
+  border-color:rgba(0,0,0,.08);
+}
+html[data-theme="apple-light"] .tutorial-topic summary{color:#1D1D1F}
+html[data-theme="apple-light"] .tutorial-topic p{color:#424245}
+html[data-theme="apple-light"] .completed-installs>div{
+  background:rgba(36,138,61,.08);
+  border:1px solid rgba(36,138,61,.20);
+}
+html[data-theme="apple-light"] .model-stage{
+  background:radial-gradient(72% 70% at 50% 38%,#DFE1E4,#D0D3D7);
+  border-color:rgba(0,0,0,.09);
+}
+html[data-theme="apple-light"] .model-readout{
+  background:#373B42;
+  color:#F8F9FA;
+}
+html[data-theme="apple-light"] .model-readout strong{color:inherit}
+html[data-theme="apple-light"] .preset-art,
+html[data-theme="apple-light"] .card-person-image,
+html[data-theme="apple-light"] .coach-portrait,
+html[data-theme="apple-light"] .native-avatar,
+html[data-theme="apple-light"] .personal-avatar{
+  background:#F2F2F7;
+}
+html[data-theme="apple-light"] .native-avatar.has-full-card img.full-card-img,
+html[data-theme="apple-light"] .personal-avatar.has-full-card img.full-card-img{
+  filter:drop-shadow(0 6px 14px rgba(0,0,0,.16));
+}
+html[data-theme="apple-light"] .preset-tag{
+  background:rgba(255,255,255,.88);
+  color:#1D1D1F;
+  border:1px solid rgba(0,0,0,.08);
+}
+html[data-theme="apple-light"] .thumbnail-editor canvas{
+  background:repeating-conic-gradient(rgba(0,0,0,.04) 0% 25%,rgba(0,0,0,.09) 0% 50%) 50%/20px 20px;
+}
+html[data-theme="apple-light"] .motion-editor .motion-current{
+  background:linear-gradient(135deg,#FFFFFF 0%,#F5F8FF 100%);
+  border-color:rgba(0,0,0,.08);
+}
+html[data-theme="apple-light"] .motion-current>strong{color:#1D1D1F}
+html[data-theme="apple-light"] .motion-current p,
+html[data-theme="apple-light"] .motion-scope p,
+html[data-theme="apple-light"] .motion-source-row small,
+html[data-theme="apple-light"] .motion-pagination span{color:var(--muted)}
+html[data-theme="apple-light"] .motion-scope strong{color:#0071E3}
+
+/* ---------- 弹窗、命令面板、Toast、任务中心 ---------- */
+html[data-theme="apple-light"] dialog{
+  background:rgba(255,255,255,.94);
+  color:#1D1D1F;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 24px 64px -16px rgba(0,0,0,.22),0 2px 10px rgba(0,0,0,.06);
+}
+html[data-theme="apple-light"] dialog::backdrop{
+  background:rgba(0,0,0,.28);
+  -webkit-backdrop-filter:blur(6px);
+  backdrop-filter:blur(6px);
+}
+html[data-theme="apple-light"] .palette-dialog{
+  background:rgba(255,255,255,.94);
+  border:1px solid rgba(0,0,0,.10);
+  box-shadow:0 28px 70px -16px rgba(0,0,0,.24);
+}
+html[data-theme="apple-light"] .palette-input{
+  color:#1D1D1F;
+  border-bottom:1px solid rgba(0,0,0,.08);
+}
+html[data-theme="apple-light"] .palette-item{color:#1D1D1F}
+html[data-theme="apple-light"] .palette-item:hover,
+html[data-theme="apple-light"] .palette-item.active{
+  background:rgba(0,113,227,.10);
+  color:#0071E3;
+}
+html[data-theme="apple-light"] .palette-item small{color:var(--muted)}
+html[data-theme="apple-light"] .toast{
+  background:rgba(29,29,31,.92);
+  color:#FFFFFF;
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:0 12px 32px -8px rgba(0,0,0,.28);
+}
+html[data-theme="apple-light"] .task-pill{
+  background:#FFFFFF;
+  color:#1D1D1F;
+  border:1px solid rgba(0,113,227,.28);
+  box-shadow:var(--shadow-pop);
+}
+html[data-theme="apple-light"] .task-pill.running .task-ring,
+html[data-theme="apple-light"] .task-spin{
+  border-color:rgba(0,113,227,.20);
+  border-top-color:#0071E3;
+}
+html[data-theme="apple-light"] .task-panel{
+  background:rgba(255,255,255,.95);
+  color:#1D1D1F;
+  border:1px solid rgba(0,0,0,.09);
+  box-shadow:var(--shadow-pop);
+}
+html[data-theme="apple-light"] .task-bar{background:rgba(0,113,227,.12)}
+html[data-theme="apple-light"] .task-card.running .task-bar i,
+html[data-theme="apple-light"] .task-card.done .task-bar i{background:#0071E3}
+
+/* ---------- 球场 / 锦标赛世界编辑页 ---------- */
+html[data-theme="apple-light"] .world-object,
+html[data-theme="apple-light"] .world-stage,
+html[data-theme="apple-light"] .world-cover-editor,
+html[data-theme="apple-light"] .world-league-picker{
+  background:#FFFFFF;
+  border-color:rgba(0,0,0,.09);
+  box-shadow:var(--shadow-sm);
+}
+html[data-theme="apple-light"] .world-step-heading>span,
+html[data-theme="apple-light"] .world-step-number{
+  background:rgba(0,113,227,.12);
+  color:#0071E3;
+}
+html[data-theme="apple-light"] .world-team{
+  background:#FFFFFF;
+  border-color:rgba(0,0,0,.10);
+}
+html[data-theme="apple-light"] .world-team.selected{
+  border-color:#0071E3;
+  background:rgba(0,113,227,.07);
+}
+html[data-theme="apple-light"] .world-unlock{
+  background:rgba(0,113,227,.05);
+  border-color:rgba(0,113,227,.18);
+}
+html[data-theme="apple-light"] .world-guidance{
+  border-left-color:#0071E3;
+  background:rgba(0,113,227,.06);
+  color:#424245;
+}
+html[data-theme="apple-light"] .world-stand{
+  background:#FFFFFF;
+  border-color:rgba(0,113,227,.22);
+}
+html[data-theme="apple-light"] .world-tifo-slider input{accent-color:#0071E3}
+html[data-theme="apple-light"] .world-cover-preview,
+html[data-theme="apple-light"] .pack-cover-preview{
+  background:#E8E8ED;
+  border-color:rgba(0,0,0,.10);
+}
+
+/* ---------- 浅色工作区布局 ---------- */
+html[data-theme="apple-light"] :is(.glass,.panel){
+  -webkit-backdrop-filter:none;
+  backdrop-filter:none;
+}
+html[data-theme="apple-light"] :is(.glass,.panel)::before{content:none}
+html[data-theme="apple-light"] :is(.page-heading .eyebrow,.hero-copy .eyebrow,.hero-name,.tile-kicker,.hub-rail-head small,.hub-setup-head em){display:none}
+html[data-theme="apple-light"] :is(.num,.input[type=number],.range-field output,.card-caption,.overview-row strong,.position-ratings strong,.workspace-badge>span:last-child,.nav-label,.brand small,.panel-title .tag,.palette-group){
+  font-stretch:normal;
+  letter-spacing:normal;
+}
+html[data-theme="apple-light"] :is(.range-field output,.overview-row strong,.position-ratings strong,.workspace-badge>span:last-child){
+  color:var(--text);
+}
+html[data-theme="apple-light"] .hero-meta{
+  column-gap:8px;
+  row-gap:10px;
+}
+html[data-theme="apple-light"] .hero-meta .hero-rating{
+  flex:0 0 100%;
+  margin:0;
+  font:400 clamp(52px,6.2vw,84px)/1 var(--rating-font);
+  font-variant-numeric:tabular-nums;
+}
+html[data-theme="apple-light"] :is(.button,.glass-icon,.beginner-shortcuts button,.folder-tab){border-radius:10px}
+html[data-theme="apple-light"] :is(.folder-tab[aria-pressed="true"],.controller-context-tabs .button[aria-pressed="true"],.coach-identity-results button[aria-selected="true"]){
+  background:var(--graphite);
+  color:var(--on-ink);
+}
+html[data-theme="apple-light"] :is(.folder-tab[aria-pressed="true"],.coach-identity-results button[aria-selected="true"]) :is(strong,small){
+  color:inherit;
+}
+html[data-theme="apple-light"] .button.primary{background:#0068D0;box-shadow:none}
+html[data-theme="apple-light"] .button.primary:hover:not(:disabled){background:#005AB7;box-shadow:none;transform:none}
+html[data-theme="apple-light"] .button.secondary:hover:not(:disabled){transform:none}
+html[data-theme="apple-light"] :is(.icon-button,.button.subtle):hover:not(:disabled){
+  background:var(--fill-2);
+  color:var(--text);
+  transform:none;
+}
+html[data-theme="apple-light"] .panel{
+  border-radius:16px;
+  box-shadow:none;
+}
+html[data-theme="apple-light"] .panel-title h2{font-size:18px}
+html[data-theme="apple-light"] .nav-item.active{
+  background:var(--accent-soft);
+  color:#005AB7;
+  box-shadow:none;
+}
+html[data-theme="apple-light"] .nav-item.active svg{color:inherit}
+html[data-theme="apple-light"] .shell-scrim{background:rgba(24,27,35,.32)}
+html[data-theme="apple-light"] .hub-hero{
+  min-height:0;
+  padding:clamp(26px,4vw,60px);
+  border:0;
+  border-radius:20px;
+  background:var(--surface);
+  box-shadow:none;
+  gap:clamp(18px,4vw,56px);
+}
+html[data-theme="apple-light"] .hero-copy h2{
+  margin-bottom:10px;
+  font-size:clamp(28px,4vw,58px);
+  line-height:1.16;
+  overflow-wrap:break-word;
+}
+html[data-theme="apple-light"] .hero-copy .hero-name-latin{
+  font:700 clamp(42px,6vw,86px)/1.06 "Bahnschrift SemiCondensed","DIN Alternate","Roboto Condensed",var(--display);
+  letter-spacing:-.025em;
+}
+html[data-theme="apple-light"] .identity .gauge b{
+  font-family:var(--rating-font);
+  font-weight:400;
+  font-stretch:normal;
+  letter-spacing:-.035em;
+  padding-inline-end:.035em;
+}
+html[data-theme="apple-light"] .identity-budget .row b{color:var(--text)}
+html[data-theme="apple-light"] :is(.hero-copy .hero-name-latin,.hero-copy .hero-rating,.identity .gauge b){
+  color:#26272C;
+  background:var(--graphite);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+@media(forced-colors:active){
+  html[data-theme="apple-light"] :is(.hero-copy .hero-name-latin,.hero-copy .hero-rating,.identity .gauge b){
+    background:none;
+    color:CanvasText;
+    -webkit-text-fill-color:currentColor;
+  }
+}
+html[data-theme="apple-light"] .hero-copy p{font-size:15px;line-height:1.65}
+html[data-theme="apple-light"] .hero-card{width:clamp(136px,18vw,235px)}
+html[data-theme="apple-light"] .hero-card .card-stage{box-shadow:0 12px 36px -20px rgba(25,30,42,.38)}
+html[data-theme="apple-light"] .hub-tiles{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:1px;
+  overflow:hidden;
+  border:1px solid #E5E5EA;
+  border-radius:16px;
+  background:#E5E5EA;
+}
+html[data-theme="apple-light"] .hub-tiles .tile{
+  display:grid;
+  grid-template-columns:36px minmax(0,1fr);
+  column-gap:14px;
+  row-gap:3px;
+  align-content:center;
+  min-height:88px;
+  padding:14px 38px 14px 16px;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  background:var(--surface);
+  color:var(--text);
+  transform:none;
+  transition:background-color .18s var(--ease);
+}
+html[data-theme="apple-light"] .hub-tiles .tile:hover:not(:disabled){background:#F3F7FC}
+html[data-theme="apple-light"] .hub-tiles .tile:focus-visible{outline-offset:-3px}
+html[data-theme="apple-light"] .hub-tiles :is(.tile.feature,.tile:last-child:nth-child(even)){
+  grid-column:span 2;
+}
+html[data-theme="apple-light"] .hub-tiles .tile.feature{
+  background:#EAF2FC;
+}
+html[data-theme="apple-light"] .hub-tiles .tile.feature:hover:not(:disabled){background:#DFECFB}
+html[data-theme="apple-light"] .hub-tiles .tile-icon{
+  grid-row:span 2;
+  align-self:center;
+  width:36px;
+  height:36px;
+  margin:0;
+  border-radius:9px;
+  background:#EDF1F7;
+  color:#005AB7;
+}
+html[data-theme="apple-light"] .hub-tiles .tile-icon svg{width:19px;height:19px}
+html[data-theme="apple-light"] .hub-tiles .tile strong{margin:0;font-size:15px;line-height:1.4}
+html[data-theme="apple-light"] .hub-tiles .tile>small{margin:0;line-height:1.45}
+html[data-theme="apple-light"] .hub-tiles .tile-count{
+  position:static;
+  grid-column:2;
+  grid-row:3;
+  font:600 12px/1.4 var(--font);
+  color:var(--muted);
+}
+html[data-theme="apple-light"] .hub-tiles .tile-count small{font-size:inherit}
+html[data-theme="apple-light"] .hub-tiles .tile::after{
+  right:18px;
+  top:calc(50% - 4px);
+  width:8px;
+  height:8px;
+  border-top:1.5px solid;
+  border-right:1.5px solid;
+  background:none;
+  color:var(--muted);
+  opacity:.75;
+  transform:rotate(45deg);
+}
+html[data-theme="apple-light"] .rail-card b{
+  color:var(--text);
+  background:rgba(255,255,255,.93);
+  border-radius:8px;
+  padding:5px 7px;
+  font:700 22px/1 var(--font);
+  text-shadow:none;
+}
+html[data-theme="apple-light"] .rail-card.new{
+  border:1px dashed var(--line-3);
+  background:transparent;
+  box-shadow:none;
+}
+html[data-theme="apple-light"] .rail-card.new i{background:var(--accent-soft);color:#005AB7}
+
+/* 桌面端左侧栏随全屏/窗口化自动切换：
+   全屏/最大化（data-ui-dock="expanded"）展开 166px 文字菜单栏；
+   窗口化或屏幕变窄（data-ui-dock="rail"）立即收起为 68px 图标栏，把空间还给球员卡 */
+@media(min-width:1280px) and (min-height:601px){
+  html[data-theme="apple-light"] .main-shell{
+    padding-left:72px;
+    transition:padding-left .24s var(--ease);
+  }
+  html[data-theme="apple-light"] .dock{
+    inset:0 auto 0 0;
+    width:68px;
+    padding:20px 10px;
+    align-items:center;
+    overflow-y:auto;
+    border:0;
+    border-right:1px solid var(--line);
+    border-radius:0;
+    background:#EEEFF2;
+    box-shadow:none;
+    transform:none;
+    transition:width .24s var(--ease),padding .24s var(--ease);
+  }
+  html[data-theme="apple-light"] .dock-logo{margin:0 0 14px}
+  html[data-theme="apple-light"] .dock-sections{width:100%;align-items:center}
+  html[data-theme="apple-light"] .dock-button{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:9px;
+    width:46px;
+    height:42px;
+    min-height:40px;
+    padding:8px;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:700;
+    text-align:left;
+  }
+  html[data-theme="apple-light"] .dock-button svg{width:18px;height:18px}
+  html[data-theme="apple-light"] .dock-button [data-icon]{flex:none}
+  html[data-theme="apple-light"] .dock-button[aria-current="page"]{
+    color:#005AB7!important;
+    background:#DDE8F7!important;
+    box-shadow:none;
+  }
+  html[data-theme="apple-light"] .dock-button:hover:not(:disabled){transform:none}
+  html[data-theme="apple-light"][data-effects="low"] .dock{background:#EEEFF2}
+
+  html[data-theme="apple-light"][data-ui-dock="expanded"] .main-shell{padding-left:166px}
+  html[data-theme="apple-light"][data-ui-dock="expanded"] .dock{
+    width:166px;
+    padding:24px 12px;
+    align-items:stretch;
+  }
+  html[data-theme="apple-light"][data-ui-dock="expanded"] .dock-logo{align-self:flex-start;margin:0 0 16px 7px}
+  html[data-theme="apple-light"][data-ui-dock="expanded"] .dock-sections{align-items:stretch}
+  html[data-theme="apple-light"][data-ui-dock="expanded"] .dock-button{
+    justify-content:flex-start;
+    width:100%;
+    height:auto;
+    border-radius:8px;
+  }
+  html[data-theme="apple-light"][data-ui-dock="expanded"] .dock-button::after{content:attr(aria-label)}
+  html[data-theme="apple-light"][data-ui-dock="expanded"] .dock-button svg{width:17px;height:17px}
+  html[data-theme="apple-light"][data-ui-dock="expanded"] .dock-tip{display:none}
+}
+
+/* ---------- 手机端搜索框等细节 ---------- */
+@media(max-width:760px){
+  html[data-theme="apple-light"] .hub-tiles{grid-template-columns:minmax(0,1fr)}
+  html[data-theme="apple-light"] .hub-tiles :is(.tile.feature,.tile:last-child:nth-child(even)){grid-column:1}
+  html[data-theme="apple-light"] .hero-card{width:min(55%,175px)}
+  html[data-theme="apple-light"] .head-actions #save-player{flex:0 0 auto}
+  html[data-theme="apple-light"] .head-actions .shell-util-btn .util-text{display:none!important}
+  html[data-theme="apple-light"] .head-actions .shell-util-btn{
+    width:36px!important;
+    min-width:36px;
+    min-height:36px;
+    padding:0!important;
+  }
+  html[data-theme="apple-light"] .native-library #library-query{
+    background:#FFFFFF;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.14);
+  }
+}
+
+/* ---------- 低特效模式（强制关闭 backdrop-filter，保证回归测试与低配流畅） ---------- */
+html[data-theme="apple-light"][data-effects="low"] .ambient i{
+  display:none;
+}
+html[data-theme="apple-light"][data-effects="low"] .dock,
+html[data-theme="apple-light"][data-effects="low"] .sidebar,
+html[data-theme="apple-light"][data-effects="low"] .head-actions,
+html[data-theme="apple-light"][data-effects="low"] .preview-fab,
+html[data-theme="apple-light"][data-effects="low"] .palette-dialog,
+html[data-theme="apple-light"][data-effects="low"] .task-panel,
+html[data-theme="apple-light"][data-effects="low"] dialog,
+html[data-theme="apple-light"][data-effects="low"] dialog::backdrop,
+html[data-theme="apple-light"][data-effects="low"] .sidebar-backdrop,
+html[data-theme="apple-light"][data-effects="low"] .preset-tag{
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+}
+html[data-theme="apple-light"][data-effects="low"] dialog,
+html[data-theme="apple-light"][data-effects="low"] .sidebar,
+html[data-theme="apple-light"][data-effects="low"] .palette-dialog,
+html[data-theme="apple-light"][data-effects="low"] .task-panel,
+html[data-theme="apple-light"][data-effects="low"] .dock{
+  background:#FFFFFF;
+}
+
+/* ---------- 苹果丝滑页面切换与微交互动效 ---------- */
+@keyframes apple-fade-up{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes apple-dialog-in{
+  from{opacity:0;transform:scale(.96) translateY(8px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+html[data-theme="apple-light"]:not([data-effects="low"]) .page.active{
+  animation:apple-fade-up .34s var(--spring) both;
+}
+html[data-theme="apple-light"]:not([data-effects="low"]) dialog[open]{
+  animation:apple-dialog-in .28s var(--spring) both;
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-theme="apple-light"] .page.active,
+  html[data-theme="apple-light"] dialog[open]{
+    animation:none!important;
+  }
+  html.theme-switching,html.theme-switching *{
+    transition:none!important;
+  }
+}

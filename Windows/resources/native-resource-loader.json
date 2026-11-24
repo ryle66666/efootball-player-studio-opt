@@ -1,0 +1,102 @@
+{
+  "protocol": "player-studio-resource-loader-build-v1",
+  "loader_min": 1,
+  "dex_entry": "classes5.dex",
+  "dex_file": "native-resource-loader.dex",
+  "dex_sha256": "86c74990aa2d660859162d30698a277494ecf57c59ed9633b3d0f82619329d74",
+  "coexist_dex_sha256": "86c74990aa2d660859162d30698a277494ecf57c59ed9633b3d0f82619329d74",
+  "accepted_source_sha256": [
+    "123d4bc7a0b26759632f7a3af62d4b79ec9933b7220e4765488c6cf7193c5280",
+    "86c74990aa2d660859162d30698a277494ecf57c59ed9633b3d0f82619329d74",
+    "f276448be79569e08866ebea928263f93f26a6bd6c9117eb2756c3fa796023c8"
+  ],
+  "java_source_sha256": {
+    "maintenance\\resource_bootstrap\\java\\org\\efootballrevival\\runtimeprobe\\EmbeddedResources.java": "f344cc7533058b3380741f046e50c5e19493323c3662d1c6ae20bdabf7cca0c3",
+    "maintenance\\resource_bootstrap\\java\\org\\efootballrevival\\runtimeprobe\\ResourceSetCore.java": "0328c103b6d5cbed76e288b2801e74cf2de239528e1429a8d59066bdb7b6b994",
+    "maintenance\\resource_bootstrap\\java\\org\\efootballrevival\\runtimeprobe\\ResourceSetInstaller.java": "50bfa4fe0bc67fc69ec5354d04f49a9214f1421a4a0dc963e87e35cf553e58ea",
+    "maintenance\\resource_bootstrap\\java\\org\\efootballrevival\\runtimeprobe\\StrictJSON.java": "32d76035072c36eedeef4201c06eb487c7c4cc18f3425af8c9623242fbad3e0b",
+    "maintenance\\resource_bootstrap\\stubs\\org\\efootballrevival\\runtimeprobe\\PersistentResources.java": "5af043a1a6513134f2941cbd9212fc3e7452342a906f3345b8d9511c4248c842",
+    "maintenance\\resource_bootstrap\\stubs\\org\\efootballrevival\\runtimeprobe\\ResourceInstaller.java": "dab9f85887583c6473438901008f910e6084531b60b9ca34bcd0181087aecd5f"
+  },
+  "build_tools": [
+    {
+      "name": "jre.zip",
+      "url": "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.17%2B10/OpenJDK17U-jre_x64_windows_hotspot_17.0.17_10.zip",
+      "bytes": 43740928,
+      "sha256": "bd17db1cc08b3a8a98cedc7b8b8a203f683793be65a9ffbe4ceaacde71fc2b6b"
+    },
+    {
+      "name": "ecj.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/eclipse/jdt/ecj/3.39.0/ecj-3.39.0.jar",
+      "bytes": 3296560,
+      "sha256": "01f5a92ac19bb2b3bf85e295a68f2c73c264369109158b566ce9b490af982948"
+    },
+    {
+      "name": "r8lib.jar",
+      "url": "https://storage.googleapis.com/r8-releases/raw/8.3.37/r8lib.jar",
+      "bytes": 16628796,
+      "sha256": "59753e70a74f918389cc87f1b7d66b5c0862932559167425708ded159e3de439"
+    },
+    {
+      "name": "platform.zip",
+      "url": "https://dl.google.com/android/repository/platform-35_r02.zip",
+      "bytes": 64273788,
+      "sha256": "0988cacad01b38a18a47bac14a0695f246bc76c1b06c0eeb8eb0dc825ab0c8e0"
+    },
+    {
+      "name": "android.jar",
+      "archive": "platform.zip",
+      "entry": "android-35/android.jar",
+      "bytes": 27092450,
+      "sha256": "4566663c3876e022b4fa4ced8c8697c4ab1688267f090114fd92d027b32e619b"
+    },
+    {
+      "name": "baksmali.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/smali/baksmali/2.5.2/baksmali-2.5.2.jar",
+      "bytes": 123309,
+      "sha256": "1ed236266d7dc4907aade0b19a34f77efac25342b63c8ace52e579039941b389"
+    },
+    {
+      "name": "dexlib2.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/smali/dexlib2/2.5.2/dexlib2-2.5.2.jar",
+      "bytes": 1103473,
+      "sha256": "5a5c8982d8bd7d6e3bb1a0713049e3c78b719ec32b20f6b619885cec30a0dd61"
+    },
+    {
+      "name": "smali-util.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/smali/util/2.5.2/util-2.5.2.jar",
+      "bytes": 27118,
+      "sha256": "4f580a9cff3ebb83cb3fd20bec88e37e4f183796ca652732992611620282daea"
+    },
+    {
+      "name": "guava.jar",
+      "url": "https://repo.maven.apache.org/maven2/com/google/guava/guava/27.1-android/guava-27.1-android.jar",
+      "bytes": 2603938,
+      "sha256": "686404f2d1d4d221911f96bd627ff60dac2226a5dfa6fb8ba517073eb97ec0ef"
+    },
+    {
+      "name": "jcommander.jar",
+      "url": "https://repo.maven.apache.org/maven2/com/beust/jcommander/1.64/jcommander-1.64.jar",
+      "bytes": 65585,
+      "sha256": "156be736199c990321d9ff77090b199629cfc9865e2d6c13f7cd291bb1641817"
+    },
+    {
+      "name": "json.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/json/json/20240303/json-20240303.jar",
+      "bytes": 78332,
+      "sha256": "3cf6cd6892e32e2b4c1c39e0f52f5248a2f5b37646fdfbb79a66b46b618414ed"
+    }
+  ],
+  "startup_hook": "GatewayBootActivity -> EmbeddedResources.prepare -> EmbeddedGateway.ensureStarted",
+  "resource_set_protocol": "player-studio-resource-set-v1",
+  "unrelated_classes_preserved": true,
+  "startup_validation": {
+    "original_methods_preserved": 1252,
+    "original_abi_resolved": true,
+    "pre_engine_call_order": true,
+    "pre_legacy_gate": true
+  },
+  "classes": 282,
+  "bytes": 474244,
+  "device_validated": false
+}

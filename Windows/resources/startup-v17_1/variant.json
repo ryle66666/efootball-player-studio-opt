@@ -1,0 +1,19 @@
+{
+  "protocol": "player-studio-resource-variant-v1",
+  "name": "v17_1",
+  "dex_entry": "classes5.dex",
+  "loader_min": 1,
+  "resource_set_protocol": "player-studio-resource-set-v1",
+  "source_files": [
+    "startup-v17_1/source.dex",
+    "startup-v17_1/source-coexist.dex",
+    "startup-v17_1/loader.dex",
+    "startup-v17_1/loader-coexist.dex"
+  ],
+  "outputs": {
+    "update": "startup-v17_1/loader.dex",
+    "coexist": "startup-v17_1/loader-coexist.dex"
+  },
+  "startup_hook": "GatewayBootActivity -> EmbeddedResources.prepare -> EmbeddedGateway.ensureStarted",
+  "device_validated": false
+}

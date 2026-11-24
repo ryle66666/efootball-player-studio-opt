@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="dark"><title>活动 · 锦标赛</title><style>/*HUB_CSS*/
+@media(max-width:900px){html,body{height:auto;min-height:100%}body{overflow-y:auto;overflow-x:hidden}.tc{min-width:0}.hints{display:none}}
+/* Tournament list: what the 活动 tile opens when several tournaments are enabled. */
+.lst{position:relative;z-index:1;max-width:1480px;margin:0 auto;padding:44px 56px 96px}
+.lst-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:26px}
+.lst-head em{display:block;font:600 14px var(--cond);letter-spacing:.32em;color:var(--hot);font-style:normal}
+.lst-head h1{margin:4px 0 0;font:900 46px/1.05 var(--ui);letter-spacing:.06em}
+.lst-close{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 20px;border:1px solid var(--line2);background:rgba(255,255,255,.06);color:#fff;font:800 15px var(--ui);letter-spacing:.08em}
+.lst-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:16px}
+.tc{position:relative;display:grid;grid-template-columns:96px 1fr;gap:20px;align-items:center;min-height:170px;padding:22px 26px;border:0;background:none;color:#fff;text-align:left;isolation:isolate;cursor:pointer}
+.tc::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(115deg,rgba(255,255,255,.10),rgba(255,255,255,.03) 70%);clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%);transition:background .15s}
+.tc:focus,.tc:hover{outline:none}
+.tc:focus::before,.tc:hover::before{background:linear-gradient(115deg,color-mix(in srgb,var(--hot) 34%,transparent),rgba(255,255,255,.05) 75%)}
+.tc:focus::after{content:"";position:absolute;inset:-3px;border:3px solid var(--hot);clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%);pointer-events:none}
+.tc .crest{width:96px;height:96px;display:grid;place-items:center}
+.tc .crest img{max-width:96px;max-height:96px}
+.tc .crest b{display:grid;place-items:center;width:84px;height:84px;border-radius:50%;background:rgba(255,255,255,.1);font:900 30px var(--ui)}
+.tc h2{margin:0;font:900 26px/1.2 var(--ui);letter-spacing:.04em}
+.tc .meta{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;color:var(--muted);font-size:14px}
+.tc .st{display:inline-block;margin-top:12px;padding:4px 12px;font:800 13px var(--ui);letter-spacing:.08em;background:rgba(255,255,255,.1)}
+.tc .st.playing,.tc .st.waiting{background:color-mix(in srgb,var(--hot) 24%,transparent);color:var(--hot)}
+.tc .st.champion{background:#e8bd5b;color:#1a1305}
+.tc .st.eliminated{background:rgba(255,77,109,.18);color:#ff9db0}
+.tc .warn{display:block;margin-top:8px;color:#ffc94a;font-size:13px;font-weight:700}
+.lst-empty{padding:60px 0;color:var(--muted);font-size:18px}
+.lst-busy{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:rgba(10,12,48,.72);backdrop-filter:blur(3px)}
+.lst-busy div{display:flex;align-items:center;gap:18px;padding:26px 40px;background:rgba(28,26,86,.95);border:1px solid rgba(var(--hot-rgb),.5);font:800 22px var(--ui);letter-spacing:.06em}
+.lst-busy i{width:26px;height:26px;border:4px solid rgba(var(--hot-rgb),.25);border-top-color:var(--hot);border-radius:50%;animation:lspin .8s linear infinite}
+@keyframes lspin{to{transform:rotate(360deg)}}
+.kbd .tc:focus::after{inset:-4px;border-width:4px}
+.kbd .lst-close:focus{outline:3px solid var(--hot);outline-offset:3px}
+.lst-grid>*,.tc>span{min-width:0}
+.tc h2{overflow-wrap:anywhere}
+@media (max-width:720px){.lst-head{flex-wrap:wrap;align-items:flex-start}.lst{padding:24px 16px 96px}.lst-head h1{font-size:32px}.lst-grid{grid-template-columns:1fr}.tc{grid-template-columns:64px 1fr;gap:14px;padding:18px}.tc .crest,.tc .crest img{width:64px;max-width:64px;height:64px;max-height:64px}.tc .crest b{width:56px;height:56px;font-size:22px}}
+</style></head>
+<body><div class="floodlights" aria-hidden="true"></div><div class="pitch" aria-hidden="true"></div>
+<main class="lst">
+  <header class="lst-head"><div><em>EVENTS</em><h1>活动 · 锦标赛</h1></div>
+    <button id="close" class="lst-close" type="button"><span class="key key-sm">B</span>返回游戏</button></header>
+  <div class="lst-grid" id="grid"></div>
+</main>
+<div class="lst-busy" id="busy" hidden><div><i></i><span id="busy-text">正在读取…</span></div></div>
+<footer class="hints"><span><b class="key">A</b>进入锦标赛中心</span><span><b class="key">B</b>返回游戏</span><span class="save"><i></i>已选好球队的赛事直接进入游戏赛事菜单</span></footer>
+<script id="list-data" type="application/json">LIST_DATA</script>
+<script>
+(() => {
+  'use strict';
+  const data = JSON.parse(document.getElementById('list-data').textContent);
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const query = new URLSearchParams(location.search), host = query.get('host'), token = query.get('window');
+  const windowsHosted = host === 'windows' && /^[a-f0-9]{32}$/.test(token || '');
+  const marker = windowsHosted ? 'PC赛事-' + token + ' ' : '';
+  document.title = marker + '活动 · 锦标赛';
+  const crest = t => t && t.emblem && t.emblem.uri ? `<img alt="" src="${esc(t.emblem.uri)}">` : `<b>${esc(((t && t.name) || '?').slice(0, 1))}</b>`;
+  const rows = data.tournaments || [];
+  const grid = document.getElementById('grid');
+  grid.innerHTML = rows.length ? rows.map((t, i) => `<button class="tc" type="button" data-uuid="${esc(t.uuid)}" data-i="${i}">
+      <span class="crest">${crest(t.team)}</span>
+      <span><h2>${esc(t.name)}</h2>
+        <span class="meta"><span>我的球队：${esc(t.team ? t.team.name : '')}</span><span>${t.teams} 队</span>${t.difficulty ? `<span>${esc(t.difficulty)}</span>` : ''}${t.stage ? `<span>${esc(t.stage)}</span>` : ''}${t.played ? `<span>已赛 ${t.played} 场</span>` : ''}</span>
+        <span class="st ${esc(t.status)}">${esc(t.status_text)}${t.status === 'complete' && t.champion ? ' · 冠军 ' + esc(t.champion.name) : ''}</span>
+        ${t.needs_team ? '<span class="warn">开赛前请先选择你的球队</span>' : ''}</span></button>`).join('')
+    : '<p class="lst-empty">当前没有启用的锦标赛。</p>';
+
+  // Open one hub; it gets the same host marker plus list=1 so its 返回 comes back here.
+  // The hub page is built on the gateway (saved progress); say so at once.
+  const loading = text => { document.getElementById('busy-text').textContent = text; document.getElementById('busy').hidden = false; };
+  let opening = false;
+  const hub = uuid => {
+    const next = new URLSearchParams();
+    if (host) next.set('host', host);
+    if (token) next.set('window', token);
+    next.set('list', '1');
+    location.href = '/player-studio/tournaments/' + encodeURIComponent(uuid) + '?' + next.toString();
+  };
+  // Team still to choose: its hub (team + draw). Otherwise the game shows the
+  // tournament's own event menu; the hub is then opened from that menu.
+  const open = uuid => {
+    if (opening) return; opening = true;
+    const row = rows.find(r => r.uuid === uuid);
+    const name = '「' + (row ? row.name : '锦标赛') + '」';
+    if (!row || row.needs_team || !data.token) { loading('正在读取' + name + '…'); return hub(uuid); }
+    loading('正在进入' + name + '…');
+    fetch('/player-studio/tournaments/' + encodeURIComponent(uuid) + '/open', {method:'POST',
+      headers:{'Content-Type':'application/json', 'X-Studio-Hub-Token':data.token}, body:'{}'})
+      .then(r => r.json().catch(() => ({})).then(body => { if (!r.ok || (body && body.error)) throw new Error();
+        if (host === 'android') document.title = 'player-studio-schedule:handoff'; else closeHost(); }))
+      .catch(() => { loading('正在读取' + name + '…'); hub(uuid); });
+  };
+  grid.addEventListener('click', e => { const b = e.target.closest('.tc'); if (b) open(b.dataset.uuid); });
+  const closeHost = () => {
+    if (windowsHosted) document.title = marker + 'player-studio-schedule:close';
+    else if (host === 'android' || host === 'windows') document.title = 'player-studio-schedule:close';
+  };
+  // 返回游戏: the game's own event list is underneath.
+  const close = () => closeHost();
+  document.getElementById('close').onclick = close;
+  window.tournamentScheduleBack = close;
+
+  // Focus: remember the last tournament across a round trip to its hub.
+  const cards = () => [...grid.querySelectorAll('.tc')];
+  let last = null;
+  try { last = sessionStorage.getItem('pc-hub-list-focus'); } catch (_) {}
+  const start = cards().find(c => c.dataset.uuid === last) || cards()[0];
+  if (start) start.focus({preventScroll:true});
+  grid.addEventListener('focusin', e => { const b = e.target.closest('.tc'); if (b) { try { sessionStorage.setItem('pc-hub-list-focus', b.dataset.uuid); } catch (_) {} } });
+  function move(dir) {
+    const list = [...cards(), document.getElementById('close')], cur = document.activeElement;
+    if (!list.includes(cur)) { list[0] && list[0].focus(); return; }
+    const a = cur.getBoundingClientRect(); let best = null, score = Infinity;
+    for (const n of list) {
+      if (n === cur) continue;
+      const b = n.getBoundingClientRect(), dx = (b.left + b.width / 2) - (a.left + a.width / 2), dy = (b.top + b.height / 2) - (a.top + a.height / 2);
+      const main = dir === 'left' ? -dx : dir === 'right' ? dx : dir === 'up' ? -dy : dy, cross = dir === 'left' || dir === 'right' ? Math.abs(dy) : Math.abs(dx);
+      if (main <= 4) continue;
+      const s = main + cross * 2.2; if (s < score) { score = s; best = n; }
+    }
+    if (best) { best.focus({preventScroll:true}); best.scrollIntoView({block:'nearest'}); }
+  }
+  const keyboardMode = () => document.documentElement.classList.add('kbd');
+  document.addEventListener('pointerdown', () => document.documentElement.classList.remove('kbd'), true);
+  window.addEventListener('pageshow', () => { opening = false; document.getElementById('busy').hidden = true; });
+  document.addEventListener('keydown', e => {
+    const dirs = {ArrowLeft:'left', ArrowRight:'right', ArrowUp:'up', ArrowDown:'down'};
+    if (dirs[e.key] || e.key === 'Tab') keyboardMode();
+    if (e.key === 'Escape') { e.preventDefault(); close(); }
+    else if (dirs[e.key]) { e.preventDefault(); move(dirs[e.key]); }
+  }, true);
+  // Controller: A open, B back to game, D-pad / left stick move.
+  // held starts as null: buttons already down when the page loads (the A that
+  // opened it, the B that came back) are not new presses.
+  let held = null, repeatAt = {}, stickDir = null;
+  const DIRS = {12:'up', 13:'down', 14:'left', 15:'right'};
+  function tick(now) {
+    const pad = [...(navigator.getGamepads ? navigator.getGamepads() : [])].find(Boolean);
+    const buttons = pad ? pad.buttons.map(b => b.pressed) : [];
+    if (held === null) { held = buttons; requestAnimationFrame(tick); return; }
+    if (pad && document.hasFocus()) {
+      if (buttons.some((down, n) => down && !held[n])) keyboardMode();
+      buttons.forEach((down, n) => {
+        if (DIRS[n]) {
+          if (down && !held[n]) { move(DIRS[n]); repeatAt[n] = now + 380; }
+          else if (down && now >= repeatAt[n]) { move(DIRS[n]); repeatAt[n] = now + 110; }
+          return;
+        }
+        if (!down || held[n]) return;
+        if (n === 0) { const el = document.activeElement; if (el && el !== document.body) el.click(); }
+        else if (n === 1) close();
+      });
+      const x = pad.axes[0] || 0, y = pad.axes[1] || 0;
+      const dir = Math.abs(x) < .55 && Math.abs(y) < .55 ? null : Math.abs(x) > Math.abs(y) ? (x > 0 ? 'right' : 'left') : (y > 0 ? 'down' : 'up');
+      if (dir && dir !== stickDir) { move(dir); repeatAt.stick = now + 380; }
+      else if (dir && now >= repeatAt.stick) { move(dir); repeatAt.stick = now + 120; }
+      stickDir = dir;
+    }
+    held = buttons; requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script></body></html>

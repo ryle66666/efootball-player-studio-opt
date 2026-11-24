@@ -1,0 +1,5 @@
+numpy==2.2.6
+Pillow==11.3.0
+cryptography==46.0.3
+cityhash==0.4.10
+WannaCRI==0.3.3

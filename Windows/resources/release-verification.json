@@ -1,0 +1,64 @@
+{
+  "game": "V17",
+  "version": "1.9.7.1",
+  "backend_tests": {
+    "passed": 233,
+    "skipped": 1,
+    "failed": 0
+  },
+  "frontend_tests": {
+    "passed": 35,
+    "failed": 0
+  },
+  "public_content": {
+    "native_players": 46629,
+    "native_coaches": 1661,
+    "personal_players": 0,
+    "personal_coaches": 0,
+    "personal_assets": 0,
+    "private_signing_keys": 0
+  },
+  "verified": {
+    "native_stock_binding_layers": [
+      4,
+      6
+    ],
+    "stock_routes_preserved": 10,
+    "coach_booster_attributes": 26,
+    "coach_ability_slots": 2,
+    "coach_link_slots": 2,
+    "existing_link_types": 32,
+    "link_conditions_encoded_and_native_type_adapters_executed": true,
+    "shirt_numbers_native_getter_executed": true,
+    "bound_identity_native_person_getter_executed": true,
+    "original_database_records_preserved": true,
+    "bound_unbound_repeated_manifest_roundtrip": true,
+    "project_sharing_preserves_links_numbers_binding": true,
+    "native_match_skill_instructions_executed": true,
+    "original_native_worker_all_hooks_install_in_isolated_memory": true,
+    "connected_controller_snapshot_mapping": true,
+    "fc_default_and_custom_combinations": true,
+    "controller_press_release_and_trigger_axes": true,
+    "coach_native_four_ten_bit_slots": true,
+    "ai_style_native_parameters_and_labels": true,
+    "skill_names_and_descriptions_in_compiled_cpk": true,
+    "bound_card_native_art_series": true,
+    "arm64_process_on_x86_android_kernel_startup": true,
+    "editable_frame_cap": true,
+    "render_jni_entry": true,
+    "visible_card_tick_resume": true,
+    "original_mini_linked_series": true,
+    "fc_mobile_shoulder_layout": true,
+    "analog_trigger_pressure_preserved": true,
+    "legacy_fc_preset_migrated": true
+  },
+  "limits": {
+    "custom_players": 10000,
+    "shared_booster_definitions": 10000,
+    "coach_native_booster_rows": 200,
+    "coach_custom_link_ids": 256
+  },
+  "in_game_tested": false,
+  "game_acceptance": "The game was not launched. Physical-controller feel, actual frame rate/resolution and on-device card animation require in-game acceptance.",
+  "personal_data_policy": "Publish clean artifacts only; installed editor, personal projects and signing keys are not replaced."
+}

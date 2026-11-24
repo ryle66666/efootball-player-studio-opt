@@ -1,0 +1,117 @@
+import {nativeRating,ratingParameters,nativeLineupRating,nativeDelta,positionAptitude,NATIVE_OVERALL,RATING_VERSION} from './native-overall.js';
+export function trainingCost(count) {
+  const q = Math.floor(count / 4), r = count % 4;
+  return 2 * q * (q + 1) + r * (q + 1);
+}
+
+export function overall(stats,position,catalog,context=null){
+  const project=context?.identity?context:{identity:{position},base_abilities:stats,source_player:{original_payload:context||{}}};
+  return nativeRating(ratingParameters(project,catalog,stats),catalog.POSITIONS.indexOf(position));
+}
+
+export function selectedCoach(project,catalog){return [...(project.custom_coaches||[]),...(catalog.coaches||[])].find(c=>c.id===project.preview?.coach_id)||null;}
+export function coachFactor(proficiency){
+  if(proficiency===null||proficiency===undefined||proficiency===127)return 1;
+  const f=Math.fround;let value=f(proficiency);
+  if(proficiency<90){const x=f(value-f(99));value=f(f(f(f(x*f(x*f(-38)))/f(99))/f(99))+f(104));}
+  else value=f(f(value*f(.048500001430511475))+f(99.25299835205078));
+  return f(value/f(100));
+}
+
+export function normalizeTraining(project,catalog){
+  const cap=Math.max(1,Math.min(100,Math.trunc(Number(project.max_level)||35))),rawLevel=Math.trunc(Number(project.initial_level)||1);
+  if(project.max_level!==cap)project.max_level=cap;
+  const level=Math.max(1,Math.min(cap,rawLevel));if(project.initial_level!==level)project.initial_level=level;
+  if(!project.training||typeof project.training!=='object')project.training={};
+  for(const g of catalog.training_groups){const count=Math.max(0,Math.min(40,Math.trunc(Number(project.training[g.id])||0)));if(project.training[g.id]!==count)project.training[g.id]=count;}
+  const spent=catalog.training_groups.reduce((sum,g)=>sum+trainingCost(project.training[g.id]),0),budget=project.card_type==='Trending'?0:2*(project.initial_level-1);
+  if(rawLevel>cap||spent>budget){project.initial_level=cap;Object.assign(project.training,autoAllocate(project,catalog));}
+  return project;
+}
+
+export function simulate(inputProject,catalog){
+  // Keep the live project and nested input objects stable across refreshes.
+  const project=normalizeTraining({...inputProject,training:{...(inputProject.training||{})}},catalog);
+  const base={...project.base_abilities},trained={...base},boosted={},playerBoosts={};
+  const budget=project.card_type==='Trending'?0:2*(project.initial_level-1);
+  let spent=0;
+  for(const group of catalog.training_groups){
+    const count=Number(project.training[group.id]||0);spent+=trainingCost(count);
+    for(const index of group.indices)trained[index]=Math.min(105,trained[index]+count);
+  }
+  for(const id of new Set(project.booster_ids||[])){
+    const booster=[...catalog.boosters,...(project.custom_boosters||[])].find(b=>b.id===id);
+    if(!booster||booster.conditional&&!project.conditional_boosters)continue;
+    for(const [index,amount]of Object.entries(booster.effects))playerBoosts[index]=(playerBoosts[index]||0)+amount;
+  }
+  for(const index of Object.keys(base))boosted[index]=Math.max(40,Math.min(120,trained[index]+(playerBoosts[index]||0)));
+  const coach=selectedCoach(project,catalog),effects=coach?.effects||{},combined={...playerBoosts},final={};
+  const teamStyle=project.preview?.team_style||Object.entries(coach?.tactics||{}).sort((a,b)=>b[1]-a[1])[0]?.[0];
+  const proficiency=coach?.tactics?.[teamStyle],multiplier=coachFactor(proficiency),aptitude=positionAptitude(project,project.identity.position);
+  for(const [index,amount]of Object.entries(effects))combined[index]=(combined[index]||0)+amount;
+  for(const index of Object.keys(base)){
+    let value=trained[index];
+    if(aptitude<2)value+=nativeDelta(value,(NATIVE_OVERALL.aptitudeFactors[index]||[1,1,1])[aptitude]);
+    if(coach)value+=nativeDelta(value,multiplier);
+    final[index]=Math.max(40,Math.min(120,value+(playerBoosts[index]||0)+(effects[index]||0)));
+  }
+  const baseParameters=ratingParameters(project,catalog,base),parameters=ratingParameters(project,catalog,trained);
+  const positionOvrs=Object.fromEntries(catalog.POSITIONS.map((pos,i)=>[pos,nativeLineupRating(parameters,i,combined,multiplier,positionAptitude(project,pos),Boolean(coach))]));
+  const potentialPositionOvrs=Object.fromEntries(catalog.POSITIONS.map((pos,i)=>[pos,nativeRating(parameters,i,playerBoosts)]));
+  const position=catalog.POSITIONS.indexOf(project.identity.position),cardOvr=nativeRating(parameters,position,playerBoosts);
+  return {base,trained,boosted,final,coach,teamStyle,proficiency,coachMultiplier:multiplier,budget,spent,remaining:budget-spent,valid:spent<=budget,
+    ovr:positionOvrs[project.identity.position],lineupOvr:positionOvrs[project.identity.position],cardOvr,
+    baseOvr:nativeRating(baseParameters,position),trainedOvr:nativeRating(parameters,position),boostedOvr:cardOvr,
+    positionOvrs,potentialPositionOvrs,algorithmVersion:RATING_VERSION,includesConditionArrow:false};
+}
+
+export function autoAllocate(project, catalog) {
+  const p = structuredClone(project);
+  p.initial_level=Math.max(1,Math.min(100,Math.trunc(Number(p.max_level)||35)));
+  for (const g of catalog.training_groups) p.training[g.id] = 0;
+  let current = simulate(p, catalog);
+  const target=p.preview?.training_position||p.identity.position;
+  const weights = catalog.auto_position_weights[target]||catalog.auto_position_weights[p.identity.position];
+  while (current.remaining > 0) {
+    let best = null;
+    for (const [groupIndex, group] of catalog.training_groups.entries()) {
+      const count = p.training[group.id];
+      const cost = trainingCost(count + 1) - trainingCost(count);
+      if (cost > current.remaining || count >= 40) continue;
+      const available = group.indices.filter(index => current.trained[index] < 105).length / group.indices.length;
+      const score = (weights[groupIndex] || 0) * available / ((count + 1) * cost);
+      if (score > 0 && (!best || score > best.score)) best = {group, score};
+    }
+    if (!best) break;
+    p.training[best.group.id]++;
+    current = simulate(p, catalog);
+  }
+  return p.training;
+}
+
+export function ratingColor(value) {
+  return value >= 95 ? '#78dfb3' : value >= 85 ? '#95d6ff' : value >= 75 ? '#cdb577' : '#a3aabc';
+}
+
+export const cardTypes = [
+  ['BigTime','Big Time 系列'], ['Epic','史诗'], ['Legendary','传奇'], ['Highlight','高光'], ['Featured','精选'], ['Trending','趋势 / POTW'], ['Standard','标准'], ['UNKNOWN','原库未标注']
+];
+export const cardTypeName = type => type === 'BigTime' ? 'Big Time' : type;
+export function selectCardType(project, type) {
+  project.card_type=type;
+  project.card_series=type==='Trending'?'POTW':type;
+}
+export function selectCardSeries(project, value) {
+  project.card_series=value;
+  const family={ShowTime:'Highlight',POTW:'Trending',IconicMoment:'Legendary'};
+  if(cardTypes.some(([type])=>type===value))project.card_type=value;
+  else if(family[value])project.card_type=family[value];
+}
+export const series = [['Epic','史诗'],['Legendary','传奇'],['Highlight','高光'],['Featured','精选'],['Trending','趋势 / POTW'],['UNKNOWN','原库未标注'],['BigTime','Big Time'],['ShowTime','Show Time'],['POTW','周精选 POTW'],['IconicMoment','旧版时刻'],['Standard','经典简洁']];
+export const statGroups = [
+  {name:'进攻与技术', indices:[14,18,17,19,20,21,22,23,27,28]},
+  {name:'速度与身体', indices:[34,38,37,35,36,39,40]},
+  {name:'防守', indices:[15,24,25,26]},
+  {name:'守门', indices:[16,29,30,31,32]}
+];
+export const positionNames = {GK:'门将',CB:'中后卫',LB:'左后卫',RB:'右后卫',DMF:'后腰',CMF:'中前卫',LMF:'左前卫',RMF:'右前卫',AMF:'前腰',LWF:'左边锋',RWF:'右边锋',SS:'影锋',CF:'中锋'};

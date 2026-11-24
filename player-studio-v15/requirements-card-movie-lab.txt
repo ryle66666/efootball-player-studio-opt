@@ -1,2 +1,0 @@
-# Required for the Windows dynamic card video importer.
-WannaCRI==0.3.3

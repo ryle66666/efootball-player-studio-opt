@@ -1,0 +1,457 @@
+"""Read compatible APK data into a new catalogue without executing APK code."""
+from archive_data import read_bytes as read_archive_bytes,read_json as read_archive_json,PERSONAL_JSON_LIMIT
+from pathlib import Path
+import logging
+import collections,contextlib,copy,csv,gzip,hashlib,io,json,os,re,shutil,sqlite3,subprocess,threading,uuid
+from native_cpk import Cpk,unwrap
+from native_tables import PLAYER,APPEARANCE,VARIATION,ALIASES
+from card_types import editor_card_type
+
+PREFIX='assets/gateway-release/'
+IMPORT_REVISION='apk-catalogue-compatible-v11-content-v2-registry'
+
+def active_resources(base,store):
+    from incremental_delta import recover
+    from types import SimpleNamespace
+    recover(SimpleNamespace(root=Path(store)))
+    path=Path(store)/'active-game.json'
+    if not path.is_file():return Path(base)
+    selected=json.loads(path.read_text(encoding='utf8'));key=selected.get('database')
+    if not isinstance(key,str) or not re.fullmatch('[a-f0-9]{24}',key):raise ValueError('当前游戏数据库记录无效，原文件已保留')
+    target=Path(store)/'game-databases'/key
+    if not (target/'import-report.json').is_file():raise ValueError('当前游戏数据库缺少导入校验记录')
+    return target
+
+def read_tables(archive):
+    sources=[]
+    for path in (PREFIX+'livedata/dt870_mobile_and.cpk',PREFIX+'custom-resources/legends-v10/dt870_mobile_and.cpk'):
+        if path in archive.namelist():sources.append(Cpk(archive.read(path,limit=None)if hasattr(archive,'file_payload')else archive.read(path)))
+    if not sources:raise ValueError('APK 不含当前支持的离线球员数据库')
+    result={}
+    for name,size in ((PLAYER,400),(APPEARANCE,64),(VARIATION,168)):
+        merged={}
+        for source in sources:
+            if name not in source.files:continue
+            data=unwrap(source.read(name))
+            if not data or len(data)%size:raise ValueError('新版数据表布局不兼容：'+name)
+            offset=8 if name==PLAYER else 0
+            for at in range(0,len(data),size):
+                row=data[at:at+size];key=int.from_bytes(row[offset:offset+8],'little');merged[key]=row
+        if not merged:raise ValueError('新版 APK 缺少必要数据表：'+name)
+        result[name]=merged
+    for source in reversed(sources):
+        if ALIASES in source.files:result[ALIASES]=unwrap(source.read(ALIASES));break
+    return result
+
+def build_catalogue(apk,resources,resource_packages=None):
+    """Use declared bit fields plus the APK's own complete card payloads."""
+    resources=Path(resources);catalog=json.loads((resources/'catalog.json').read_text(encoding='utf8'))
+    from skill_localization import apply_labels
+    apply_labels(catalog,resources)
+    fields=json.loads((resources/'native-player-fields.json').read_text(encoding='utf8'));ability=json.loads((resources/'native-ability-bits.json').read_text(encoding='utf8'))
+    from native_skill_effects import skill_bits
+    skills=skill_bits(resources)
+    from resource_set import Reader
+    with Reader(apk,resource_packages) as z:
+        from native_leagues import from_archive
+        (resources/'team-leagues.json').write_text(json.dumps(from_archive(z),ensure_ascii=False),encoding='utf8')
+        from pack_catalogue import catalogue_from_archive
+        (resources/'pack-exclusions.json').write_text(json.dumps(catalogue_from_archive(z),ensure_ascii=False),encoding='utf8')
+        tables=read_tables(z);names={};classes={};verified={}
+        from native_numbers import assignments,restore as restore_number
+        number_sources=[Cpk(z.read(path,limit=None)) for path in (PREFIX+'livedata/dt870_mobile_and.cpk',PREFIX+'custom-resources/legends-v10/dt870_mobile_and.cpk') if path in z.namelist()]
+        shirt_numbers=assignments(number_sources)
+        name_path=PREFIX+'outputs/reference/player_editor_names.json.gz'
+        if name_path in z.namelist():names=json.loads(gzip.decompress(z.read(name_path)))
+        class_path=PREFIX+'outputs/reference/card-class-table.csv'
+        if class_path in z.namelist():classes={r['player_id']:r['card_class'] for r in csv.DictReader(io.StringIO(z.read(class_path).decode('utf8')))}
+        verify_path=PREFIX+'outputs/reference/verified-card-update.json.gz'
+        if verify_path in z.namelist():
+            for row in json.loads(gzip.decompress(z.read(verify_path))).get('cards',[]):
+                p=row.get('payload') or {};cid=str((p.get('gameplayer_id') or {}).get('id',''))
+                if row.get('level_limit_verified'):verified[cid]=p
+        seed=sqlite3.connect(':memory:')
+        try:
+            seed.deserialize(read_archive_bytes(z,PREFIX+'outputs/efootball/local-club.sqlite3',limit=None))
+            if seed.execute('pragma quick_check').fetchone()[0]!='ok':raise ValueError('APK 自带数据库校验失败')
+            managed={str(cid):(json.loads(raw),kind) for cid,raw,kind in seed.execute('select card_id,payload,card_type from managed_cards')}
+        finally:seed.close()
+        labels={str(cid):b[12:140].split(b'\0')[0].decode('utf8','strict') for cid,b in tables[VARIATION].items()}
+        records=[]
+        for ident,b in sorted(tables[PLAYER].items()):
+            pid=str(ident);bits=int.from_bytes(b,'little')
+            def get(key):f=fields[key];return (bits>>f['bit'])&((1<<f['width'])-1)
+            strings=[b[88+i*61:149+i*61].split(b'\0')[0].decode('utf8','strict').strip() for i in range(5)]
+            en=next((s for s in strings[::-1] if s),pid);name,english=(names.get(pid) or [en,en])[:2]
+            params=[0]*147;params[0]=get('position')
+            if params[0]>=len(catalog['POSITIONS']):raise ValueError('新版球员位置编号不兼容：'+pid)
+            for i,m in ability.items():params[int(i)]=((bits>>m['bit'])&63)+40
+            for i,pos in enumerate(catalog['APTITUDES'],1):params[i]=get('aptitude.'+pos)
+            for i,key in ((33,'weak_foot_accuracy'),(41,'form'),(42,'injury_resistance'),(43,'foot'),(45,'weak_foot_usage')):params[i]=get(key)
+            params[46:49]=[get('age')+10,get('height_cm')+100,get('weight_kg')+30]
+            if not 140<=params[47]<=220:params[47]=0
+            from native_skill_effects import decode_skills
+            selected=decode_skills(bits,params,catalog,skills)
+            attack,defense=get('style.in_possession'),get('style.out_of_possession');params[61:63]=[attack,defense]
+            p={'gameplayer_id':{'id':ident,'serial':0},'parameters':params,'level_info':{'level':1,'level_limit':None},'play_style':[attack,defense],
+               'initial_base_team_id':get('club'),'_nation_id':get('nationality'),'_studio_unknown_level_limit':True,'_studio_partial_skill_mapping':True,'_studio_skill_ids':selected}
+            kind=classes.get(pid,'UNKNOWN');source='导入 APK · Player.bin/400'
+            if pid in managed:
+                complete,kind=managed[pid]
+                if len(complete.get('parameters',[]))!=147:raise ValueError('新版完整球员参数布局改变')
+                p.update(copy.deepcopy(complete));source+=' + 原包完整卡池'
+                p.pop('_studio_unknown_level_limit',None);p.pop('_studio_partial_skill_mapping',None)
+            elif pid in verified:
+                complete=verified[pid];limit=complete.get('level_info',{}).get('level_limit')
+                if len(complete.get('parameters',[]))==147 and type(limit) is int and 1<=limit<=100:
+                    p.update(copy.deepcopy(complete));p.pop('_studio_unknown_level_limit',None);p.pop('_studio_partial_skill_mapping',None);source+=' + 原包已校验资料'
+            p.update(_studio_client_record=b.hex(),_studio_names=strings,_studio_card_label=labels.get(pid,''),_studio_native_card_class=kind)
+            restore_number(p,ident,int(p.get('initial_base_team_id') or get('club')),shirt_numbers)
+            from native_celebration import restore_payload
+            restore_payload(p)
+            from ai_playing_styles import restore_payload as restore_ai_styles
+            restore_ai_styles(p)
+            kind=editor_card_type(kind,labels.get(pid,''));position=p['parameters'][0]
+            if type(position) is not int or not 0<=position<len(catalog['POSITIONS']):raise ValueError('完整卡池位置格式改变')
+            level=p.get('level_info',{}).get('level_limit')
+            if level is not None and (type(level) is not int or not 1<=level<=100):raise ValueError('新版等级上限超出当前布局')
+            records.append((pid,name or en,english or en,' '.join([pid,name or en,english or en,*strings]).casefold(),catalog['POSITIONS'][position],kind,p.get('_overall'),level,str(ident&0xfffffff),json.dumps(p,ensure_ascii=False,separators=(',',':')),source))
+        path=resources/'library.sqlite3';db=sqlite3.connect(path)
+        try:
+            with db:
+                db.execute('delete from players');db.executemany('insert into players values(?,?,?,?,?,?,?,?,?,?,?)',records)
+                db.execute('delete from card_aliases')
+                if ALIASES in tables:db.executemany('insert or replace into card_aliases values(:before,:after)',csv.DictReader(io.StringIO(tables[ALIASES].decode('utf8'))))
+                from library_bound_cards import restore as restore_bound_cards
+                restore_bound_cards(db,z,apk)
+                # Team names are version-local, while the stable IDs in saved
+                # projects are deliberately not rewritten.
+                live=Cpk(z.read(PREFIX+'livedata/dt870_mobile_and.cpk',limit=None))
+                if 'common/etc/pesdb/Team.bin' in live.files:
+                    teams=unwrap(live.read('common/etc/pesdb/Team.bin'))
+                    if len(teams)%1600:raise ValueError('球队表布局改变')
+                    db.execute('delete from identities where kind="team"')
+                    for at in range(0,len(teams),1600):
+                        row=teams[at:at+1600];tid=int.from_bytes(row[12:16],'little')&131071;en=row[396:466].split(b'\0')[0].decode('utf8');zh=row[1036:1106].split(b'\0')[0].decode('utf8')
+                        if en or zh:db.execute('insert or replace into identities values(?,?,?,?)',('team',tid,zh or en,en))
+                summary=json.loads(db.execute('select value from meta where key="summary"').fetchone()[0]);summary.update(players=len(records),client_player_records=len(records),source=Path(apk).name,by_card_type=dict(collections.Counter(row[5] for row in records)))
+                db.execute('update meta set value=? where key="summary"',(json.dumps(summary,ensure_ascii=False),))
+            if db.execute('pragma quick_check').fetchone()[0]!='ok':raise ValueError('生成后的数据库校验失败')
+        finally:db.close()
+        from native_appearance import compact_table
+        (resources/'native-appearance.bin').write_bytes(compact_table(tables[APPEARANCE]))
+        coaches=read_coaches(z,resources)
+        catalog['coaches']=json.loads((resources/'coaches.json').read_text(encoding='utf8'))['coaches']
+        from native_equipment import write_catalogue
+        equipment=write_catalogue(Cpk(z.read(PREFIX+'custom-resources/legends-v10/dt870_mobile_and.cpk',limit=None)),resources)
+        from apk_literals import update_options
+        options=update_options(apk,catalog)
+        (resources/'native-progression.json').write_text(json.dumps({'version':1,'source':'导入 APK · pes_tables.EXPERIENCE_LIST','costs':options['costs']}),encoding='utf8')
+        catalog['release_id']=json.loads(z.read(PREFIX+'release-manifest.json'))['release_id'];(resources/'catalog.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2),encoding='utf8')
+        return {'players':len(records),'managed_cards':len(managed),'coaches':coaches,'boosters':options['boosters'],'skills':options['skills'],'verified_level_cards':sum(row[7] is not None for row in records),'tables':{k:len(v) for k,v in tables.items() if isinstance(v,dict)}}
+
+def read_coaches(archive,resources):
+    from coach_identity import owned_payloads,apply as apply_coach_identity,REVISION as IDENTITY_REVISION
+    from native_coaches import COACH,BOOSTER,TACTICS,ATTRIBUTES,ability_ids,SLOT_LAYOUT
+    sources=[Cpk(archive.read(n,limit=None)if hasattr(archive,'file_payload')else archive.read(n)) for n in (PREFIX+'livedata/dt870_mobile_and.cpk',PREFIX+'custom-resources/legends-v10/dt870_mobile_and.cpk') if n in archive.namelist()]
+    raw=bonus=None
+    for source in sources:
+        if COACH in source.files:raw=unwrap(source.read(COACH))
+        if BOOSTER in source.files:bonus=unwrap(source.read(BOOSTER))
+    previous=json.loads((resources/'coaches.json').read_text(encoding='utf8'));old={str(c['id']):c for c in previous['coaches']}
+    if raw is None:return len(old)
+    if len(raw)%176 or bonus is None or len(bonus)%4:raise ValueError('新版教练数据库布局改变')
+    boosts={};attribute={v:k for k,v in ATTRIBUTES.items()}
+    for at in range(0,len(bonus),4):
+        value=int.from_bytes(bonus[at:at+4],'little');boosts[value&1023]=((value>>15)&31,(value>>10)&31)
+    coaches=[];payloads=owned_payloads(archive)
+    for at in range(0,len(raw),176):
+        row=raw[at:at+176];value=int.from_bytes(row,'little');cid=str(value&((1<<64)-1))
+        local=row[32:78].split(b'\0')[0].decode('utf8','strict');english=row[78:124].split(b'\0')[0].decode('utf8','strict')
+        if not cid or not (local or english):continue
+        prior=copy.deepcopy(old.get(cid) or next(iter(old.values())));prior.update(id=cid,type='native',name=english or local,name_en=english or local,name_local=local,age=((value>>231)&63)+15)
+        if cid not in old:prior['pack_title']=''
+        prior['raw_payload_verified']=cid in payloads
+        prior['raw_payload']=copy.deepcopy(payloads.get(cid) or {'sell_gp':0,'is_coach_texture_use':'NO','initial_base_team_id':0,'overload':0,'compability':'TRAINING_SKILL_NONE','team_style':0,'formation_data':'','is_lock':'NO','type':'NORMAL'})
+        apply_coach_identity(prior,row,payloads)
+        prior['tactics']={name:(value>>bit)&127 for name,bit in TACTICS.items()}
+        ids=ability_ids(row);effects={};unmapped=[]
+        for bid in ids[:2]:
+            if not bid:continue
+            attr,amount=boosts.get(bid,(None,0))
+            if attr in attribute:effects[attribute[attr]]=effects.get(attribute[attr],0)+amount
+            else:unmapped.append(bid)
+        prior.update(effects=effects,unmapped_abilities=unmapped,ability_ids=ids,source='导入 APK · 原生教练表')
+        prior['raw_payload'].update(coach_id={'id':int(cid),'serial':0},name=prior['name'],name_en=prior['name_en'],age=prior['age'],ability_id=ids,**prior['tactics'])
+        coaches.append(prior)
+    if not coaches:raise ValueError('新版教练目录为空，未启用数据库')
+    from native_coach_links import read_catalogue
+    from coach_tactics import REVISION as TACTICS_REVISION
+    previous['coach_tactics_revision']=TACTICS_REVISION
+    link_source=next((source for source in reversed(sources) if 'common/etc/pesdb/CoachLink.bin' in source.files),None)
+    from personal_source import PATH as personal_path
+    personal=read_archive_json(archive,personal_path,limit=PERSONAL_JSON_LIMIT) if personal_path in archive.namelist() else {}
+    previous['linkup_types']=read_catalogue(link_source,coaches,resources,personal.get('coach_links',[])) if link_source else []
+    previous['coach_options_revision']='native-boosters-2-and-links-2-v1';previous['coach_slot_layout']=SLOT_LAYOUT
+    previous['coach_identity_revision']=IDENTITY_REVISION
+    previous['coaches']=coaches;(resources/'coaches.json').write_text(json.dumps(previous,ensure_ascii=False,indent=2),encoding='utf8');return len(coaches)
+
+def index_assets(library):
+    if not library.tool.is_file():raise FileNotFoundError(f"缺少 APK 资源解码工具：{library.tool}")
+    key=(library.containers/'resource-key.bin').read_bytes().hex();env=os.environ.copy();env['TEMP']=str(library.native);env['TMP']=str(library.native)
+    command=[str(library.tool),'-i',str(library.containers),'-g','GAME_eFootball','-k','0x'+key,'-p','*','-l']
+    completed=subprocess.run(command,capture_output=True,env=env,timeout=180,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+    (library.root/'last-index.log').write_bytes(completed.stderr)
+    if completed.returncode:raise ValueError('新版资源索引读取失败')
+    listed={p.strip() for p in completed.stdout.decode('utf8','replace').splitlines()};paths=sorted(p for p in listed if p.endswith('.uasset'));rows=[]
+    for asset in paths:
+        name=asset.rsplit('/',1)[-1][:-7]
+        if '/Thumbnail/Player/' in asset or ('/RealFace/' in asset and re.fullmatch(r'\d+(?:_|f)',name)):
+            kind='portrait' if re.fullmatch(r'\d+_(?:l)?',name) else 'card';match=re.match(r'(\d+)',name) if kind=='portrait' or re.fullmatch(r'\d+f',name) else re.search(r'(\d{6,})',name)
+        elif '/character/' in asset.casefold() and name.startswith('SK_'):kind='model';match=re.match(r'SK_(\d+)',name)
+        else:continue
+        rows.append((hashlib.sha256(asset.encode()).hexdigest()[:24],asset,name,kind,match.group(1) if match else ''))
+    if len(rows)<1000:raise ValueError('新版美术索引数量异常，未替换旧数据库')
+    with contextlib.closing(sqlite3.connect(library.resources/'library.sqlite3')) as db,db:
+        db.execute('delete from assets');db.executemany('insert into assets values(?,?,?,?,?)',rows)
+        summary=json.loads(db.execute('select value from meta where key="summary"').fetchone()[0]);summary.update(assets=len(rows),by_asset_kind=dict(collections.Counter(row[3] for row in rows)))
+        db.execute('update meta set value=? where key="summary"',(json.dumps(summary,ensure_ascii=False),))
+    media=json.loads((library.resources/'native-card-media.json').read_text(encoding='utf8'))
+    media['movies']=sorted({p for p in listed if p.lower().endswith(('.usm','.webm','.mp4','.m2v')) and '/playercard/' in p.lower()})
+    (library.resources/'native-card-media.json').write_text(json.dumps(media,ensure_ascii=False),encoding='utf8')
+    return len(rows)
+
+class GameImport:
+    def __init__(self,server,base):self.server=server;self.base=Path(base);self.state={'phase':'idle'};self.lock=threading.Lock()
+    def status(self):
+        with self.lock:return copy.deepcopy(self.state)
+    def update(self,**kw):
+        with self.lock:self.state.update(kw)
+    def install_adapter(self,path):
+        source=Path(path)
+        if not source.is_file() or source.suffix.lower()!='.json' or source.stat().st_size>65536:raise ValueError('请选择不超过 64 KB 的兼容适配 JSON')
+        document=json.loads(source.read_text(encoding='utf8'))
+        if document.get('format')!='player-studio-game-adapters-v1' or not isinstance(document.get('engines'),dict) or not 1<=len(document['engines'])<=128:raise ValueError('适配资料格式无效')
+        base=json.loads((self.base/'game-adapters.json').read_text(encoding='utf8'));family=json.loads((self.base/'native-resource-profile.json').read_text(encoding='utf8')).get('adapter_family','V14')
+        for digest,item in document['engines'].items():
+            if not re.fullmatch('[a-f0-9]{64}',digest) or not isinstance(item,dict) or set(item)-{'family','game_version','validation','resource_key_offset','resource_key_sha256'}:raise ValueError('适配引擎资料字段无效')
+            if item.get('family')!=family or not re.fullmatch('V[0-9]{1,3}',str(item.get('game_version',''))):raise ValueError('适配资料与当前原生系列不兼容')
+            if digest in base['engines'] and item!=base['engines'][digest]:raise ValueError('不能覆盖随软件已核对的引擎适配资料')
+            if 'resource_key_offset' in item and (type(item['resource_key_offset']) is not int or not 0<=item['resource_key_offset']<1<<31):raise ValueError('资源密钥位置无效')
+            if 'resource_key_sha256' in item and not re.fullmatch('[a-f0-9]{64}',str(item['resource_key_sha256'])):raise ValueError('资源密钥校验值无效')
+        folder=self.server.store.root/'compatibility';folder.mkdir(exist_ok=True);target=folder/'game-adapters.json'
+        prior=json.loads(target.read_text(encoding='utf8')) if target.is_file() else {'format':'player-studio-game-adapters-v1','engines':{}}
+        prior['engines'].update(document['engines']);temp=target.with_suffix('.tmp');temp.write_text(json.dumps(prior,ensure_ascii=False,indent=2),encoding='utf8');os.replace(temp,target)
+        return {'installed':len(document['engines']),'message':'已安装适配资料；仍会检查数据库、骨架和写入接口。'}
+    def start(self,body):
+        if self.status()['phase']=='working':raise ValueError('正在导入游戏数据，请稍候')
+        if self.server.native_package.status()['phase']=='working' or self.server.library.state['phase']=='preparing':raise ValueError('请等待当前实装或资源准备结束')
+        if body.get('operation')=='auto':
+            selected=Path(body.get('path','')).absolute()
+            if selected.suffix.lower()=='.zip':return self.start_delta(dict(body,operation='content-delta'))
+            if selected.suffix.lower()!='.apk':raise ValueError('请选择游戏 APK 或内容增量 ZIP')
+            from apk_sources import resolve
+            known=resolve(self.server.library,self.server.store)
+            body=dict(body,apk=str(selected),companion=body.get('companion')or known.get('companion',''))
+        if body.get('operation')=='content-delta':return self.start_delta(body)
+        apk=Path(body.get('apk','')).absolute();companion=Path(body.get('companion','')).absolute()
+        if not apk.is_file()or apk.suffix.lower()!='.apk':raise ValueError('请选择新版主 APK')
+        from resource_set import read_manifest
+        from resource_source_bindings import selected_files
+        from apk_sources import resource_paths
+        provided=copy.deepcopy(body.get('resource_packages')or{})
+        provided.update(selected_files(body.get('resource_files')or[]))
+        manifest=read_manifest(apk)
+        if manifest:
+            offline=next((p for p in manifest['packages']if p['role']=='offline'),None)
+            if offline and companion.is_file():provided.setdefault(offline['package'],str(companion))
+            resources=resource_paths(self.server.library,self.server.store,apk,provided)
+            if offline:companion=Path(resources[offline['id']])
+        else:resources={}
+        if not companion.is_file():raise ValueError('请选择配套离线资源 APK')
+        with self.lock:
+            if self.state['phase']=='working':raise ValueError('正在导入游戏数据，请稍候')
+            self.state={'phase':'working','message':'核对新版 APK 与兼容性','result':None}
+        threading.Thread(target=self._work,args=(apk,companion,resources),daemon=True).start();return self.status()
+    def inspect_delta(self,path):
+        from incremental_delta import Delta
+        with Delta(path) as delta:return delta.summary()
+    def start_delta(self,body):
+        path=Path(body.get('path','')).absolute()
+        if not path.is_file()or path.suffix.lower()!='.zip':raise ValueError('请选择内容增量 ZIP')
+        with self.lock:
+            if self.state['phase']=='working':raise ValueError('正在导入游戏数据，请稍候')
+            self.state={'phase':'working','message':'读取增量资料与美术文件','result':None}
+        threading.Thread(target=self._incremental_work,args=(path,),daemon=True).start();return self.status()
+
+    def _incremental_work(self,path):
+        from incremental_delta import import_delta
+        try:
+            result=import_delta(self.server.library,self.server.store,path,self.update)
+            message='此增量包已安装，已更新资料与卡面索引。'if result.get('already_installed')else'增量内容已导入，资料与卡面索引已更新。'
+            self.update(phase='done',message=message,result=result)
+        except Exception as failure:self.update(phase='error',message=str(failure))
+
+    def start_delta_legacy(self,body):
+        from import_resource_source import select_delta_sources
+        apk,companion=select_delta_sources(self.server.library,self.server.store,body)
+        from resource_source_bindings import paths,selected_files
+        provided=dict(body.get('resource_packages')or{});provided.update(selected_files(body.get('resource_files')or[]))
+        resource_packages=paths(self.server.library,self.server.store,apk,provided)
+        path=Path(body.get('path','')).absolute()
+        if not path.is_file() or path.suffix.lower()!='.zip':raise ValueError('请选择内容增量 ZIP')
+        with self.lock:
+            if self.state['phase']=='working':raise ValueError('正在导入游戏数据，请稍候')
+            self.state={'phase':'working','message':'检查内容增量包的清单与全部哈希','result':None}
+        threading.Thread(target=self._delta_work,args=(apk,companion,path,resource_packages),daemon=True).start();return self.status()
+    def _delta_work(self,apk,companion,path,resource_packages=None):
+        from content_delta import Delta,build_source,read_catalogue
+        work=None;output=None;bundle_output=None;committed=False
+        try:
+            with Delta(path) as delta:
+                from resource_set import Reader
+                with Reader(apk,resource_packages) as archive:prior=read_catalogue(archive)
+                for receipt in prior['packages']:
+                    if receipt['package_id']==delta.manifest['package_id']:
+                        if receipt['manifest_sha256']!=delta.digest:raise ValueError('同名增量包内容已改变，请使用新的包编号')
+                        if not receipt.get('pending_entities'):
+                            self._work(apk,companion,resource_packages)
+                            if self.status()['phase']=='done':
+                                result=self.status()['result'];result.update(content_delta=receipt,already_installed=True)
+                                self.update(phase='done',message='此内容增量包已经导入，未重复追加卡片或资源',result=result)
+                            return
+                root=self.server.store.root
+                work=root/'tmp'/('content-delta-'+uuid.uuid4().hex);work.mkdir(parents=True)
+                folder=root/'content-sources';folder.mkdir(exist_ok=True)
+                output=folder/(delta.digest[:24]+'-'+uuid.uuid4().hex[:8]+'.apk')
+                built=work/'source.apk'
+                import inspect
+                options={}
+                if 'signer'in inspect.signature(build_source).parameters:
+                    from apk_format import local_signer
+                    options={'resource_packages':resource_packages,'signer':local_signer(root/'signing'),'resource_template':companion}
+                receipt=build_source(delta,apk,built,work,self.server.library.profile,self.update,**options)
+                if receipt.get('already_installed'):
+                    self._work(apk,companion,resource_packages);return
+                new_packages=dict(resource_packages or{})
+                bundle=receipt.get('source_bundle')
+                if bundle:
+                    bundle_source=Path(bundle['directory']).resolve();bundle_game=Path(bundle['game']).resolve()
+                    if bundle_source.parent!=work.resolve()or bundle_source.name!='source-set'or bundle_source.is_symlink()or bundle_source.is_junction():
+                        raise ValueError('内容增量资源集输出目录不在本任务内，未移动任何来源')
+                    game_relative=bundle_game.relative_to(bundle_source)
+                    bundle_output=folder/(delta.digest[:24]+'-'+uuid.uuid4().hex[:8])
+                    if bundle_output.resolve().parent!=folder.resolve()or bundle_output.exists():raise ValueError('内容来源目标目录无效')
+                    os.replace(bundle_source,bundle_output)
+                    output=bundle_output/game_relative
+                    def rebased(path):
+                        try:return str(bundle_output/Path(path).resolve().relative_to(bundle_source))
+                        except ValueError:return str(path)
+                    new_packages={key:rebased(value)for key,value in receipt.get('resource_packages',{}).items()}
+                    receipt['resource_packages']=new_packages;receipt['source_bundle']=dict(bundle,directory=str(bundle_output),game=str(output))
+                    from resource_set import read_manifest
+                    manifest=read_manifest(output)
+                    if manifest:
+                        offline=next((row for row in manifest['packages']if row['role']=='offline'),None)
+                        if offline:companion=Path(new_packages.get(offline['id'],new_packages.get(offline['package'],companion)))
+                else:os.replace(built,output)
+                self.update(message='导入增量来源，重建资源库与美术索引')
+                self._work(output,companion,new_packages)
+                if self.status()['phase']!='done':raise ValueError(self.status().get('message','增量资料库导入失败'))
+                committed=True
+                result=self.status()['result'];result['content_delta']=receipt
+                try:
+                    reports=root/'content-reports';reports.mkdir(exist_ok=True)
+                    report_name=delta.manifest['package_id']+'-'+delta.digest[:12]+'.json'
+                    raw_report=json.dumps(receipt,ensure_ascii=False,indent=2)
+                    (reports/report_name).write_text(raw_report,'utf8')
+                    (root/'exports'/report_name).write_text(raw_report,'utf8')
+                    result['content_delta_report']={'url':'/exports/'+report_name,'name':report_name}
+                except OSError as exc:result['report_warning']='已导入；独立报告未能保存，逐项记录仍保留在 APK 内容清单：'+str(exc)
+                self.update(phase='done',message='内容增量已启用；工程、签名与游戏存档保留，新卡未自动发放',result=result)
+        except Exception as exc:
+            self.update(phase='error',message='导入内容增量失败：'+str(exc))
+        finally:
+            if bundle_output and bundle_output.exists()and not committed:
+                if bundle_output.resolve().parent==(self.server.store.root/'content-sources').resolve()and not bundle_output.is_symlink()and not bundle_output.is_junction():shutil.rmtree(bundle_output)
+            elif output and output.is_file()and not committed:output.unlink()
+            if work and work.is_dir() and work.resolve().parent==(self.server.store.root/'tmp').resolve() and work.name.startswith('content-delta-'):
+                shutil.rmtree(work,ignore_errors=True)
+    def _work(self,apk,companion,resource_packages=None):
+        from native_library import NativeLibrary
+        staging=None;previous_resources=self.server.library.resources
+        try:
+            from apk_sources import resource_paths
+            from resource_set import Reader
+            resource_packages=resource_paths(self.server.library,self.server.store,apk,resource_packages)
+            with Reader(apk,resource_packages) as archive:
+                manifest=json.loads(archive.read(PREFIX+'release-manifest.json'));release=manifest['release_id']
+                from personal_source import read as read_personal
+                personal=read_personal(archive,manifest)
+                with archive.open('lib/arm64-v8a/libUE4.so') as f:engine=hashlib.file_digest(f,'sha256').hexdigest()
+            adapters=json.loads((self.base/'game-adapters.json').read_text(encoding='utf8'))['engines'];adapter=adapters.get(engine)
+            external=self.server.store.root/'compatibility/game-adapters.json'
+            if not adapter and external.is_file():adapter=json.loads(external.read_text(encoding='utf8')).get('engines',{}).get(engine)
+            from engine_compatibility import detect
+            self.update(message='自动核对原生接口；引擎指纹变化不影响兼容版本导入')
+            adapter=detect(apk,self.base,release,adapter)
+            base_profile=json.loads((self.base/'native-resource-profile.json').read_text(encoding='utf8'))
+            if adapter['family']!=base_profile.get('adapter_family','V14'):raise ValueError('此 APK 属于另一原生适配系列，请用对应的软件版本导入')
+            from types import SimpleNamespace
+            from apk_sources import verify_source,activate_import
+            inspection=SimpleNamespace(resources=self.base,profile={**base_profile,**adapter,
+                'release_id':release,'native_engine_sha256':engine})
+            identities={kind:verify_source(path,kind,inspection,progress=lambda message:self.update(message=message))
+                        for kind,path in (('apk',apk),('companion',companion))}
+            from resource_source_bindings import verify as verify_resource_set
+            resource_bound=verify_resource_set(self.server.library,self.server.store,apk,resource_packages,
+                progress=lambda message:self.update(message=message))
+            self.update(message='计算主包校验值，避免同版本文件被误复用')
+            with apk.open('rb') as source:apk_hash=hashlib.file_digest(source,'sha256').hexdigest()
+            key=hashlib.sha256((release+engine+apk_hash+IMPORT_REVISION).encode()).hexdigest()[:24];root=self.server.store.root/'game-databases';root.mkdir(exist_ok=True);destination=root/key
+            if destination.exists():
+                if not (destination/'import-report.json').is_file():raise ValueError('存在未完成的同版本导入，请保留日志后重试')
+            else:
+                staging=root/('stage-'+uuid.uuid4().hex);shutil.copytree(self.base,staging)
+                namespace=adapter['game_version']+'-'+key[:8]
+                previous_report=previous_resources/'import-report.json'
+                if previous_report.is_file():
+                    prior=json.loads(previous_report.read_text(encoding='utf8'))
+                    if prior.get('apk_sha256')==apk_hash and prior.get('engine_sha256')==engine:
+                        namespace=json.loads((previous_resources/'native-resource-profile.json').read_text(encoding='utf8'))['cache_namespace']
+                profile={**base_profile,**adapter,'release_id':release,'native_engine_sha256':engine,'cache_namespace':namespace}
+                (staging/'native-resource-profile.json').write_text(json.dumps(profile,ensure_ascii=False,indent=2),encoding='utf8')
+                self.update(message='重建新版球员、等级、国家与球队数据库')
+                counts=build_catalogue(apk,staging,resource_packages);library=NativeLibrary(staging,self.server.library.home,self.server.store)
+                from catalogue_trash import restore_catalogue
+                restore_catalogue(staging,self.server.store)
+                if library.state['phase']!='ready':library.state={'phase':'preparing','message':'准备新版美术资源','files':0,'bytes':0};library._setup(apk,companion,resource_packages)
+                if library.state['phase']!='ready':raise ValueError(library.state.get('message') or '新版美术资源准备失败')
+                self.update(message='读取新版卡面、脸模与小头像索引')
+                counts['assets']=index_assets(library)
+                from content_delta import finish_catalogue
+                content=finish_catalogue(apk,staging,resource_packages)
+                if content:
+                    counts['content_delta']=content
+                    from content_autofill import retain_materials
+                    retain_materials(apk,library,resource_packages=resource_packages)
+                report={'format':'player-studio-apk-database-v1','import_revision':IMPORT_REVISION,'database':key,'apk':str(apk),'apk_sha256':apk_hash,'companion':str(companion),'release_id':release,'engine_sha256':engine,'source_identities':identities,
+                    'resource_dependencies':resource_bound['resource_dependencies'],'resource_set_id':resource_bound['resource_set_id'],
+                    'counts':counts,'personal_data_preserved':True,'in_game_tested':False}
+                (staging/'import-report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf8');staging.rename(destination);staging=None
+            self.server.use_resources(destination)
+            activate_import(self.server.store,key,apk,companion,identities,resource_bound)
+            from library_cleanup import cleanup_old_libraries
+            try:cleanup=cleanup_old_libraries(self.server.store,self.server.library.home,destination)
+            except (OSError,ValueError) as exc:cleanup={'warnings':[str(exc)]}
+            result=json.loads((destination/'import-report.json').read_text(encoding='utf8'));result['old_library_cleanup']=cleanup
+            self.update(phase='done',message='新版数据库已启用，旧库已清理，自建工程与签名已保留' if not cleanup.get('warnings') else '新版数据库已启用，部分旧缓存待清理；自建工程与签名已保留',result=result)
+        except Exception as exc:
+            logging.exception("Game APK import failed")
+            if self.server.library.resources!=previous_resources:self.server.use_resources(previous_resources)
+            if staging and staging.is_dir():
+                parent=self.server.store.root/'game-databases'
+                if staging.resolve().parent==parent.resolve() and staging.name.startswith('stage-') and not staging.is_symlink() and not staging.is_junction():
+                    try:shutil.rmtree(staging);staging=None
+                    except OSError:pass
+            self.update(phase='error',message=str(exc),staging=str(staging) if staging else None)

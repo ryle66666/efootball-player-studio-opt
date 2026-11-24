@@ -1,0 +1,2952 @@
+{
+  "revision": "android-v8-ground-pass-20261114-1",
+  "source_build": "pc-gameplay-current-20261113-5",
+  "face_sequences": "preserved",
+  "constants": {
+    "common/match/constant/constant_match.bin": {
+      "objects": {
+        "animeAgingDribble.o": [
+          512,
+          48
+        ],
+        "animeAgingFreeMove.o": [
+          560,
+          64
+        ],
+        "animeAgingKick.o": [
+          624,
+          32
+        ],
+        "animeAgingTrap.o": [
+          656,
+          64
+        ],
+        "ball.o": [
+          720,
+          1040
+        ],
+        "cameraInplay.o": [
+          1760,
+          352
+        ],
+        "mlScreenShot.o": [
+          2112,
+          1792
+        ],
+        "modeMatchup.o": [
+          3904,
+          224
+        ],
+        "rating.o": [
+          4128,
+          4816
+        ],
+        "setplayGuideCommon.o": [
+          8944,
+          32
+        ],
+        "setplayGuideCornerKick.o": [
+          8976,
+          176
+        ],
+        "setplayGuideFreeKickFar.o": [
+          9152,
+          176
+        ],
+        "setplayGuideFreeKickMiddle.o": [
+          9328,
+          176
+        ],
+        "setplayGuideFreeKickNear.o": [
+          9504,
+          176
+        ],
+        "setplayGuideGoalKick.o": [
+          9680,
+          176
+        ],
+        "userPlayTendencyTest.o": [
+          9856,
+          112
+        ]
+      },
+      "fields": [
+        {
+          "object": "ball.o",
+          "field": "airRegistNormal",
+          "object_offset": 0,
+          "type": "float32",
+          "before": "0000803f",
+          "after": "3333333f"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundBoundSpeedMax",
+          "object_offset": 12,
+          "type": "float32",
+          "before": "00004041",
+          "after": "00004041",
+          "source_values": [
+            "713d6a41"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "boundBoundSpeedMin",
+          "object_offset": 16,
+          "type": "float32",
+          "before": "00000040",
+          "after": "00000040",
+          "source_values": [
+            "f6281c40"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "boundFrictionSpeedMax",
+          "object_offset": 32,
+          "type": "float32",
+          "before": "0000c841",
+          "after": "0000f441"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundFrictionSpeedMin",
+          "object_offset": 36,
+          "type": "float32",
+          "before": "00002041",
+          "after": "33334341"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundRollMax",
+          "object_offset": 44,
+          "type": "float32",
+          "before": "0000f040",
+          "after": "0000f040",
+          "source_values": [
+            "00007441"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "boundRotationSpeedMax",
+          "object_offset": 48,
+          "type": "float32",
+          "before": "0000a041",
+          "after": "3333c341"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundRotationSpeedMin",
+          "object_offset": 52,
+          "type": "float32",
+          "before": "0000a040",
+          "after": "3333c340"
+        },
+        {
+          "object": "ball.o",
+          "field": "dragSpeedMax",
+          "object_offset": 100,
+          "type": "float32",
+          "before": "71fdc142",
+          "after": "00005c42"
+        },
+        {
+          "object": "ball.o",
+          "field": "dragSpeedMin",
+          "object_offset": 104,
+          "type": "float32",
+          "before": "7ffb6342",
+          "after": "00003442"
+        },
+        {
+          "object": "ball.o",
+          "field": "grounderBoundYAdd",
+          "object_offset": 136,
+          "type": "float32",
+          "before": "ec51b83d",
+          "after": "ec51b83d",
+          "source_values": [
+            "f6285c3e"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "grounderCTan",
+          "object_offset": 140,
+          "type": "float32",
+          "before": "00000041",
+          "after": "00000041",
+          "source_values": [
+            "3333f340"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "magnusRate",
+          "object_offset": 152,
+          "type": "float32",
+          "before": "295c0f3d",
+          "after": "0ad7a33c"
+        },
+        {
+          "object": "ball.o",
+          "field": "natualBoundB",
+          "object_offset": 160,
+          "type": "float32",
+          "before": "9a99193f",
+          "after": "9a99193f",
+          "source_values": [
+            "14ae473f"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "naturalRoll",
+          "object_offset": 168,
+          "type": "float32",
+          "before": "00000040",
+          "after": "9a993940"
+        },
+        {
+          "object": "ball.o",
+          "field": "nonSpinMax",
+          "object_offset": 172,
+          "type": "float32",
+          "before": "0000d242",
+          "after": "00005c42"
+        },
+        {
+          "object": "ball.o",
+          "field": "nonSpinMin",
+          "object_offset": 176,
+          "type": "float32",
+          "before": "00003442",
+          "after": "0000b441"
+        },
+        {
+          "object": "ball.o",
+          "field": "nonSpinRate",
+          "object_offset": 180,
+          "type": "float32",
+          "before": "0000803f",
+          "after": "0000f03f"
+        },
+        {
+          "object": "ball.o",
+          "field": "roll",
+          "object_offset": 204,
+          "type": "float32",
+          "before": "000000c0",
+          "after": "000020c0"
+        },
+        {
+          "object": "ball.o",
+          "field": "rollToBoundAdd",
+          "object_offset": 208,
+          "type": "float32",
+          "before": "295c8f3d",
+          "after": "295c8f3d",
+          "source_values": [
+            "3333b33d"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "rollToBoundRollMax",
+          "object_offset": 212,
+          "type": "float32",
+          "before": "0000e040",
+          "after": "0000e040",
+          "source_values": [
+            "00000c41"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "rollToBoundRollMin",
+          "object_offset": 216,
+          "type": "float32",
+          "before": "00000040",
+          "after": "00000040",
+          "source_values": [
+            "0000e03f"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "rollToSpeedMaxRoll",
+          "object_offset": 224,
+          "type": "float32",
+          "before": "00000841",
+          "after": "00002a41"
+        },
+        {
+          "object": "ball.o",
+          "field": "rollToSpeedSpeedYMax",
+          "object_offset": 228,
+          "type": "float32",
+          "before": "0000003f",
+          "after": "0000203f"
+        },
+        {
+          "object": "ball.o",
+          "field": "rollToSpeedSpeedYMin",
+          "object_offset": 232,
+          "type": "float32",
+          "before": "cdcccc3d",
+          "after": "0000003e"
+        },
+        {
+          "object": "ball.o",
+          "field": "stopSpeed",
+          "object_offset": 244,
+          "type": "float32",
+          "before": "3333333e",
+          "after": "0000a03f"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundCheckBoundAddRate[0]",
+          "object_offset": 272,
+          "type": "float32",
+          "before": "00002041",
+          "after": "00002041",
+          "source_values": [
+            "00007041"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "boundCheckBoundAddRate[1]",
+          "object_offset": 276,
+          "type": "float32",
+          "before": "0000a040",
+          "after": "0000a040",
+          "source_values": [
+            "0000f040"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "boundCheckBoundAddRate[4]",
+          "object_offset": 288,
+          "type": "float32",
+          "before": "0000a040",
+          "after": "0000a040",
+          "source_values": [
+            "0000f040"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "boundCheckBoundAddRate[5]",
+          "object_offset": 292,
+          "type": "float32",
+          "before": "0000a040",
+          "after": "0000a040",
+          "source_values": [
+            "0000f040"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "boundCheckFrictionAddRate[4]",
+          "object_offset": 320,
+          "type": "float32",
+          "before": "0000f040",
+          "after": "00002e41"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundRate[0]",
+          "object_offset": 336,
+          "type": "float32",
+          "before": "3333333f",
+          "after": "3333333f",
+          "source_values": [
+            "b81e453f"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "boundRate[1]",
+          "object_offset": 340,
+          "type": "float32",
+          "before": "3333333f",
+          "after": "3333333f",
+          "source_values": [
+            "b81e453f"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "boundRate[2]",
+          "object_offset": 344,
+          "type": "float32",
+          "before": "3333333f",
+          "after": "3333333f",
+          "source_values": [
+            "b81e453f"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "boundRate[3]",
+          "object_offset": 348,
+          "type": "float32",
+          "before": "0000003f",
+          "after": "0000003f",
+          "source_values": [
+            "cdcc0c3f"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "boundRate[4]",
+          "object_offset": 352,
+          "type": "float32",
+          "before": "3333333f",
+          "after": "3333333f",
+          "source_values": [
+            "b81e453f"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "boundRate[5]",
+          "object_offset": 356,
+          "type": "float32",
+          "before": "3333333f",
+          "after": "3333333f",
+          "source_values": [
+            "b81e453f"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationAddRateXZ[0]",
+          "object_offset": 368,
+          "type": "float32",
+          "before": "9a99993e",
+          "after": "6dffca3e"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationAddRateXZ[1]",
+          "object_offset": 372,
+          "type": "float32",
+          "before": "7b14ae3e",
+          "after": "6b10e63e"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationAddRateXZ[2]",
+          "object_offset": 376,
+          "type": "float32",
+          "before": "5c8fc23e",
+          "after": "b490003f"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationAddRateXZ[3]",
+          "object_offset": 380,
+          "type": "float32",
+          "before": "295c0f3e",
+          "after": "ee763d3e"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationAddRateXZ[4]",
+          "object_offset": 384,
+          "type": "float32",
+          "before": "52b81e3f",
+          "after": "acc3513f"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationAddRateXZ[5]",
+          "object_offset": 388,
+          "type": "float32",
+          "before": "52b81e3f",
+          "after": "acc3513f"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationBaseXZ[0]",
+          "object_offset": 432,
+          "type": "float32",
+          "before": "8fc2f53d",
+          "after": "df4f0d3e"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationBaseXZ[1]",
+          "object_offset": 436,
+          "type": "float32",
+          "before": "295c0f3e",
+          "after": "2fdd243e"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationBaseXZ[2]",
+          "object_offset": 440,
+          "type": "float32",
+          "before": "7b142e3e",
+          "after": "2731483e"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationBaseXZ[3]",
+          "object_offset": 444,
+          "type": "float32",
+          "before": "ae47e13d",
+          "after": "3789013e"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationBaseXZ[4]",
+          "object_offset": 448,
+          "type": "float32",
+          "before": "cdcc4c3e",
+          "after": "1f856b3e"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationBaseXZ[5]",
+          "object_offset": 452,
+          "type": "float32",
+          "before": "cdcc4c3e",
+          "after": "1f856b3e"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationSpeedMinXZ[0]",
+          "object_offset": 560,
+          "type": "float32",
+          "before": "00002041",
+          "after": "0000e040"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationSpeedMinXZ[1]",
+          "object_offset": 564,
+          "type": "float32",
+          "before": "00002041",
+          "after": "0000e040"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationSpeedMinXZ[2]",
+          "object_offset": 568,
+          "type": "float32",
+          "before": "00002041",
+          "after": "0000e040"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationSpeedMinXZ[3]",
+          "object_offset": 572,
+          "type": "float32",
+          "before": "00002041",
+          "after": "0000e040"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationSpeedMinXZ[4]",
+          "object_offset": 576,
+          "type": "float32",
+          "before": "cdcccc3d",
+          "after": "295c8f3d"
+        },
+        {
+          "object": "ball.o",
+          "field": "boundToRotationSpeedMinXZ[5]",
+          "object_offset": 580,
+          "type": "float32",
+          "before": "00004040",
+          "after": "66660640"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateMax[0]",
+          "object_offset": 624,
+          "type": "float32",
+          "before": "2db27d3f",
+          "after": "d42b753f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateMax[1]",
+          "object_offset": 628,
+          "type": "float32",
+          "before": "1b2f7d3f",
+          "after": "b37b723f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateMax[2]",
+          "object_offset": 632,
+          "type": "float32",
+          "before": "08ac7c3f",
+          "after": "4182723f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateMax[3]",
+          "object_offset": 636,
+          "type": "float32",
+          "before": "a4707d3f",
+          "after": "3333733f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateMax[4]",
+          "object_offset": 640,
+          "type": "float32",
+          "before": "e17a743f",
+          "after": "f775603f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateMax[5]",
+          "object_offset": 644,
+          "type": "float32",
+          "before": "e3a57b3f",
+          "after": "df4f6d3f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateMin[0]",
+          "object_offset": 656,
+          "type": "float32",
+          "before": "08ac7c3f",
+          "after": "f016783f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateMin[1]",
+          "object_offset": 660,
+          "type": "float32",
+          "before": "f6287c3f",
+          "after": "a2b4773f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateMin[2]",
+          "object_offset": 664,
+          "type": "float32",
+          "before": "e3a57b3f",
+          "after": "6132753f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateMin[3]",
+          "object_offset": 668,
+          "type": "float32",
+          "before": "48e17a3f",
+          "after": "0e4f6f3f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateMin[4]",
+          "object_offset": 672,
+          "type": "float32",
+          "before": "08ac7c3f",
+          "after": "21b0623f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateMin[5]",
+          "object_offset": 676,
+          "type": "float32",
+          "before": "e3a57b3f",
+          "after": "e2e9753f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateStop[0]",
+          "object_offset": 688,
+          "type": "float32",
+          "before": "e3a57b3f",
+          "after": "8a1f733f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateStop[1]",
+          "object_offset": 692,
+          "type": "float32",
+          "before": "d1227b3f",
+          "after": "1826733f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateStop[2]",
+          "object_offset": 696,
+          "type": "float32",
+          "before": "be9f7a3f",
+          "after": "0f9c733f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateStop[3]",
+          "object_offset": 700,
+          "type": "float32",
+          "before": "ec51783f",
+          "after": "1ceb723f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateStop[4]",
+          "object_offset": 704,
+          "type": "float32",
+          "before": "08ac7c3f",
+          "after": "62a1763f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollRateStop[5]",
+          "object_offset": 708,
+          "type": "float32",
+          "before": "e3a57b3f",
+          "after": "58a8753f"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedMax[0]",
+          "object_offset": 720,
+          "type": "float32",
+          "before": "0000c041",
+          "after": "9a99c141"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedMax[1]",
+          "object_offset": 724,
+          "type": "float32",
+          "before": "0000c041",
+          "after": "3333b341"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedMax[2]",
+          "object_offset": 728,
+          "type": "float32",
+          "before": "0000c041",
+          "after": "6666da41"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedMax[3]",
+          "object_offset": 732,
+          "type": "float32",
+          "before": "00004842",
+          "after": "3333d341"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedMax[4]",
+          "object_offset": 736,
+          "type": "float32",
+          "before": "00000041",
+          "after": "9a990142"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedMax[5]",
+          "object_offset": 740,
+          "type": "float32",
+          "before": "0000f041",
+          "after": "cdcce041"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedMin[0]",
+          "object_offset": 752,
+          "type": "float32",
+          "before": "00008041",
+          "after": "00003041"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedMin[1]",
+          "object_offset": 756,
+          "type": "float32",
+          "before": "00008041",
+          "after": "66662e41"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedMin[2]",
+          "object_offset": 760,
+          "type": "float32",
+          "before": "00008041",
+          "after": "9a996141"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedMin[3]",
+          "object_offset": 764,
+          "type": "float32",
+          "before": "00000041",
+          "after": "00006841"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedMin[4]",
+          "object_offset": 768,
+          "type": "float32",
+          "before": "00000041",
+          "after": "00008841"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedMin[5]",
+          "object_offset": 772,
+          "type": "float32",
+          "before": "00007041",
+          "after": "9a995141"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedStop[0]",
+          "object_offset": 784,
+          "type": "float32",
+          "before": "00000041",
+          "after": "00002040"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedStop[1]",
+          "object_offset": 788,
+          "type": "float32",
+          "before": "00000041",
+          "after": "cdcc2c40"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedStop[2]",
+          "object_offset": 792,
+          "type": "float32",
+          "before": "00000041",
+          "after": "9a997940"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedStop[3]",
+          "object_offset": 796,
+          "type": "float32",
+          "before": "00000000",
+          "after": "0000a040"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedStop[4]",
+          "object_offset": 800,
+          "type": "float32",
+          "before": "00000041",
+          "after": "3333a340"
+        },
+        {
+          "object": "ball.o",
+          "field": "frictionRollSpeedStop[5]",
+          "object_offset": 804,
+          "type": "float32",
+          "before": "00000000",
+          "after": "66664640"
+        },
+        {
+          "object": "ball.o",
+          "field": "natualBoundA[0]",
+          "object_offset": 848,
+          "type": "float32",
+          "before": "52b81e3e",
+          "after": "52b81e3e",
+          "source_values": [
+            "a245563e"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "natualBoundA[1]",
+          "object_offset": 852,
+          "type": "float32",
+          "before": "52b81e3e",
+          "after": "52b81e3e",
+          "source_values": [
+            "a245563e"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "natualBoundA[2]",
+          "object_offset": 856,
+          "type": "float32",
+          "before": "52b81e3e",
+          "after": "52b81e3e",
+          "source_values": [
+            "a245563e"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "natualBoundA[3]",
+          "object_offset": 860,
+          "type": "float32",
+          "before": "52b81e3e",
+          "after": "52b81e3e",
+          "source_values": [
+            "a245563e"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "natualBoundA[4]",
+          "object_offset": 864,
+          "type": "float32",
+          "before": "ae47613d",
+          "after": "ae47613d",
+          "source_values": [
+            "6210983d"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "natualBoundA[5]",
+          "object_offset": 868,
+          "type": "float32",
+          "before": "ae47613d",
+          "after": "ae47613d",
+          "source_values": [
+            "6210983d"
+          ]
+        },
+        {
+          "object": "ball.o",
+          "field": "natunalRollBackSpinRate[0]",
+          "object_offset": 880,
+          "type": "float32",
+          "before": "3333b33e",
+          "after": "c2f5e83e"
+        },
+        {
+          "object": "ball.o",
+          "field": "natunalRollBackSpinRate[1]",
+          "object_offset": 884,
+          "type": "float32",
+          "before": "cdcccc3e",
+          "after": "b81e053f"
+        },
+        {
+          "object": "ball.o",
+          "field": "natunalRollBackSpinRate[2]",
+          "object_offset": 888,
+          "type": "float32",
+          "before": "6666e63e",
+          "after": "8fc2153f"
+        },
+        {
+          "object": "ball.o",
+          "field": "natunalRollBackSpinRate[3]",
+          "object_offset": 892,
+          "type": "float32",
+          "before": "cdcc4c3e",
+          "after": "b81e853e"
+        },
+        {
+          "object": "ball.o",
+          "field": "natunalRollBackSpinRate[4]",
+          "object_offset": 896,
+          "type": "float32",
+          "before": "0000003f",
+          "after": "6666263f"
+        },
+        {
+          "object": "ball.o",
+          "field": "natunalRollBackSpinRate[5]",
+          "object_offset": 900,
+          "type": "float32",
+          "before": "cdcccc3e",
+          "after": "b81e053f"
+        },
+        {
+          "object": "ball.o",
+          "field": "overRotMax[0]",
+          "object_offset": 912,
+          "type": "float32",
+          "before": "0000803f",
+          "after": "cdcccc3f"
+        },
+        {
+          "object": "ball.o",
+          "field": "overRotMax[1]",
+          "object_offset": 916,
+          "type": "float32",
+          "before": "0000803f",
+          "after": "cdcccc3f"
+        },
+        {
+          "object": "ball.o",
+          "field": "overRotMax[2]",
+          "object_offset": 920,
+          "type": "float32",
+          "before": "0000803f",
+          "after": "cdcccc3f"
+        },
+        {
+          "object": "ball.o",
+          "field": "overRotMax[3]",
+          "object_offset": 924,
+          "type": "float32",
+          "before": "0000803f",
+          "after": "cdcccc3f"
+        },
+        {
+          "object": "ball.o",
+          "field": "overRotMax[4]",
+          "object_offset": 928,
+          "type": "float32",
+          "before": "0000803f",
+          "after": "cdcccc3f"
+        },
+        {
+          "object": "ball.o",
+          "field": "overRotMax[5]",
+          "object_offset": 932,
+          "type": "float32",
+          "before": "0000803f",
+          "after": "cdcccc3f"
+        },
+        {
+          "object": "ball.o",
+          "field": "overRotMin[0]",
+          "object_offset": 944,
+          "type": "float32",
+          "before": "000000c0",
+          "after": "000040c0"
+        },
+        {
+          "object": "ball.o",
+          "field": "overRotMin[1]",
+          "object_offset": 948,
+          "type": "float32",
+          "before": "000000c0",
+          "after": "000040c0"
+        },
+        {
+          "object": "ball.o",
+          "field": "overRotMin[2]",
+          "object_offset": 952,
+          "type": "float32",
+          "before": "000000c0",
+          "after": "000040c0"
+        },
+        {
+          "object": "ball.o",
+          "field": "overRotMin[3]",
+          "object_offset": 956,
+          "type": "float32",
+          "before": "000000c0",
+          "after": "000040c0"
+        },
+        {
+          "object": "ball.o",
+          "field": "overRotMin[4]",
+          "object_offset": 960,
+          "type": "float32",
+          "before": "000000c0",
+          "after": "000040c0"
+        },
+        {
+          "object": "ball.o",
+          "field": "overRotMin[5]",
+          "object_offset": 964,
+          "type": "float32",
+          "before": "000000c0",
+          "after": "000040c0"
+        }
+      ]
+    },
+    "common/match/constant/constant_player.bin": {
+      "objects": {
+        "ballplayer.o": [
+          224,
+          75120
+        ],
+        "centering.o": [
+          75344,
+          160
+        ],
+        "flypass.o": [
+          75504,
+          256
+        ],
+        "grounderpass.o": [
+          75760,
+          256
+        ],
+        "moveMatching.o": [
+          76016,
+          896
+        ],
+        "passget.o": [
+          76912,
+          288
+        ],
+        "shoot.o": [
+          77200,
+          752
+        ],
+        "throughpass.o": [
+          77952,
+          480
+        ],
+        "trap.o": [
+          78432,
+          1040
+        ]
+      },
+      "fields": [
+        {
+          "object": "centering.o",
+          "field": "adjustSpeed",
+          "object_offset": 20,
+          "type": "float32",
+          "before": "00002041",
+          "after": "0000a041"
+        },
+        {
+          "object": "centering.o",
+          "field": "adjustSpeedHigh",
+          "object_offset": 28,
+          "type": "float32",
+          "before": "00000000",
+          "after": "00004041"
+        },
+        {
+          "object": "flypass.o",
+          "field": "manual.distForGageMax",
+          "object_offset": 128,
+          "type": "float32",
+          "before": "00007042",
+          "after": "00009642"
+        },
+        {
+          "object": "flypass.o",
+          "field": "manual.interpolateRate",
+          "object_offset": 136,
+          "type": "float32",
+          "before": "9a99993e",
+          "after": "3333333f"
+        },
+        {
+          "object": "flypass.o",
+          "field": "search.angleRate",
+          "object_offset": 192,
+          "type": "float32",
+          "before": "0000003f",
+          "after": "6666263f"
+        },
+        {
+          "object": "grounderpass.o",
+          "field": "paraMaxSpeedRate",
+          "object_offset": 40,
+          "type": "float32",
+          "before": "0000803f",
+          "after": "713d8a3f"
+        },
+        {
+          "object": "grounderpass.o",
+          "field": "paraMinSpeedRate",
+          "object_offset": 44,
+          "type": "float32",
+          "before": "6666663f",
+          "after": "fed4783f"
+        },
+        {
+          "object": "grounderpass.o",
+          "field": "angleY.angleForDistMax",
+          "object_offset": 64,
+          "type": "float32",
+          "before": "0000e040",
+          "after": "0000e040",
+          "source_values": [
+            "00000c41"
+          ]
+        },
+        {
+          "object": "grounderpass.o",
+          "field": "angleY.distMax",
+          "object_offset": 72,
+          "type": "float32",
+          "before": "00002042",
+          "after": "00002042",
+          "source_values": [
+            "00004842"
+          ]
+        },
+        {
+          "object": "grounderpass.o",
+          "field": "angleY.distMin",
+          "object_offset": 76,
+          "type": "float32",
+          "before": "00004041",
+          "after": "00004041",
+          "source_values": [
+            "00007041"
+          ]
+        },
+        {
+          "object": "grounderpass.o",
+          "field": "calcRecieveSpeed.autoRecieveSpeedAddDistMax",
+          "object_offset": 80,
+          "type": "float32",
+          "before": "00007041",
+          "after": "9a998141"
+        },
+        {
+          "object": "grounderpass.o",
+          "field": "calcRecieveSpeed.autoRecieveSpeedAddDistMin",
+          "object_offset": 84,
+          "type": "float32",
+          "before": "00002041",
+          "after": "cdcc2c41"
+        },
+        {
+          "object": "grounderpass.o",
+          "field": "calcRecieveSpeed.autoRecieveSpeedDecDistMax",
+          "object_offset": 88,
+          "type": "float32",
+          "before": "00007041",
+          "after": "9a998141"
+        },
+        {
+          "object": "grounderpass.o",
+          "field": "calcRecieveSpeed.autoRecieveSpeedDecDistMin",
+          "object_offset": 92,
+          "type": "float32",
+          "before": "00002041",
+          "after": "cdcc2c41"
+        },
+        {
+          "object": "grounderpass.o",
+          "field": "search.angleRate",
+          "object_offset": 224,
+          "type": "float32",
+          "before": "cdcccc3e",
+          "after": "b81e053f"
+        },
+        {
+          "object": "grounderpass.o",
+          "field": "search.searchMinDist",
+          "object_offset": 240,
+          "type": "float32",
+          "before": "00001040",
+          "after": "cdcc2c40"
+        },
+        {
+          "object": "passget.o",
+          "field": "openBodyMaxValue",
+          "object_offset": 48,
+          "type": "float32",
+          "before": "00003442",
+          "after": "00006a42"
+        },
+        {
+          "object": "passget.o",
+          "field": "ballFollowNeutral.ballSpeedMax",
+          "object_offset": 148,
+          "type": "float32",
+          "before": "00002042",
+          "after": "00003842"
+        },
+        {
+          "object": "passget.o",
+          "field": "ballFollowNeutral.ballSpeedMin",
+          "object_offset": 152,
+          "type": "float32",
+          "before": "0000a040",
+          "after": "0000b840"
+        },
+        {
+          "object": "passget.o",
+          "field": "inputMoveAir.ballHeight",
+          "object_offset": 212,
+          "type": "float32",
+          "before": "0000c03f",
+          "after": "6666e63f"
+        },
+        {
+          "object": "passget.o",
+          "field": "inputMovePosition.passOther",
+          "object_offset": 242,
+          "type": "bool8",
+          "before": "00",
+          "after": "01"
+        },
+        {
+          "object": "passget.o",
+          "field": "inputMovePosition.passThrough",
+          "object_offset": 243,
+          "type": "bool8",
+          "before": "00",
+          "after": "01"
+        },
+        {
+          "object": "passget.o",
+          "field": "naturalPassget.angleMoveInputRange",
+          "object_offset": 256,
+          "type": "float32",
+          "before": "0000c842",
+          "after": "00000243"
+        },
+        {
+          "object": "passget.o",
+          "field": "naturalPassget.distBackMove",
+          "object_offset": 268,
+          "type": "float32",
+          "before": "0000a040",
+          "after": "0000c040"
+        },
+        {
+          "object": "passget.o",
+          "field": "naturalPassget.speedBackMove",
+          "object_offset": 276,
+          "type": "float32",
+          "before": "00008041",
+          "after": "9a999941"
+        },
+        {
+          "object": "trap.o",
+          "field": "ballControlRate",
+          "object_offset": 16,
+          "type": "float32",
+          "before": "0000803f",
+          "after": "0000803f"
+        },
+        {
+          "object": "trap.o",
+          "field": "ballControlWeekFootDownLimit",
+          "object_offset": 20,
+          "type": "float32",
+          "before": "0000a041",
+          "after": "33336b42"
+        },
+        {
+          "object": "trap.o",
+          "field": "staggerTrapHeight",
+          "object_offset": 60,
+          "type": "float32",
+          "before": "cdcccc3e",
+          "after": "2db21d3e"
+        },
+        {
+          "object": "trap.o",
+          "field": "trapChapeuAuto",
+          "object_offset": 72,
+          "type": "bool8",
+          "before": "01",
+          "after": "00"
+        },
+        {
+          "object": "trap.o",
+          "field": "afterCollision.noHit.foot",
+          "object_offset": 96,
+          "type": "bool8",
+          "before": "01",
+          "after": "00"
+        },
+        {
+          "object": "trap.o",
+          "field": "afterCollision.noHit.reg",
+          "object_offset": 97,
+          "type": "bool8",
+          "before": "01",
+          "after": "00"
+        },
+        {
+          "object": "trap.o",
+          "field": "afterCollision.noHit.thigh",
+          "object_offset": 98,
+          "type": "bool8",
+          "before": "01",
+          "after": "00"
+        },
+        {
+          "object": "trap.o",
+          "field": "afterCollision.hitAfterFrame",
+          "object_offset": 112,
+          "type": "int32",
+          "before": "0a000000",
+          "after": "03000000"
+        },
+        {
+          "object": "trap.o",
+          "field": "animeBlend.changeAnimeBlendRate",
+          "object_offset": 128,
+          "type": "float32",
+          "before": "0000003f",
+          "after": "31082c3e"
+        },
+        {
+          "object": "trap.o",
+          "field": "animeBlend.defaultBlendRate",
+          "object_offset": 132,
+          "type": "float32",
+          "before": "0000803f",
+          "after": "c3f5a83e"
+        },
+        {
+          "object": "trap.o",
+          "field": "animeBlend.use",
+          "object_offset": 136,
+          "type": "bool8",
+          "before": "00",
+          "after": "01"
+        },
+        {
+          "object": "trap.o",
+          "field": "ballForceDirect.blendStartFrame.offsetPos_Dash_Dash",
+          "object_offset": 176,
+          "type": "float32",
+          "before": "00001040",
+          "after": "0000d83f"
+        },
+        {
+          "object": "trap.o",
+          "field": "ballForceDirect.blendStartFrame.offsetPos_Dash_Idle",
+          "object_offset": 180,
+          "type": "float32",
+          "before": "0000003f",
+          "after": "0000c03e"
+        },
+        {
+          "object": "trap.o",
+          "field": "ballForceDirect.blendStartFrame.offsetPos_Dash_Run",
+          "object_offset": 184,
+          "type": "float32",
+          "before": "0000c03f",
+          "after": "0000903f"
+        },
+        {
+          "object": "trap.o",
+          "field": "ballForceDirect.blendStartFrame.offsetPos_Idle_Dash",
+          "object_offset": 188,
+          "type": "float32",
+          "before": "00001040",
+          "after": "0000d83f"
+        },
+        {
+          "object": "trap.o",
+          "field": "ballForceDirect.blendStartFrame.offsetPos_Idle_Idle",
+          "object_offset": 192,
+          "type": "float32",
+          "before": "0000003f",
+          "after": "0000c03e"
+        },
+        {
+          "object": "trap.o",
+          "field": "ballForceDirect.blendStartFrame.offsetPos_Idle_Run",
+          "object_offset": 196,
+          "type": "float32",
+          "before": "0000c03f",
+          "after": "0000903f"
+        },
+        {
+          "object": "trap.o",
+          "field": "ballForceDirect.blendStartFrame.offsetPos_Run_Idle",
+          "object_offset": 200,
+          "type": "float32",
+          "before": "0000003f",
+          "after": "0000c03e"
+        },
+        {
+          "object": "trap.o",
+          "field": "ballForceDirect.blendStartFrame.offsetPos_Run_Run",
+          "object_offset": 204,
+          "type": "float32",
+          "before": "0000c03f",
+          "after": "0000903f"
+        },
+        {
+          "object": "trap.o",
+          "field": "ballForceDirect.blendStartFrame.offsetPos_Run_dash",
+          "object_offset": 208,
+          "type": "float32",
+          "before": "00001040",
+          "after": "0000d83f"
+        },
+        {
+          "object": "trap.o",
+          "field": "busyTrapControl.busyTime",
+          "object_offset": 416,
+          "type": "float32",
+          "before": "0000003f",
+          "after": "3333b33e"
+        },
+        {
+          "object": "trap.o",
+          "field": "busyTrapControl.runTrapStopTurnAngle",
+          "object_offset": 424,
+          "type": "float32",
+          "before": "0000b442",
+          "after": "0000b442"
+        },
+        {
+          "object": "trap.o",
+          "field": "cancel.hitBefore.jumpStartFrame",
+          "object_offset": 448,
+          "type": "int32",
+          "before": "06000000",
+          "after": "04000000"
+        },
+        {
+          "object": "trap.o",
+          "field": "defenseTrap.checkBallHeight",
+          "object_offset": 496,
+          "type": "float32",
+          "before": "9a99993e",
+          "after": "3e0a573e"
+        },
+        {
+          "object": "trap.o",
+          "field": "defenseTrap.checkBallLimitRange",
+          "object_offset": 500,
+          "type": "float32",
+          "before": "0000003f",
+          "after": "3333333f"
+        },
+        {
+          "object": "trap.o",
+          "field": "hitAfterCancel.parameterRange.max",
+          "object_offset": 528,
+          "type": "int32",
+          "before": "5f000000",
+          "after": "63000000"
+        },
+        {
+          "object": "trap.o",
+          "field": "hitAfterCancel.parameterRange.min",
+          "object_offset": 532,
+          "type": "int32",
+          "before": "32000000",
+          "after": "28000000"
+        },
+        {
+          "object": "trap.o",
+          "field": "hitAfterCancel.frameRange",
+          "object_offset": 544,
+          "type": "int32",
+          "before": "0a000000",
+          "after": "0c000000"
+        },
+        {
+          "object": "trap.o",
+          "field": "kickAdjust.angleSub",
+          "object_offset": 576,
+          "type": "float32",
+          "before": "00008742",
+          "after": "0000a041"
+        },
+        {
+          "object": "trap.o",
+          "field": "kickAdjust.rateAngleSub",
+          "object_offset": 580,
+          "type": "float32",
+          "before": "0000003f",
+          "after": "9a99193e"
+        },
+        {
+          "object": "trap.o",
+          "field": "kickAdjust.rateKickInput",
+          "object_offset": 588,
+          "type": "float32",
+          "before": "0000003f",
+          "after": "9a99193e"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionBoundBall.airBall.paraMax.reactionBallSpeed",
+          "object_offset": 608,
+          "type": "float32",
+          "before": "00004842",
+          "after": "00008742"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionBoundBall.airBall.paraMax.reactionTime",
+          "object_offset": 612,
+          "type": "float32",
+          "before": "cdcccc3e",
+          "after": "713d0a3f"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionBoundBall.airBall.paraMin.reactionBallSpeed",
+          "object_offset": 624,
+          "type": "float32",
+          "before": "00003442",
+          "after": "00007342"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionBoundBall.airBall.paraMin.reactionTime",
+          "object_offset": 628,
+          "type": "float32",
+          "before": "cdcccc3e",
+          "after": "b4c8863f"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionBoundBall.groundBall.paraMax.reactionBallSpeed",
+          "object_offset": 656,
+          "type": "float32",
+          "before": "00007042",
+          "after": "0000a242"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionBoundBall.groundBall.paraMax.reactionTime",
+          "object_offset": 660,
+          "type": "float32",
+          "before": "cdcccc3e",
+          "after": "1a2f5d3f"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionBoundBall.groundBall.paraMin.reactionBallSpeed",
+          "object_offset": 672,
+          "type": "float32",
+          "before": "00004842",
+          "after": "00008742"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionBoundBall.groundBall.paraMin.reactionTime",
+          "object_offset": 676,
+          "type": "float32",
+          "before": "cdcccc3e",
+          "after": "ffd4783f"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionEnemyBall.airBall.paraMax.reactionBallSpeed",
+          "object_offset": 720,
+          "type": "float32",
+          "before": "00004842",
+          "after": "00008742"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionEnemyBall.airBall.paraMax.reactionTime",
+          "object_offset": 724,
+          "type": "float32",
+          "before": "9a99993e",
+          "after": "2a5ccf3e"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionEnemyBall.airBall.paraMin.reactionBallSpeed",
+          "object_offset": 736,
+          "type": "float32",
+          "before": "00003442",
+          "after": "00007342"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionEnemyBall.airBall.paraMin.reactionTime",
+          "object_offset": 740,
+          "type": "float32",
+          "before": "9a99993e",
+          "after": "2a5ccf3e"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionEnemyBall.groundBall.paraMax.reactionBallSpeed",
+          "object_offset": 768,
+          "type": "float32",
+          "before": "00007042",
+          "after": "0000a242"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionEnemyBall.groundBall.paraMax.reactionTime",
+          "object_offset": 772,
+          "type": "float32",
+          "before": "cdcccc3e",
+          "after": "713d0a3f"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionEnemyBall.groundBall.paraMin.reactionBallSpeed",
+          "object_offset": 784,
+          "type": "float32",
+          "before": "00004842",
+          "after": "00008742"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionEnemyBall.groundBall.paraMin.reactionTime",
+          "object_offset": 788,
+          "type": "float32",
+          "before": "cdcccc3e",
+          "after": "713d0a3f"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionOwnBall.airBall.paraMax.reactionBallSpeed",
+          "object_offset": 832,
+          "type": "float32",
+          "before": "00007042",
+          "after": "0000a242"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionOwnBall.airBall.paraMax.reactionTime",
+          "object_offset": 836,
+          "type": "float32",
+          "before": "cdcc4c3e",
+          "after": "713d8a3e"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionOwnBall.airBall.paraMin.reactionBallSpeed",
+          "object_offset": 848,
+          "type": "float32",
+          "before": "00004842",
+          "after": "00008742"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionOwnBall.airBall.paraMin.reactionTime",
+          "object_offset": 852,
+          "type": "float32",
+          "before": "9a99993e",
+          "after": "2a5ccf3e"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionOwnBall.groundBall.paraMax.reactionBallSpeed",
+          "object_offset": 880,
+          "type": "float32",
+          "before": "0000a042",
+          "after": "0000d842"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionOwnBall.groundBall.paraMax.reactionTime",
+          "object_offset": 884,
+          "type": "float32",
+          "before": "cdcccc3d",
+          "after": "713d0a3e"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionOwnBall.groundBall.paraMin.reactionBallSpeed",
+          "object_offset": 896,
+          "type": "float32",
+          "before": "00008c42",
+          "after": "0000bd42"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.reactionOwnBall.groundBall.paraMin.reactionTime",
+          "object_offset": 900,
+          "type": "float32",
+          "before": "9a99193e",
+          "after": "2a5ccf3e"
+        },
+        {
+          "object": "trap.o",
+          "field": "reactionTrapBall.ballHeight",
+          "object_offset": 944,
+          "type": "float32",
+          "before": "6666e63e",
+          "after": "a245563f"
+        },
+        {
+          "object": "trap.o",
+          "field": "stopTrap.inputTime",
+          "object_offset": 976,
+          "type": "float32",
+          "before": "0000003f",
+          "after": "6666263f"
+        },
+        {
+          "object": "trap.o",
+          "field": "touchAfterSec.defence",
+          "object_offset": 992,
+          "type": "float32",
+          "before": "9a99193e",
+          "after": "ec51b83e"
+        },
+        {
+          "object": "trap.o",
+          "field": "touchAfterSec.defenceKeep",
+          "object_offset": 996,
+          "type": "float32",
+          "before": "0000803e",
+          "after": "1f85eb3e"
+        },
+        {
+          "object": "trap.o",
+          "field": "touchAfterSec.offence",
+          "object_offset": 1000,
+          "type": "float32",
+          "before": "cdcccc3d",
+          "after": "9a99993d"
+        },
+        {
+          "object": "trap.o",
+          "field": "touchAfterSec.shoot",
+          "object_offset": 1004,
+          "type": "float32",
+          "before": "cdcccc3e",
+          "after": "0ad7a33e"
+        },
+        {
+          "object": "trap.o",
+          "field": "trapCutFrame.default",
+          "object_offset": 1024,
+          "type": "int32",
+          "before": "08000000",
+          "after": "06000000"
+        }
+      ]
+    },
+    "common/match/constant/constant_team.bin": {
+      "objects": {
+        "basePosition.o": [
+          48,
+          864
+        ]
+      },
+      "fields": [
+        {
+          "object": "basePosition.o",
+          "field": "adjustAngle_FreeKickSupport",
+          "object_offset": 0,
+          "type": "float32",
+          "before": "0000f041",
+          "after": "00000442"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "adjustBackOF",
+          "object_offset": 4,
+          "type": "float32",
+          "before": "000020c1",
+          "after": "000030c1"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "adjustCloseRate_stratagy_defensive",
+          "object_offset": 8,
+          "type": "float32",
+          "before": "000080c0",
+          "after": "000031c1"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "adjustDefenceLine_strategy_defensive",
+          "object_offset": 24,
+          "type": "float32",
+          "before": "00002041",
+          "after": "00003041"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "adjustDefenceLine_strategy_levelup",
+          "object_offset": 28,
+          "type": "float32",
+          "before": "0000a0c0",
+          "after": "0000b0c0"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "adjustDfLineWidth_GoalKick",
+          "object_offset": 32,
+          "type": "float32",
+          "before": "00000040",
+          "after": "00000d40"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "adjustDiv",
+          "object_offset": 40,
+          "type": "float32",
+          "before": "00008040",
+          "after": "00008d40"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "adjustFrontOF",
+          "object_offset": 48,
+          "type": "float32",
+          "before": "000020c1",
+          "after": "000030c1"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "adjustReturnDist",
+          "object_offset": 68,
+          "type": "float32",
+          "before": "0000e040",
+          "after": "0000f640"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "adjustSpaceCoverRate",
+          "object_offset": 88,
+          "type": "float32",
+          "before": "1f856b3e",
+          "after": "0000823e"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "adjustSupportDist_FreeKick",
+          "object_offset": 92,
+          "type": "float32",
+          "before": "0000e040",
+          "after": "0000f640"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "adjustXCompactFW",
+          "object_offset": 100,
+          "type": "float32",
+          "before": "0000003f",
+          "after": "00000d3f"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "adjustX_FreeKick",
+          "object_offset": 112,
+          "type": "float32",
+          "before": "00008040",
+          "after": "00008d40"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "adjustZCompact",
+          "object_offset": 116,
+          "type": "float32",
+          "before": "00002040",
+          "after": "00003040"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "adjustZ_FreeKick",
+          "object_offset": 132,
+          "type": "float32",
+          "before": "0000e040",
+          "after": "0000f640"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "closePenetrateZRate",
+          "object_offset": 200,
+          "type": "float32",
+          "before": "00004842",
+          "after": "00008542"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "closeRate_MF_adjustX_stratagy_defensive",
+          "object_offset": 216,
+          "type": "float32",
+          "before": "00002041",
+          "after": "00002340"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "coverLimitXRate",
+          "object_offset": 244,
+          "type": "float32",
+          "before": "00008040",
+          "after": "00000040"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "dfAdjustZCheckLenMin",
+          "object_offset": 264,
+          "type": "float32",
+          "before": "00004841",
+          "after": "0000e040"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "dfAdjustZCheckWidthMin",
+          "object_offset": 272,
+          "type": "float32",
+          "before": "0000a040",
+          "after": "00002040"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "dfLineCloseRate",
+          "object_offset": 332,
+          "type": "float32",
+          "before": "cdcc0c3f",
+          "after": "0000ef3e"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "lastLineCloseMaxRate",
+          "object_offset": 528,
+          "type": "float32",
+          "before": "cdcc4c3f",
+          "after": "00002e3f"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "marginPredictionFrameBase",
+          "object_offset": 568,
+          "type": "int32",
+          "before": "00000000",
+          "after": "09000000"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "marginSide",
+          "object_offset": 572,
+          "type": "float32",
+          "before": "0000803f",
+          "after": "00008f3e"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "marginTargetLineX",
+          "object_offset": 576,
+          "type": "float32",
+          "before": "0000c0c0",
+          "after": "000086c0"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "margin_restartX",
+          "object_offset": 580,
+          "type": "float32",
+          "before": "0000c040",
+          "after": "00008640"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "matchUpContinueRate",
+          "object_offset": 584,
+          "type": "float32",
+          "before": "0000f041",
+          "after": "00007042"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "matchUpContinueRate_FW_MF",
+          "object_offset": 588,
+          "type": "float32",
+          "before": "00002042",
+          "after": "00008242"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "mfLineScore_adjustMax",
+          "object_offset": 612,
+          "type": "float32",
+          "before": "00002041",
+          "after": "00003041"
+        },
+        {
+          "object": "basePosition.o",
+          "field": "sideCloseRate",
+          "object_offset": 732,
+          "type": "float32",
+          "before": "00007042",
+          "after": "00009242"
+        }
+      ]
+    }
+  },
+  "animations": {
+    "common/anime/Mbinfo/bin/CancelData.bin": {
+      "kind": "references",
+      "record_bytes": 12,
+      "minimum_bytes": 68976,
+      "mask": 8380416,
+      "records": [
+        {
+          "record": 32,
+          "before": 167056,
+          "after": 3216
+        },
+        {
+          "record": 33,
+          "before": 183441,
+          "after": 3217
+        },
+        {
+          "record": 34,
+          "before": 150674,
+          "after": 3218
+        },
+        {
+          "record": 35,
+          "before": 134292,
+          "after": 3220
+        },
+        {
+          "record": 36,
+          "before": 167061,
+          "after": 3221
+        },
+        {
+          "record": 37,
+          "before": 167062,
+          "after": 3222
+        },
+        {
+          "record": 38,
+          "before": 199831,
+          "after": 3223
+        },
+        {
+          "record": 39,
+          "before": 199832,
+          "after": 3224
+        },
+        {
+          "record": 40,
+          "before": 52378,
+          "after": 3226
+        },
+        {
+          "record": 41,
+          "before": 134298,
+          "after": 3226
+        },
+        {
+          "record": 42,
+          "before": 158875,
+          "after": 3227
+        },
+        {
+          "record": 43,
+          "before": 68765,
+          "after": 3229
+        },
+        {
+          "record": 44,
+          "before": 126109,
+          "after": 3229
+        },
+        {
+          "record": 45,
+          "before": 142495,
+          "after": 3231
+        },
+        {
+          "record": 46,
+          "before": 167072,
+          "after": 3232
+        },
+        {
+          "record": 47,
+          "before": 232608,
+          "after": 3232
+        },
+        {
+          "record": 48,
+          "before": 52385,
+          "after": 3233
+        },
+        {
+          "record": 49,
+          "before": 134305,
+          "after": 3233
+        },
+        {
+          "record": 50,
+          "before": 167073,
+          "after": 3233
+        },
+        {
+          "record": 51,
+          "before": 117928,
+          "after": 3240
+        },
+        {
+          "record": 52,
+          "before": 265384,
+          "after": 3240
+        },
+        {
+          "record": 53,
+          "before": 52393,
+          "after": 3241
+        },
+        {
+          "record": 54,
+          "before": 101545,
+          "after": 3241
+        },
+        {
+          "record": 55,
+          "before": 68773,
+          "after": 3237
+        },
+        {
+          "record": 56,
+          "before": 126122,
+          "after": 3242
+        },
+        {
+          "record": 57,
+          "before": 191658,
+          "after": 3242
+        },
+        {
+          "record": 58,
+          "before": 85163,
+          "after": 3243
+        },
+        {
+          "record": 59,
+          "before": 109740,
+          "after": 3244
+        },
+        {
+          "record": 60,
+          "before": 167084,
+          "after": 3244
+        },
+        {
+          "record": 61,
+          "before": 52397,
+          "after": 3245
+        },
+        {
+          "record": 62,
+          "before": 117934,
+          "after": 3246
+        },
+        {
+          "record": 63,
+          "before": 60591,
+          "after": 3247
+        },
+        {
+          "record": 64,
+          "before": 117556,
+          "after": 2868
+        },
+        {
+          "record": 65,
+          "before": 191284,
+          "after": 2868
+        },
+        {
+          "record": 66,
+          "before": 101555,
+          "after": 3251
+        },
+        {
+          "record": 67,
+          "before": 150707,
+          "after": 3251
+        },
+        {
+          "record": 68,
+          "before": 68788,
+          "after": 3252
+        },
+        {
+          "record": 69,
+          "before": 117940,
+          "after": 3252
+        },
+        {
+          "record": 70,
+          "before": 183476,
+          "after": 3252
+        },
+        {
+          "record": 71,
+          "before": 36026,
+          "after": 3258
+        },
+        {
+          "record": 72,
+          "before": 117946,
+          "after": 3258
+        },
+        {
+          "record": 794,
+          "before": 199833,
+          "after": 3225
+        },
+        {
+          "record": 1288,
+          "before": 216226,
+          "after": 3234
+        },
+        {
+          "record": 1289,
+          "before": 281762,
+          "after": 3234
+        },
+        {
+          "record": 1677,
+          "before": 150710,
+          "after": 3254
+        },
+        {
+          "record": 1678,
+          "before": 191670,
+          "after": 3254
+        },
+        {
+          "record": 1679,
+          "before": 265398,
+          "after": 3254
+        },
+        {
+          "record": 1754,
+          "before": 117941,
+          "after": 3253
+        },
+        {
+          "record": 1755,
+          "before": 183477,
+          "after": 3253
+        },
+        {
+          "record": 1756,
+          "before": 265397,
+          "after": 3253
+        },
+        {
+          "record": 1799,
+          "before": 85170,
+          "after": 3250
+        },
+        {
+          "record": 1800,
+          "before": 183474,
+          "after": 3250
+        },
+        {
+          "record": 1809,
+          "before": 52407,
+          "after": 3255
+        },
+        {
+          "record": 1810,
+          "before": 93369,
+          "after": 3257
+        },
+        {
+          "record": 1926,
+          "before": 167096,
+          "after": 3256
+        },
+        {
+          "record": 1927,
+          "before": 52411,
+          "after": 3259
+        },
+        {
+          "record": 1974,
+          "before": 298131,
+          "after": 3219
+        },
+        {
+          "record": 1975,
+          "before": 371859,
+          "after": 3219
+        },
+        {
+          "record": 1976,
+          "before": 167070,
+          "after": 3230
+        },
+        {
+          "record": 1977,
+          "before": 85156,
+          "after": 3236
+        },
+        {
+          "record": 1979,
+          "before": 52390,
+          "after": 3238
+        },
+        {
+          "record": 1980,
+          "before": 126118,
+          "after": 3238
+        },
+        {
+          "record": 2234,
+          "before": 306339,
+          "after": 3235
+        },
+        {
+          "record": 2235,
+          "before": 85159,
+          "after": 3239
+        },
+        {
+          "record": 2236,
+          "before": 167079,
+          "after": 3239
+        },
+        {
+          "record": 2237,
+          "before": 117936,
+          "after": 3248
+        },
+        {
+          "record": 2238,
+          "before": 175280,
+          "after": 3248
+        },
+        {
+          "record": 2554,
+          "before": 281756,
+          "after": 3228
+        },
+        {
+          "record": 2555,
+          "before": 232625,
+          "after": 3249
+        },
+        {
+          "record": 2656,
+          "before": 429795,
+          "after": 3811
+        },
+        {
+          "record": 2657,
+          "before": 978660,
+          "after": 3812
+        },
+        {
+          "record": 2760,
+          "before": 388991,
+          "after": 3967
+        },
+        {
+          "record": 2761,
+          "before": 552831,
+          "after": 3967
+        },
+        {
+          "record": 2762,
+          "before": 266112,
+          "after": 3968
+        },
+        {
+          "record": 2763,
+          "before": 298881,
+          "after": 3969
+        },
+        {
+          "record": 2764,
+          "before": 495490,
+          "after": 3970
+        },
+        {
+          "record": 2765,
+          "before": 667522,
+          "after": 3970
+        },
+        {
+          "record": 2766,
+          "before": 405379,
+          "after": 3971
+        },
+        {
+          "record": 2767,
+          "before": 249732,
+          "after": 3972
+        },
+        {
+          "record": 2768,
+          "before": 298885,
+          "after": 3973
+        },
+        {
+          "record": 3000,
+          "before": 77916,
+          "after": 4188
+        },
+        {
+          "record": 3001,
+          "before": 159836,
+          "after": 4188
+        },
+        {
+          "record": 3037,
+          "before": 102626,
+          "after": 4322
+        },
+        {
+          "record": 3038,
+          "before": 159970,
+          "after": 4322
+        },
+        {
+          "record": 3039,
+          "before": 78051,
+          "after": 4323
+        },
+        {
+          "record": 3040,
+          "before": 135395,
+          "after": 4323
+        },
+        {
+          "record": 3050,
+          "before": 61665,
+          "after": 4321
+        },
+        {
+          "record": 3051,
+          "before": 86244,
+          "after": 4324
+        },
+        {
+          "record": 3052,
+          "before": 61669,
+          "after": 4325
+        },
+        {
+          "record": 3053,
+          "before": 69862,
+          "after": 4326
+        },
+        {
+          "record": 4877,
+          "before": 119655,
+          "after": 37735
+        },
+        {
+          "record": 4878,
+          "before": 193383,
+          "after": 37735
+        },
+        {
+          "record": 4879,
+          "before": 234344,
+          "after": 37736
+        },
+        {
+          "record": 4880,
+          "before": 299880,
+          "after": 37736
+        },
+        {
+          "record": 4881,
+          "before": 152477,
+          "after": 37789
+        },
+        {
+          "record": 4882,
+          "before": 209821,
+          "after": 37789
+        },
+        {
+          "record": 4883,
+          "before": 283558,
+          "after": 37798
+        },
+        {
+          "record": 4884,
+          "before": 340902,
+          "after": 37798
+        },
+        {
+          "record": 4885,
+          "before": 218025,
+          "after": 37801
+        },
+        {
+          "record": 4886,
+          "before": 275369,
+          "after": 37801
+        },
+        {
+          "record": 4887,
+          "before": 218058,
+          "after": 37834
+        },
+        {
+          "record": 4888,
+          "before": 291786,
+          "after": 37834
+        },
+        {
+          "record": 4889,
+          "before": 136140,
+          "after": 37836
+        },
+        {
+          "record": 4890,
+          "before": 209868,
+          "after": 37836
+        },
+        {
+          "record": 4892,
+          "before": 242515,
+          "after": 37715
+        },
+        {
+          "record": 4893,
+          "before": 316243,
+          "after": 37715
+        },
+        {
+          "record": 4894,
+          "before": 226134,
+          "after": 37718
+        },
+        {
+          "record": 4895,
+          "before": 308054,
+          "after": 37718
+        },
+        {
+          "record": 4957,
+          "before": 173763,
+          "after": 34499
+        },
+        {
+          "record": 4958,
+          "before": 214724,
+          "after": 34500
+        },
+        {
+          "record": 4960,
+          "before": 214726,
+          "after": 34502
+        },
+        {
+          "record": 4961,
+          "before": 247495,
+          "after": 34503
+        },
+        {
+          "record": 4972,
+          "before": 149675,
+          "after": 2219
+        },
+        {
+          "record": 4973,
+          "before": 133295,
+          "after": 2223
+        },
+        {
+          "record": 4974,
+          "before": 133298,
+          "after": 2226
+        },
+        {
+          "record": 4975,
+          "before": 133299,
+          "after": 2227
+        },
+        {
+          "record": 4976,
+          "before": 166068,
+          "after": 2228
+        },
+        {
+          "record": 4977,
+          "before": 215221,
+          "after": 2229
+        },
+        {
+          "record": 5642,
+          "before": 160771,
+          "after": 37891
+        },
+        {
+          "record": 5643,
+          "before": 119812,
+          "after": 37892
+        },
+        {
+          "record": 5644,
+          "before": 136197,
+          "after": 37893
+        },
+        {
+          "record": 5645,
+          "before": 152582,
+          "after": 37894
+        },
+        {
+          "record": 5665,
+          "before": 207705,
+          "after": 2905
+        },
+        {
+          "record": 5666,
+          "before": 240474,
+          "after": 2906
+        }
+      ]
+    },
+    "common/anime/FHSequence/bin/Handlbase.bin": {
+      "kind": "references",
+      "record_bytes": 12,
+      "minimum_bytes": 188232,
+      "mask": 67100672,
+      "records": [
+        {
+          "record": 13968,
+          "before": 101247701,
+          "after": 101239509
+        },
+        {
+          "record": 13969,
+          "before": 101247701,
+          "after": 101239509
+        },
+        {
+          "record": 13970,
+          "before": 101247701,
+          "after": 101239509
+        },
+        {
+          "record": 13971,
+          "before": 101247701,
+          "after": 101239509
+        },
+        {
+          "record": 13972,
+          "before": 101247701,
+          "after": 101239509
+        },
+        {
+          "record": 13973,
+          "before": 101247701,
+          "after": 101239509
+        },
+        {
+          "record": 13974,
+          "before": 101279016,
+          "after": 101270824
+        },
+        {
+          "record": 13975,
+          "before": 101279016,
+          "after": 101270824
+        },
+        {
+          "record": 13976,
+          "before": 101279016,
+          "after": 101270824
+        },
+        {
+          "record": 13977,
+          "before": 101279016,
+          "after": 101270824
+        },
+        {
+          "record": 13978,
+          "before": 101279016,
+          "after": 101270824
+        },
+        {
+          "record": 13979,
+          "before": 101279016,
+          "after": 101270824
+        },
+        {
+          "record": 13980,
+          "before": 102091573,
+          "after": 102083381
+        },
+        {
+          "record": 13981,
+          "before": 102091573,
+          "after": 102083381
+        },
+        {
+          "record": 13982,
+          "before": 102091573,
+          "after": 102083381
+        },
+        {
+          "record": 13983,
+          "before": 102091573,
+          "after": 102083381
+        },
+        {
+          "record": 13984,
+          "before": 102091573,
+          "after": 102083381
+        },
+        {
+          "record": 13985,
+          "before": 102091573,
+          "after": 102083381
+        },
+        {
+          "record": 13986,
+          "before": 102091573,
+          "after": 102083381
+        }
+      ]
+    },
+    "common/anime/FHSequence/bin/Handrbase.bin": {
+      "kind": "references",
+      "record_bytes": 12,
+      "minimum_bytes": 194892,
+      "mask": 67100672,
+      "records": [
+        {
+          "record": 14550,
+          "before": 906554069,
+          "after": 906545877
+        },
+        {
+          "record": 14551,
+          "before": 906554069,
+          "after": 906545877
+        },
+        {
+          "record": 14552,
+          "before": 906554069,
+          "after": 906545877
+        },
+        {
+          "record": 14553,
+          "before": 906554069,
+          "after": 906545877
+        },
+        {
+          "record": 14554,
+          "before": 906554069,
+          "after": 906545877
+        },
+        {
+          "record": 14555,
+          "before": 34170152,
+          "after": 34161960
+        },
+        {
+          "record": 14556,
+          "before": 34170152,
+          "after": 34161960
+        },
+        {
+          "record": 14557,
+          "before": 34170152,
+          "after": 34161960
+        },
+        {
+          "record": 14558,
+          "before": 34170152,
+          "after": 34161960
+        },
+        {
+          "record": 14559,
+          "before": 907397941,
+          "after": 907389749
+        },
+        {
+          "record": 14560,
+          "before": 907397941,
+          "after": 907389749
+        },
+        {
+          "record": 14561,
+          "before": 907397941,
+          "after": 907389749
+        },
+        {
+          "record": 14562,
+          "before": 907397941,
+          "after": 907389749
+        },
+        {
+          "record": 14563,
+          "before": 907397941,
+          "after": 907389749
+        },
+        {
+          "record": 14564,
+          "before": 907397941,
+          "after": 907389749
+        },
+        {
+          "record": 14565,
+          "before": 907397941,
+          "after": 907389749
+        },
+        {
+          "record": 14566,
+          "before": 907397941,
+          "after": 907389749
+        },
+        {
+          "record": 14567,
+          "before": 907397941,
+          "after": 907389749
+        }
+      ]
+    },
+    "common/anime/FoxAnim/Body/body_anime_file9.mtar": {
+      "kind": "motions",
+      "skeleton": "15001d000000000000000000000000000000000000000000",
+      "motions": [
+        {
+          "id": 44056,
+          "record": "d34cb79d18ac0000d0c5ce0020030000",
+          "file": "motion-44056.bin"
+        },
+        {
+          "id": 48495,
+          "record": "0ccd96bc6fbd0000f0c8ce0020030000",
+          "file": "motion-48495.bin"
+        }
+      ]
+    }
+  },
+  "ground_pass": {
+    "revision": "android-ground-pass-20261114-1",
+    "release_pitch": "native",
+    "release_spin": "native",
+    "shared_ball_bounce": "native",
+    "restored_fields": [
+      "common/match/constant/constant_match.bin:ball.o/boundBoundSpeedMax",
+      "common/match/constant/constant_match.bin:ball.o/boundBoundSpeedMin",
+      "common/match/constant/constant_match.bin:ball.o/boundRollMax",
+      "common/match/constant/constant_match.bin:ball.o/grounderBoundYAdd",
+      "common/match/constant/constant_match.bin:ball.o/grounderCTan",
+      "common/match/constant/constant_match.bin:ball.o/natualBoundB",
+      "common/match/constant/constant_match.bin:ball.o/rollToBoundAdd",
+      "common/match/constant/constant_match.bin:ball.o/rollToBoundRollMax",
+      "common/match/constant/constant_match.bin:ball.o/rollToBoundRollMin",
+      "common/match/constant/constant_match.bin:ball.o/boundCheckBoundAddRate[0]",
+      "common/match/constant/constant_match.bin:ball.o/boundCheckBoundAddRate[1]",
+      "common/match/constant/constant_match.bin:ball.o/boundCheckBoundAddRate[4]",
+      "common/match/constant/constant_match.bin:ball.o/boundCheckBoundAddRate[5]",
+      "common/match/constant/constant_match.bin:ball.o/boundRate[0]",
+      "common/match/constant/constant_match.bin:ball.o/boundRate[1]",
+      "common/match/constant/constant_match.bin:ball.o/boundRate[2]",
+      "common/match/constant/constant_match.bin:ball.o/boundRate[3]",
+      "common/match/constant/constant_match.bin:ball.o/boundRate[4]",
+      "common/match/constant/constant_match.bin:ball.o/boundRate[5]",
+      "common/match/constant/constant_match.bin:ball.o/natualBoundA[0]",
+      "common/match/constant/constant_match.bin:ball.o/natualBoundA[1]",
+      "common/match/constant/constant_match.bin:ball.o/natualBoundA[2]",
+      "common/match/constant/constant_match.bin:ball.o/natualBoundA[3]",
+      "common/match/constant/constant_match.bin:ball.o/natualBoundA[4]",
+      "common/match/constant/constant_match.bin:ball.o/natualBoundA[5]",
+      "common/match/constant/constant_player.bin:grounderpass.o/angleY.angleForDistMax",
+      "common/match/constant/constant_player.bin:grounderpass.o/angleY.distMax",
+      "common/match/constant/constant_player.bin:grounderpass.o/angleY.distMin"
+    ]
+  }
+}
