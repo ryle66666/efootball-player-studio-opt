@@ -1,8 +1,8 @@
 # 构建与发布 / Build and release
 
-在 Windows x64 上使用 Python 3.12。共享源码已包含构建好的界面。修改界面后，使用 esbuild 0.25.12 重建。构建时，`--tools` 指向上一版免安装包或兼容的 V17 工坊所带的 `tools` 目录。
+在 Windows x64 上使用 Python 3.12。共享源码已包含构建好的界面。修改界面后，使用 esbuild 0.25.12 重建。构建时，`--tools` 指向上一版免安装包或兼容 73eFootball V17 的工坊所带的 `tools` 目录。构建产物为 `球员工坊-优化版.exe`。
 
-Use Python 3.12 on Windows x64. The repository includes the compiled web UI. Rebuild it with esbuild 0.25.12 after UI changes. Point `--tools` at the `tools` folder from an existing portable release or a compatible V17 Studio package.
+Use Python 3.12 on Windows x64. The repository includes the compiled web UI. Rebuild it with esbuild 0.25.12 after UI changes. Point `--tools` at the `tools` folder from an existing portable release or a Studio package compatible with 73eFootball V17. The executable is named `球员工坊-优化版.exe`.
 
 ```powershell
 py -3.12 -m venv .venv

@@ -3,7 +3,7 @@
 The exact official rating formula and a complete official lower-division table
 are not shipped in the supplied offline APK. Lower bands retain its published
 offline thresholds except D10 (native capture) and D4 (requested 23 points).
-Those fallback values must never be advertised as verified KONAMI rules.
+Those fallback values are approximations of the game rules.
 """
 import copy
 import hashlib

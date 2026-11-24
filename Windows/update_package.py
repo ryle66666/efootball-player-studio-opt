@@ -23,7 +23,7 @@ FORMAT = 'player-studio-windows-update-v1'
 JOURNAL = '.studio-update-recovery.json'
 LOCK_FILE = '.studio-update.lock'
 ASSET_SUFFIX = '-windows-update.zip'
-PORTABLE_EXE = 'PlayerStudioOpt.exe'
+PORTABLE_EXE = '球员工坊-优化版.exe'
 PORTABLE_VERSION_FILE = 'studio-version.json'
 REQUIRED = {'app.py', 'updates.py', 'update_package.py', 'resources/github-updates.json',
             'web/dist/current/index.html'}

@@ -12,7 +12,7 @@ import zipfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'Windows'))
 from updates import DEFAULT_REPOSITORY, UpdateChecker, release_result
-from update_package import FORMAT, JOURNAL, PORTABLE_REQUIRED, REQUIRED, install_staged, stage_package
+from update_package import FORMAT, JOURNAL, PORTABLE_EXE, PORTABLE_REQUIRED, REQUIRED, install_staged, stage_package
 
 REPO_URL = 'https://github.com/' + DEFAULT_REPOSITORY + '/releases/'
 TAG = 'v3.0.17'
@@ -120,7 +120,7 @@ class OnlineUpdatesTest(unittest.TestCase):
                 package.writestr('Portable/README.md', 'first install guide')
             stage_package(archive, work / 'stage', '1.0.1', portable=True)
             install_staged(work, home, portable=True)
-            self.assertTrue((home / 'PlayerStudioOpt.exe').is_file())
+            self.assertTrue((home / PORTABLE_EXE).is_file())
             self.assertEqual(private.read_text(), 'private')
 
     def test_replacement_rolls_back_and_keeps_user_data(self):
