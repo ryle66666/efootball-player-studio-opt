@@ -2,15 +2,20 @@
 
 > **声明与致谢**：球员工坊-优化版基于 [@light23335](https://github.com/light23335) 的球员工坊开发，面向 [efootball_73](https://t.me/efootball_73) 制作的 **73eFootball V17**。
 >
-> 本项目完全免费，源码公开，保留原项目的作者署名与来源。
+> 本项目完全免费，保留原项目的作者署名与来源。Windows 免安装版在 Releases 提供。
 
 [English](#english)
 
 ## 📖 项目简介
 
-球员工坊-优化版是面向 73eFootball V17 的 Windows 编辑工具。首发版本号为 **1.0.0**，可编辑球员、卡面、教练、卡包与赛事，并生成兼容的 Android 游戏 APK。优化重点是让资料库浏览、反复导出和后续更新更方便。
+球员工坊-优化版是面向 73eFootball V17 的 Windows 编辑工具。当前版本为 **1.0.1**，可编辑球员、卡面、教练、卡包与赛事，并生成兼容的 Android 游戏 APK。优化重点是让资料库浏览、反复导出和后续更新更方便。
 
-### ✨ 本分支主要修改与优化
+## 1.0.1 最新优化
+
+- **自建球员容量**提高到 30,000 名，覆盖工程保存、单次导出及批量操作。美术和技能绑定各支持 200,000 条。重新导出完整 APK 后，游戏端的新容量生效。
+- **位置适应度**改为 13 个位置的球场热力图。点选位置可切换适应度，格子显示满适应参考总评，并支持撤销和重做。
+
+### ✨ 主要修改与优化
 
 - **性能优化**
   - 首页按需加载 3D、卡面和赛事模块。离开预览页时回收资源，重复预览可复用模型解码结果。大型工程和 APK 采用分块读写。
@@ -23,7 +28,7 @@
   - 「我的锦标赛」可按场随机或固定时间、季节、天气和场地状况，也可单独选择草皮长度。原有球场、比赛用球和赛事进度一并保留。
   - 存储管理显示硬链接去重后的实际占用，按包名管理通过校验的完整 APK 底包。支持核对和切换资料库来源，预览清理旧 APK、过期小包和缓存。工程、签名、当前基准和恢复记录受保护。
   - 兼容基准支持用 `.73pack` 独立追加或按永久编号更新球员。可预览清单，导入时核对目标版本、基准、校验值和可用空间，并记录新增、更新、跳过和拒绝的原因。从「我的球员」也可直接把所选工程带入导出页。
-  - 提供 Windows 免安装包。首页「软件更新」可检查、下载和校验 GitHub Release，确认后重启安装并保留本机数据。
+  - 提供 Windows 免安装包。首页「软件更新」从更新日志读取新版事项，通过 GitHub Release 下载并校验更新，确认后重启安装并保留本机数据。
 - **问题修复**
   - 修复部分底包自建卡在资料库只显示小头像的问题。恢复能核实的工坊自建卡星级和基础总评，并识别外部自建卡的大图绑定。
   - 修复部分精选卡重复叠头像、前景盖住人物和小头像被拉伸的问题。窄窗口的资料库网格与侧栏也随可用宽度调整。
@@ -38,15 +43,31 @@
 1. 从 [Releases](https://github.com/ryle66666/efootball-player-studio-opt/releases) 下载 Windows ZIP 并完整解压。
 2. 打开 `Portable` 文件夹，双击 `球员工坊-优化版.exe`。免安装版自带运行环境。
 3. 在工坊中选择自己的 **73eFootball V17** 主 APK 和配套离线资源。修改比赛手感后，需重新生成并安装游戏 APK。
-4. 搬迁或手动升级前，备份 `data` 和 `library`。从源码构建请参阅 [BUILD.md](BUILD.md)。
+4. 搬迁或手动升级前，备份 `data` 和 `library`。
 
 Windows 启动、资料库、完整 APK 签名导出和重启更新已验证。多卡动态小包仍属实验功能。比赛手感、连续导入和中断恢复仍待 Android 真机验证。V32 适配、完整德甲接入、教练小包和 FM 模式仍在待办范围。
 
 ---
 
-## 📄 开源协议 (License)
+## 从旧版迁移球员、教练、球场和赛事
 
-原项目的项目级许可条款尚待原作者确认。项目保留原作者署名和来源。随附第三方组件各自适用其许可，见 [第三方说明](Windows/resources/third-party-licenses) 和 [工具许可](Windows/tools)。
+首次从原版球员工坊换到优化版时，把优化版解压到一个新文件夹。先在旧工坊保存编辑，再退出两个工坊并备份旧版 `data`。原版和优化免安装版的 `data` 都在各自的 EXE 旁边，从源码启动的优化版用 `Windows/data`。
+
+从旧版 `data` 复制以下文件到优化版的 `data`，保留相同的相对位置。新工坊已有自己的数据时，先备份新工坊的 `data`，逐项核对同名文件再决定用哪一份。
+
+| 要迁移的内容 | 从旧版 `data` 复制什么 |
+| --- | --- |
+| 自建球员 | 优先从旧工坊导出 `.efproject`，再在优化版导入。也可以从旧版复制 `players/`、`assets/` 里的相应素材，以及已有的 `player-folders.json`。如需保留当时打开的工程，先备份旧版 `current-project.json`，避免覆盖新工坊正在编辑的工程。 |
+| 自定义教练 | `coaches/` 里的教练记录，以及 `assets/` 里对应的头像和头模。旧目录有 `coach-heads.json` 或 `coach-models.json` 时，也带上这些头模设置。如果以前已把自定义教练导出到游戏，带上 `native-coach-registry.json` 可以沿用分配过的教练编号。 |
+| 球场和自定义赛事 | `world-workspace.json` 同时保存球场和赛事设置。一起复制 `assets/` 里对应的模型、贴图和封面。有 `deleted-tournaments.json` 的话也带上，保留以前删除赛事的记录。 |
+
+全新安装可以直接复制旧版整个 `assets/`，省去逐个查找素材文件的步骤。打开优化版，用原来的 73eFootball V17 主 APK 和配套离线资源包准备资料库，然后检查「我的球员」、教练头像和头模、球场预览以及赛事列表。确认都能打开后，再处理旧目录。
+
+比赛规则和选队设置随工坊数据迁移。已经踢过的比分、赛程和积分榜进度保存在安卓游戏存档中，需要保留原游戏存档。
+
+## 📄 许可说明 (License)
+
+原项目的项目级许可条款尚待原作者确认。项目保留原作者署名和来源。随附第三方组件各自适用其许可，许可说明随发布包提供。
 
 ## 🙏 致谢
 
@@ -65,11 +86,16 @@ Windows 启动、资料库、完整 APK 签名导出和重启更新已验证。�
 
 > **Attribution and acknowledgments**
 >
-> This project builds on Player Studio by [@light23335](https://github.com/light23335) and supports **73eFootball V17** by [efootball_73](https://t.me/efootball_73). It is free to use, publishes its source here, and retains the original credits.
+> This project builds on Player Studio by [@light23335](https://github.com/light23335) and supports **73eFootball V17** by [efootball_73](https://t.me/efootball_73). It is free to use and retains the original credits. The Windows portable build is available on Releases.
 
 ### 📖 About
 
-球员工坊-优化版 is a Windows editor for 73eFootball V17. Its first version is **1.0.0**. It edits players, cards, managers, packs, and tournaments, and builds compatible Android game APKs. The changes focus on everyday library browsing, repeated exports, and updates.
+球员工坊-优化版 is a Windows editor for 73eFootball V17. The current version is **1.0.1**. It edits players, cards, managers, packs, and tournaments, and builds compatible Android game APKs. The changes focus on everyday library browsing, repeated exports, and updates.
+
+#### Latest changes in 1.0.1
+
+- Save, export, or batch-process up to 30,000 custom players. Art and skill bindings each support 200,000 entries. Rebuild the full game APK to apply the new in-game limits.
+- Edit position familiarity on a 13-position pitch map. Each position displays the reference rating at full familiarity. Click to cycle familiarity levels, with undo and redo support.
 
 #### ✨ Main changes
 
@@ -84,7 +110,7 @@ Windows 启动、资料库、完整 APK 签名导出和重启更新已验证。�
   - Randomize or lock match time, season, weather, and pitch condition. Set grass length separately. Stadium, match ball, and tournament progress are preserved.
   - See actual disk usage with hard links counted once. Manage verified base APKs by package ID, change the library source after verification, and preview cleanup of old APKs, packs, and caches. Projects, signing files, active bases, and recovery records are protected.
   - Append or update players by permanent ID using `.73pack` on a compatible base. Preview the manifest and check target, base, integrity, and available space. Receipts show additions, updates, skips, and rejections. My Players can open the export screen with a project already selected.
-  - Run the portable Windows package and check, download, verify, and restart for GitHub updates while keeping local data.
+  - Run the portable Windows package, read what changed in the changelog, and download and verify GitHub updates while keeping local data.
 - **Fixes**
   - Restore full card art for supported custom cards that previously showed small portraits. Restore verifiable stars and base ratings for Studio-made cards and resolve large images for externally authored cards.
   - Fix duplicate portraits, decorations covering players, and stretched small portraits. Adjust the library grid and sidebar to fit narrow windows.
@@ -99,15 +125,29 @@ See the [changelog](更新日志.md) for details and the [original author's prof
 1. Download and extract the Windows ZIP from [Releases](https://github.com/ryle66666/efootball-player-studio-opt/releases).
 2. Open `Portable` and double-click `球员工坊-优化版.exe`. The portable build includes its runtime.
 3. Import your own **73eFootball V17** game APK and companion offline resources. Rebuild and install the game APK to apply match-feel changes.
-4. Back up `data` and `library` before moving or manually updating the installation. See [BUILD.md](BUILD.md) for source builds.
+4. Back up `data` and `library` before moving or manually updating the installation.
 
 Windows startup, library browsing, signed full-APK export, and restart updates have been verified. Multi-card animated packs are experimental. Match feel, repeated pack imports, and interruption recovery still need Android device testing. V32, full Bundesliga integration, manager packs, and an FM-style mode remain on the roadmap.
 
 ---
 
+### Migrate players, managers, stadiums, and tournaments
+
+Extract the optimized build to a new folder. Save your edits, close both copies of Studio, and back up the old `data` folder beside its EXE. The portable build also reads `data` beside its EXE. A source checkout uses `Windows/data`.
+
+| Data | What to bring over from the old `data` folder |
+| --- | --- |
+| Custom players | Export `.efproject` files in the old Studio and import them in the new Studio. For a file-based migration, copy `players/`, the corresponding files from `assets/`, and `player-folders.json` if present. Save a separate copy of `current-project.json` to keep the project that was open. |
+| Custom managers | Copy `coaches/` and the associated portraits and head models from `assets/`. Also copy `coach-heads.json`, `coach-models.json`, and `native-coach-registry.json` if present. |
+| Stadiums and tournaments | Copy `world-workspace.json`, the related models, textures, and covers from `assets/`, and `deleted-tournaments.json` if present. |
+
+Keep the relative paths. For a fresh install, you can copy the entire `assets/` folder. If the destination already has data, back it up and review conflicts before replacing any files. Prepare the library from the same 73eFootball V17 game APK and companion offline resources, then check My Players, manager portraits and models, stadium previews, and the tournament list before removing the old installation.
+
+In-game results, fixtures, and standings progress remain in the Android game save. Keep that save to retain tournament progress.
+
 ### 📄 License
 
-The original project's project-wide license is pending confirmation from the original author. Credits and source attribution are retained. Bundled components are covered by their respective [third-party notices](Windows/resources/third-party-licenses) and [tool licenses](Windows/tools).
+The original project's project-wide license is pending confirmation from the original author. Credits and source attribution are retained. Bundled third-party components are covered by their respective licenses, which accompany the release package.
 
 ### 🙏 Credits
 
