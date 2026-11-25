@@ -8,9 +8,15 @@
 
 ## 📖 项目简介
 
-球员工坊-优化版是面向 73eFootball V17 的 Windows 编辑工具。当前版本为 **1.0.1**，可编辑球员、卡面、教练、卡包与赛事，并生成兼容的 Android 游戏 APK。优化重点是让资料库浏览、反复导出和后续更新更方便。
+球员工坊-优化版是面向 73eFootball V17 的 Windows 编辑工具。当前版本为 **1.0.2**，可编辑球员、卡面、教练、卡包与赛事，并生成兼容的 Android 游戏 APK。优化重点是让资料库浏览、反复导出和后续更新更方便。
 
-## 1.0.1 最新优化
+## 1.0.2 最新优化
+
+- **直接编辑原版球员**。在资料库可用「载入资料新建球员」做自建卡，也可用「直接编辑原版数据」修改底包或内容增量包里的原卡。支持修改能力、星级、等级上限、增能和装备，以及恢复原版。修改和恢复都在下次完整导出 APK 时应用。
+- **资料库排序和总评**。有立绘的卡优先显示。缺少原库总评时，工坊用基础能力补算 1 级参考总评。官方星级、增能和等级上限仍需按原卡号核对。
+- 左侧新增「球员资料库」入口，并修复从资料库或快速跳转进入「我的球员」时切换失败的问题。
+
+### 1.0.1 优化回顾
 
 - **新的自建球员使用 22 位短号**，人物和美术槽位共用编号。新建独立卡通常只需要主卡和人物基础两条路由；重新导入导出的 APK 时，资料库会按工坊记录折叠重复的辅助卡。
 - **自建球员容量**提高到 30,000 名，覆盖工程保存、单次导出及批量操作。美术和技能绑定各支持 200,000 条。重新导出完整 APK 后，游戏端的新容量生效。
@@ -94,9 +100,15 @@
 
 ### 📖 About
 
-球员工坊-优化版 is a Windows editor for 73eFootball V17. The current version is **1.0.1**. It edits players, cards, managers, packs, and tournaments, and builds compatible Android game APKs. The changes focus on everyday library browsing, repeated exports, and updates.
+球员工坊-优化版 is a Windows editor for 73eFootball V17. The current version is **1.0.2**. It edits players, cards, managers, packs, and tournaments, and builds compatible Android game APKs. The changes focus on everyday library browsing, repeated exports, and updates.
 
-#### Latest changes in 1.0.1
+#### Latest changes in 1.0.2
+
+- **Edit original players directly.** Use the library to create a custom player from an existing card or to edit the original card, including cards added by content updates. Edit stats, stars, level caps, boosters, and equipment, or restore the original data. Changes and restorations apply on the next full APK export.
+- **Library ordering and ratings.** Cards with portraits appear first. When the original rating is missing, Studio calculates a reference level-1 rating from base stats. Official stars, boosters, and level caps still require a matching card record.
+- A dedicated Player Library button is available in the sidebar. Navigation from the library or quick links to My Players now works.
+
+#### Changes in 1.0.1
 
 - New custom players use short 22-bit IDs and share their player and art ID. A new standalone card generally needs two routes, and the library hides duplicate helper rows identified by Studio when reimporting a built APK.
 - Save, export, or batch-process up to 30,000 custom players. Art and skill bindings each support 200,000 entries. Rebuild the full game APK to apply the new in-game limits.
