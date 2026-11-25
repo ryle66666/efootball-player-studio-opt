@@ -1,6 +1,6 @@
 # efootball-player-studio-opt
 
-> **声明与致谢**：球员工坊-优化版基于 [@light23335](https://github.com/light23335) 的球员工坊开发，面向 [efootball_73](https://t.me/efootball_73) 制作的 **73eFootball V17**。
+> **声明与致谢**：球员工坊-优化版基于 [@light23335](https://github.com/light23335) 的球员工坊开发版开发，面向 [efootball_73](https://t.me/efootball_73) 制作的 **73eFootball V17**。
 >
 > 本项目完全免费，保留原项目的作者署名与来源。Windows 免安装版在 Releases 提供。
 
@@ -45,7 +45,6 @@
 3. 在工坊中选择自己的 **73eFootball V17** 主 APK 和配套离线资源。修改比赛手感后，需重新生成并安装游戏 APK。
 4. 搬迁或手动升级前，备份 `data` 和 `library`。
 
-Windows 启动、资料库、完整 APK 签名导出和重启更新已验证。多卡动态小包仍属实验功能。比赛手感、连续导入和中断恢复仍待 Android 真机验证。V32 适配、完整德甲接入、教练小包和 FM 模式仍在待办范围。
 
 ---
 
@@ -76,8 +75,8 @@ Windows 启动、资料库、完整 APK 签名导出和重启更新已验证。�
 
 ## ⚠️ 免责声明
 
-* 本项目代码及派生修改内容**仅供个人学习、技术交流与非营利性娱乐使用，严禁用于任何商业用途**（包括但不限于二次售卖、付费定制、商业引流等）。
-* 项目中所涉及的游戏界面风格、卡面视觉元素及相关素材，其版权均归原游戏开发商（KONAMI）及对应权利方所有；如涉及侵权，请联系仓库作者及时删除。
+* 本项目及派生修改内容**仅供个人学习、技术交流与非营利性娱乐使用，严禁用于任何商业用途**（包括但不限于二次售卖、付费定制、商业引流等）。
+* 项目中所涉及的游戏界面风格、卡面视觉元素及相关素材，其版权均归原游戏开发商及对应权利方所有；如涉及侵权，请联系仓库作者及时删除。
 * 本工具按“现状”提供，开发者不对因使用或无法使用本工具而导致的任何直接或间接后果承担责任。
 
 ---
@@ -127,7 +126,6 @@ See the [changelog](更新日志.md) for details and the [original author's prof
 3. Import your own **73eFootball V17** game APK and companion offline resources. Rebuild and install the game APK to apply match-feel changes.
 4. Back up `data` and `library` before moving or manually updating the installation.
 
-Windows startup, library browsing, signed full-APK export, and restart updates have been verified. Multi-card animated packs are experimental. Match feel, repeated pack imports, and interruption recovery still need Android device testing. V32, full Bundesliga integration, manager packs, and an FM-style mode remain on the roadmap.
 
 ---
 
@@ -156,6 +154,6 @@ The original project's project-wide license is pending confirmation from the ori
 
 ### ⚠️ Disclaimer
 
-* This project's code and derivative modifications are **for personal learning, technical exchange, and nonprofit entertainment only. All commercial use is prohibited**, including resale, paid customization, and commercial promotion.
-* The game interface style, card visuals, and related assets referenced in this project belong to the original game developer (KONAMI) and the respective rights holders. If you believe your rights have been infringed, please contact the repository owner so the material can be removed promptly.
+* This project and derivative modifications are **for personal learning, technical exchange, and nonprofit entertainment only. All commercial use is prohibited**, including resale, paid customization, and commercial promotion.
+* The game interface style, card visuals, and related assets referenced in this project belong to the original game developer and the respective rights holders. If you believe your rights have been infringed, please contact the repository owner so the material can be removed promptly.
 * This tool is provided “as is.” The developers accept no liability for any direct or indirect consequences arising from its use or the inability to use it.
