@@ -45,6 +45,10 @@
 3. 在工坊中选择自己的 **73eFootball V17** 主 APK 和配套离线资源。修改比赛手感后，需重新生成并安装游戏 APK。
 4. 搬迁或手动升级前，备份 `data` 和 `library`。
 
+> **自建加强卡时，优先绑定原版球员 ID。** 如果给现役或传奇球星做加强卡，在「球员资料 → 原游戏球员身份」勾选「绑定原游戏球员 ID」。游戏会把加强卡和原卡认作同一人，同一人的多张卡通常无法同时上场，可以减少“自己防自己”的情况。
+>
+> 绑定可以省下几条美术路由，例如有的卡能少占 2–3 条。如果每张卡从占 4 条降到 2 条，同样的路由空间理论上能放约两倍的卡。实际容量还受卡片配置和 30,000 名工坊上限限制。
+
 
 ---
 
@@ -125,6 +129,10 @@ See the [changelog](更新日志.md) for details and the [original author's prof
 2. Open `Portable` and double-click `球员工坊-优化版.exe`. The portable build includes its runtime.
 3. Import your own **73eFootball V17** game APK and companion offline resources. Rebuild and install the game APK to apply match-feel changes.
 4. Back up `data` and `library` before moving or manually updating the installation.
+
+> **Link the original player ID when making an upgraded card.** For an active player or a legend, open Profile → Original Player Identity and enable **Link Original Player ID**. The game recognizes the custom card and the original as the same person, so their cards generally cannot play together.
+>
+> Linking can save a few art-routing entries, such as two or three on some cards. Cutting four entries to two would let the same routing budget hold roughly twice as many cards. Actual capacity also depends on card settings and Studio's 30,000-player limit.
 
 
 ---
