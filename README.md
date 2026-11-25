@@ -12,6 +12,7 @@
 
 ## 1.0.1 最新优化
 
+- **新的自建球员使用 22 位短号**，人物和美术槽位共用编号。新建独立卡通常只需要主卡和人物基础两条路由；重新导入导出的 APK 时，资料库会按工坊记录折叠重复的辅助卡。
 - **自建球员容量**提高到 30,000 名，覆盖工程保存、单次导出及批量操作。美术和技能绑定各支持 200,000 条。重新导出完整 APK 后，游戏端的新容量生效。
 - **位置适应度**改为 13 个位置的球场热力图。点选位置可切换适应度，格子显示满适应参考总评，并支持撤销和重做。
 
@@ -47,7 +48,7 @@
 
 > **自建加强卡时，优先绑定原版球员 ID。** 如果给现役或传奇球星做加强卡，在「球员资料 → 原游戏球员身份」勾选「绑定原游戏球员 ID」。游戏会把加强卡和原卡认作同一人，同一人的多张卡通常无法同时上场，可以减少“自己防自己”的情况。
 >
-> 绑定可以省下几条美术路由，例如有的卡能少占 2–3 条。如果每张卡从占 4 条降到 2 条，同样的路由空间理论上能放约两倍的卡。实际容量还受卡片配置和 30,000 名工坊上限限制。
+> 新建独立球员已使用短号来减少美术路由。给同一位球星做不同版本时，按是否需要共用原版身份来决定要不要绑定。
 
 
 ---
@@ -97,6 +98,7 @@
 
 #### Latest changes in 1.0.1
 
+- New custom players use short 22-bit IDs and share their player and art ID. A new standalone card generally needs two routes, and the library hides duplicate helper rows identified by Studio when reimporting a built APK.
 - Save, export, or batch-process up to 30,000 custom players. Art and skill bindings each support 200,000 entries. Rebuild the full game APK to apply the new in-game limits.
 - Edit position familiarity on a 13-position pitch map. Each position displays the reference rating at full familiarity. Click to cycle familiarity levels, with undo and redo support.
 
@@ -132,7 +134,7 @@ See the [changelog](更新日志.md) for details and the [original author's prof
 
 > **Link the original player ID when making an upgraded card.** For an active player or a legend, open Profile → Original Player Identity and enable **Link Original Player ID**. The game recognizes the custom card and the original as the same person, so their cards generally cannot play together.
 >
-> Linking can save a few art-routing entries, such as two or three on some cards. Cutting four entries to two would let the same routing budget hold roughly twice as many cards. Actual capacity also depends on card settings and Studio's 30,000-player limit.
+> New standalone players already use short IDs to save art-routing entries. Link the original ID when the cards should represent the same person.
 
 
 ---
