@@ -2,7 +2,7 @@
 
 > **声明与致谢**：球员工坊-优化版基于 [@light23335](https://github.com/light23335) 的球员工坊开发版开发，面向 [efootball_73](https://t.me/efootball_73) 制作的 **73eFootball V17**。
 >
-> 本项目完全免费，保留原项目的作者署名与来源。Windows 免安装版在 Releases 提供。
+> 本项目完全免费，保留原项目的作者署名与来源。Windows 免安装版和 Android APK在 Releases 提供。
 
 [English](#english)
 
